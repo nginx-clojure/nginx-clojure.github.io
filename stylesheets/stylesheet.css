@@ -366,7 +366,13 @@ Full-Width Styles
   background: #212121;
 }
 
+.social-buttons {
+	float: right;
+}
 
+.social-buttons li {
+    display: inline-block;
+}
 
 /*******************************************************************************
 Small Device Styles
