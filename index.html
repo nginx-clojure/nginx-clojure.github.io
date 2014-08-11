@@ -192,7 +192,7 @@ For more detail example of ring handler please see the next secion.</p>
 <li>Because the maybe more than one nginx worker processes, so this code will run everytime per worker starting. </li>
 <li>If you use <a href="https://github.com/OpenHFT/HugeCollections/wiki/Getting-Started">SharedHashMap</a>  to share data 
 among nginx worker processes, Java file lock can be used to let only one nginx worker process do the initialization.</li>
-<li>If you enabled <a href="#">coroutine support</a>, nginx maybe will start successfully even if your initialization failed after some socket operations. If you case it, you can 
+<li>If you enabled <a href="#24-chose--coroutine-based-socket-or-asynchronous-socket-or-thread-pool-for-slow-io-operations">coroutine support</a>, nginx maybe will start successfully even if your initialization failed after some socket operations. If you case it, you can 
 use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.</li>
 </ul><p>For clojure</p>
 
@@ -518,14 +518,14 @@ It uses event driven pattern and works with a java callback handler or clojure f
 Please check the source code and examples for more details.</p>
 
 <ul>
-<li>source: <a href="https://github.com/nginx-clojure/nginx-clojure/tree/master/src/java/nginx/clojure/net/NginxClojureAsynSocket.java">nginx.clojure.net.NginxClojureAsynSocket</a>
+<li>source: <a target="_blank" href="https://github.com/nginx-clojure/nginx-clojure/tree/master/src/java/nginx/clojure/net/NginxClojureAsynSocket.java">nginx.clojure.net.NginxClojureAsynSocket</a>
 </li>
 <li>example: 
 
 <ul>
-<li>Java <a href="https://github.com/nginx-clojure/nginx-clojure/tree/master/test/java/nginx/clojure/net/SimpleHandler4TestNginxClojureAsynSocket.java">nginx.clojure.net.SimpleHandler4TestNginxClojureAsynSocket</a>
+<li>Java <a target="_blank" href="https://github.com/nginx-clojure/nginx-clojure/tree/master/test/java/nginx/clojure/net/SimpleHandler4TestNginxClojureAsynSocket.java">nginx.clojure.net.SimpleHandler4TestNginxClojureAsynSocket</a>
 </li>
-<li>Clojure <a href="https://github.com/nginx-clojure/nginx-clojure/tree/master/test/clojure/nginx/clojure/asyn_socket_handlers_for_test.clj">nginx.clojure.asyn-socket-handlers-for-test</a>
+<li>Clojure <a target="_blank" href="https://github.com/nginx-clojure/nginx-clojure/tree/master/test/clojure/nginx/clojure/asyn_socket_handlers_for_test.clj">nginx.clojure.asyn-socket-handlers-for-test</a>
 </li>
 </ul>
 </li>
