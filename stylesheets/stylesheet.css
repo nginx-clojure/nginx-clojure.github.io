@@ -332,16 +332,16 @@ Full-Width Styles
   color: #fff;
   font-size: 42px;
   font-weight: 700;
-  text-shadow: #111 0px 0px 10px;
+  text-shadow: #f00 0px 0px 10px;
   display: inline;
 }
 
 #project_tagline {
   color: #fff;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 300;
   background: none;
-  text-shadow: #111 0px 0px 10px;
+  text-shadow: #fff 0px 0px 10px;
 }
 
 #downloads {
@@ -383,11 +383,16 @@ Full-Width Styles
   background: url(../images/sprite_download.png) no-repeat top right;
 }
 
+body {
+  padding-top: 200px;
+}
+
 #main_content_wrap {
   background: #f2f2f2;
   border-top: 1px solid #111;
   border-bottom: 1px solid #111;
 }
+
 
 #main_content {
   padding-top: 40px;

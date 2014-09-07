@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>/home/who/git/nginx-clojure.github.io/.HISTORY.md.html</title>
+
+
+<style type="text/css">
+
+.markdown-body {
+    border: 1px solid #CACACA;
+    padding: 30px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.markdown-body h2 {
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.markdown-body code {
+    white-space: nowrap;
+}
+
+.markdown-body code, .markdown-body tt {
+    background-color: #F8F8F8;
+    border: 1px solid #EAEAEA;
+    border-radius: 3px 3px 3px 3px;
+    margin: 0 2px;
+    padding: 0 5px;
+}
+
+.markdown-body .highlight pre, .markdown-body pre {
+    background-color: #F8F8F8;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px 3px 3px 3px;
+    font-size: 13px;
+    line-height: 19px;
+    overflow: auto;
+    padding: 6px 10px;
+}
+
+.markdown-body img {
+    border: 0 none;
+}
+
+pre, code, tt {
+    font-family: Consolas,"Liberation Mono",Courier,monospace;
+    font-size: 12px;
+}
+
+</style>
+
+
+<script type="text/javascript">
+
+function getDocumentScrollTop() 
+{
+   var res = document.body.scrollTop || document.documentElement.scrollTop || window.pageYOffset || 0;
+   // alert(res);
+   return res;
+}
+
+function setDocumentScrollTop(ypos) 
+{
+	window.scrollTo(0, ypos);
+}
+
+</script>
+
+
+</head>
+<body class="markdown-body">
+<h1> <a name="user-content-downloads--release-history" class="anchor" href="..md.html#downloads--release-history" aria-hidden="true"><span class="octicon octicon-link"></span></a>Downloads &amp; Release History</h1> 
+<ol> 
+ <li><a href="http://sourceforge.net/projects/nginx-clojure/files/">Binaries of Releases</a></li> 
+ <li><a href="https://github.com/nginx-clojure/nginx-clojure/releases">Sources of Releases</a></li> 
+</ol>
+<h2> <a name="user-content-025-2014-09-07" class="anchor" href="..md.html#025-2014-09-07" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.5 (2014-09-07)</h2> 
+<ol> 
+ <li>New Feature: Reference variables in jvm_options &amp; different jvm debug ports for jvm processes (issue #42)</li> 
+ <li>New Feature: Server Sent Events(SSE) &amp; Long polling (issue #41, issue #36)</li> 
+ <li>New Feature: Supports 64-bit JDK on 64-bit Windows (issue #40)</li> 
+ <li>New Feature: Coroutine based socket supports JDK8 (issue #39)</li> 
+ <li>New Feature: More easier to archive Sub/Pub services with Broadcast Events to all Nginx workers (issue #39)</li> 
+ <li>New Feature: Asynchronous Channel a wrapper of asynchronous socket to make the usage easier (issue #37)</li> 
+ <li>Enhancement: Fix--On Windows a little many write events happen and these events seem useless (issue #35)</li> 
+</ol>
+<h2> <a name="user-content-024-2014-07-25" class="anchor" href="..md.html#024-2014-07-25" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.4 (2014-07-25)</h2> 
+<ol> 
+ <li>New Feature: Support Groovy - another dynamic jvm language (issue #34)</li> 
+ <li>Fix bug: Slow Memory Leak for Coroutine based Socket bug (issue #32 )</li> 
+ <li>Fix bug: Should Clone ThreadLocals for Coroutines (issue #31)</li> 
+ <li>New Feature: More friendly to java users who maybe know nothing about clojure feature (issue #29)</li> 
+ <li>Five new nginx directives <code>handler_type</code>, <code>handler_name</code>, <code>handler_code</code>, <code>rewrite_handler_name</code>, <code>rewrite_handler_code</code>. Make Clojure/Java/Groovy handler configurations have the same form. e.g. The old pair of nginx directives <code>clojure</code>, <code>clojure_code</code> is equivalent to <code>handler_type='clojure'</code> + <code>handler_code</code>.</li> 
+</ol>
+<h2> <a name="user-content-023-2014-07-05" class="anchor" href="..md.html#023-2014-07-05" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.3 (2014-07-05)</h2> 
+<ol> 
+ <li>Fix issue After invoking on coroutine based socket nginx worker will exit and be recreated when network is disabled (issue #26)</li> 
+ <li>Fix issue PATCH loses the data payload (issue #27)</li> 
+ <li>Support user defined http request method (issue #28 )</li> 
+ <li>Fix issue Nginx worker crashes when to fetch http header &quot;authorization&quot; from request (issue #30)</li> 
+</ol>
+<h2> <a name="user-content-022-2014-05-31" class="anchor" href="..md.html#022-2014-05-31" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.2 (2014-05-31)</h2> 
+<ol> 
+ <li>Fix bug of with Compojure 1.1.5 + Apache Solrj 4.3.0 + httpclient 4.3.2 NPE happens first time then everything is OK (issue #22)</li> 
+ <li>Verifying option for auto generated waving configurations needed by coroutine based socket (issue #23)</li> 
+</ol>
+<h2> <a name="user-content-021-2014-05-17" class="anchor" href="..md.html#021-2014-05-17" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.1 (2014-05-17)</h2> 
+<ol> 
+ <li>Support to close coroutine based socket from non-main thread (issue #19)</li> 
+ <li>Auto generated waving class configurations about Proxy InvocationHandler instance (issue #17 )</li> 
+ <li>Supports auto turn on thread pool mode when turning on Run Tool Mode feature (issue #16 )</li> 
+ <li>Fix bug of reading from coroutine based socket inputstream returns 0 when eof, should return -1 (issue #15)</li> 
+ <li>Handle multiple sockets parallel in sub coroutines, e.g. we can invoke two remote services at the same time feature (issue #14)</li> 
+ <li>Support nginx rewrite handler to set var before proxy pass (issue #3)</li> 
+</ol>
+<h2> <a name="user-content-020-2014-04-25" class="anchor" href="..md.html#020-2014-04-25" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.0 (2014-04-25)</h2> 
+<ol> 
+ <li>non-blocking socket based on coroutine and compatible with largely existing java library such as apache http client, mysql jdbc drivers</li> 
+ <li>asynchronous callback API of socket for some advanced usage</li> 
+ <li>run initialization clojure code when nginx worker starting</li> 
+ <li>provide a build-in tool to make setting of coroutine based socket easier</li> 
+ <li>support Linux 32bit x86 now</li> 
+ <li>publish <a href="https://sourceforge.net/projects/nginx-clojure/files/">binary release compiled with lastes stable nginx 1.6.0</a> about Linux x64, Linux i586, Win32 &amp; MacOS X</li> 
+</ol>
+<h2> <a name="user-content-012-2014-02-03" class="anchor" href="..md.html#012-2014-02-03" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.1.2 (2014-02-03)</h2> 
+<ol> 
+ <li>fix <a href="/nginx-clojure/nginx-clojure/issues/.2.md.html">#2 Problems with HTTP Redirect 302</a> </li> 
+ <li>header names are case-insensitive now.</li> 
+ <li>publish <a href="https://sourceforge.net/projects/nginx-clojure/files/">binary release</a> about Linux x64, Win32 &amp; MacOS X</li> 
+</ol>
+<h2> <a name="user-content-011-2014-01-20" class="anchor" href="..md.html#011-2014-01-20" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.1.1 (2014-01-20)</h2> 
+<ol> 
+ <li>Supports InputStream, ISeq &amp; recursive ISeq in Response Body. </li> 
+ <li>Auto maintains HTTP last-modified header for multiple files in Response Body</li> 
+</ol>
+<h2> <a name="user-content-010-2014-01-09" class="anchor" href="..md.html#010-2014-01-09" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.1.0 (2014-01-09)</h2> 
+<ol> 
+ <li>Compitiable with Ring Spec (1.1) </li> 
+ <li>Supports Java Thread Pool for handle request</li> 
+ <li>Fast Static File Service</li> 
+</ol>
+</body>
+</html>

@@ -1,78 +1,3 @@
-Nginx-Clojure
-=============
-
-![Alt text](logo.png)Nginx-Clojure is a [Nginx](http://nginx.org/) module for embedding Clojure or Java or Groovy programs, typically those [Ring](https://github.com/ring-clojure/ring/blob/master/SPEC) based handlers.
-
-There are some core features :
-
-1. Compatible with [Ring](https://github.com/ring-clojure/ring/blob/master/SPEC) and obviously supports those Ring based frameworks, such as Compojure etc.
-1. Use Clojure / Java / Groovy(**_NEW_** ) to write simple ring handlers for http services.
-1. Use Clojure / Java / Groovy(**_NEW_** ) to write a simple nginx rewrite handler to set var or return errors before proxy pass or content ring handler
-1. Non-blocking coroutine based socket which is Compatible with Java Socket API and works well with largely existing java library such as apache http client, mysql jdbc drivers. 
-With this feature  one java main thread can handle thousands of connections.
-1. Handle multiple sockets parallel in sub coroutines, e.g. we can invoke two remote services at the same time feature
-1. Asynchronous callback API of socket for some advanced usage
-1. Run initialization clojure code when nginx worker starting
-1. Support user defined http request method
-1. Compatible with the Nginx lastest stable version 1.6.0. (Nginx 1.4.x is also ok, older version is not tested and maybe works.)
-1. One of  benifits of [Nginx](http://nginx.org/) is worker processes are automatically restarted by a master process if they crash
-1. Utilizes lazy headers and direct memory operation between [Nginx](http://nginx.org/) and JVM to fast handle dynamic contents from Clojure or Java code.
-1. Utilizes [Nginx](http://nginx.org/) zero copy file sending mechanism to fast handle static contents controlled by Clojure or Java code.
-1. Supports Linux x64, Linux x86 32bit, Win32 and Mac OS X. Win64 users can also run it with a 32bit JRE/JDK.
-
-By the way it is very fast, the benchmarks can be found [HERE](https://github.com/ptaoussanis/clojure-web-server-benchmarks) .
-
-
-1. Installation
-=============
-
-The lastest release is 0.2.4. Please check the  [Update History](HISTORY.md) for more details.
-
-1.1 Installation by Binary
--------------
-
-1. First you can download  Release 0.2.4  from [here](https://sourceforge.net/projects/nginx-clojure/files/). 
-The zip file includes Nginx-Clojure binaries about Linux x64, Linux i586, Win32 and Mac OS X.
-1. Unzip the zip file downloaded then rename the file `nginx-${os-arc}` to `nginx`, eg. for linux is `nginx-linux-x64`
-
-
-1.2 Installation by Source
--------------
-
-Nginx-Clojure may be compiled successfully on Linux x64, Linux x86 32bit, Win32 and Mac OS X x64.
-
-1. First download from [nginx site](http://nginx.org/en/download.html) or check out nginx source by hg from http://hg.nginx.org/nginx. 
-For Win32 users MUST check out nginx source by hg because the zipped source doesn't contain Win32 related code.
-1. Check out Nginx-Clojure source from github OR download the zipped source code from https://github.com/xfeep/nginx-clojure/releases
-1. If you want to use Http SSL module, you should install openssl and openssl dev first.
-1. Setting Java header include path in nginx-clojure/src/c/config
-
-	```nginx
-	#eg. on ubuntu
-	JNI_HEADER_1="/usr/lib/jvm/java-7-oracle/include"
-	JNI_HEADER_2="${JNI_HEADER_1}/linux"
-	````
-1. Add Nginx-Clojure module to Nginx configure command, here is a simplest example without more details about [InstallOptions](http://wiki.nginx.org/InstallOptions)
-
-	```bash
-	#If nginx source is checked out from hg, please replace ./configure with auto/configure
-	$./configure \
-		--add-module=nginx-clojure/src/c
-	$ make
-	$ make install
-	```
-1. Create the jar file about Nginx-Clojure
-
-	Please check the lein version `lein version`, it should be at least 2.0.0.
-
-	```bash
-	$ cd nginx-clojure
-	$ lein jar
-	```
-	Then you'll find nginx-clojure-${version}.jar (eg. nginx-clojure-0.2.4.jar) in the target folder. 
-	The jar file is self contained. If your project use clojure  it naturally depends on the clojure core jar, e.g clojure-1.5.1.jar.
-	If your project use groovy it naturally depends on the groovy runtime jar, e.g. groovy-2.3.4.jar.
-
 2. Configurations
 =================
 
@@ -83,36 +8,87 @@ Setting JVM path and class path within `http {` block in  nginx.conf
 
 ```nginx
 
-    #for win32,  jvm_path maybe is "C:/Program Files/Java/jdk1.7.0_25/jre/bin/server/jvm.dll";
-    #for macosx, jvm_path maybe is "/Library/Java/JavaVirtualMachines/1.6.0_65-b14-462.jdk/Contents/Libraries/libserver.dylib";
-    #for ubuntu, jvm_path maybe is "/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so";
-    #for centos, jvm_path maybe is "/usr/java/jdk1.6.0_45/jre/lib/amd64/server/libjvm.so";
-    #for centos 32bit, jvm_path maybe is "/usr/java/jdk1.7.0_51/jre/lib/i386/server/libjvm.so";
+    ###define jvm path
+    ###for win32,  jvm_path maybe is "C:/Program Files/Java/jdk1.7.0_25/jre/bin/server/jvm.dll";
+    ###for macosx, jvm_path maybe is "/Library/Java/JavaVirtualMachines/1.6.0_65-b14-462.jdk/Contents/Libraries/libserver.dylib";
+    ###for ubuntu, jvm_path maybe is "/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so";
+    ###for centos, jvm_path maybe is "/usr/java/jdk1.6.0_45/jre/lib/amd64/server/libjvm.so";
+    ###for centos 32bit, jvm_path maybe is "/usr/java/jdk1.7.0_51/jre/lib/i386/server/libjvm.so";
     
     jvm_path "/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so";
     
-    #jvm_options can be repeated once per option.
-    #for clojure, you should append clojure core jar, e.g -Djava.class.path=jars/nginx-clojure-0.2.4.jar:mypath-xxx/clojure-1.5.1.jar,please  replace ':' with ';' on windows
-    #for groovy, you should append groovy runtime jar, e.g. -Djava.class.path=jars/nginx-clojure-0.2.4.jar:mypath-xxx/groovy-2.3.4.jar, please replace ':' with ';' on windows
-    jvm_options "-Djava.class.path=jars/nginx-clojure-0.2.4.jar";
+    ###jvm_options can be repeated once per option.
     
-    #jvm heap memory
-    jvm_options "-Xms1024m";
-    jvm_options "-Xmx1024m";
+    ###define class paths
+    ###for clojure, you should append clojure core jar
+    ###for groovy, you should append groovy runtime jar
+    jvm_options "-Djava.class.path=#{my_jar_root}/nginx-clojure-0.2.4.jar";
     
-    #for enable java remote debug uncomment next two lines, make sure "master_process = off;" or "worker_processes = 1;"
+    ###uncomment next two line to define jvm heap memory
+    #jvm_options "-Xms1024m";
+    #jvm_options "-Xmx1024m";
+    
+    ###for enable java remote debug uncomment next two lines
+    ###the remote debug port will be 8401 ~ 840X .
     #jvm_options "-Xdebug";
-    #jvm_options "-Xrunjdwp:server=y,transport=dt_socket,address=8400,suspend=n";
+    #jvm_options "-Xrunjdwp:server=y,transport=dt_socket,address=840#{pno},suspend=n";
 ````
+###Reusable Variables
 
-###Advanced Options for I/O
+It 's a new feature since v0.2.5. We can define variables and reuse them in jvm_options to make configurations neat.
 
-Check [this section](#24-chose--coroutine-based-socket-or-asynchronous-socket-or-thread-pool-for-slow-io-operations) for more deitals about choosing and configuration about thread pool , coroutined based socket or asynchronous socket/channel.
+```nginx
+
+    ###define nginx_clojure_jar
+    jvm_var nginx_clojure_jar '/home/who/git/nginx-clojure/target/nginx-clojure-0.2.5.jar';
+    ###reference variable nginx_clojure_jar, starts with #{ different from nginx variable
+    jvm_options "-javaagent:#{nginx_clojure_jar}=mb";
+    jvm_options "-Xbootclasspath/a:#{nginx_clojure_jar}:jars/clojure-1.5.1.jar"; 
+    
+    ###define jvm var `ncdev , `mrr, `ncjar, `ncdev is reused in `ncdev
+    jvm_var ncdev '/home/who/git/nginx-clojure';
+    jvm_var mrr '/home/who/.m2/repository';
+    jvm_var ncjar '#{ncdev}/target/nginx-clojure-0.2.5.jar';
+
+    jvm_options "-Djava.class.path=#{ncjar}:#{mrr}/clj-http/clj-http/0.7.8/clj-http-0.7.8.jar";
+```
+
+###Specify Debug Ports for JVMs
+
+It 's a new feature since v0.2.5.
+If the `worker_processes` > 1, the below code will cause error for multiple JVMs try listen on the same debug port `2400`.
+
+```nginx
+
+    jvm_options "-Xdebug";
+    jvm_options "-Xrunjdwp:server=y,transport=dt_socket,address=2400,suspend=n";
+```
+
+Since v0.2.5 we can use a built-in jvm_var `pno` to make all JVMs have different debug ports,  `pno` is a dynamic variable and will be increased 
+on creating every JVM.
+e.g. When `worker_processes` is 8, the debug ports will range from port `2401` to `2408`
+
+```nginx
+
+worker_processes  8;
+
+http {
+...
+    jvm_options "-Xdebug";
+    jvm_options "-Xrunjdwp:server=y,transport=dt_socket,address=240#{pno},suspend=n";
+}
+```
+
+###Advanced JVM Options for I/O
+
+Check [this section](#24-chose--coroutine-based-socket-or-asynchronous-socket-or-thread-pool-for-slow-io-operations) for more deitals about choice and configuration about `thread pool` , `coroutined` based socket or `asynchronous socket/channel`.
 
 ###Some Useful Tips
 
 These tips are really useful. Most of them are from real users. Thanks [Rickr Nook](https://github.com/rickr-nook) who give us some useful tips.
 
+1. The number of embed JVMs is the same with Nginx `worker_processes`, so if `worker_processes` > 1 we maybe need [nginx-clojure broadcast API][], shared memory (e.g [SharedHashMap/Chronicle-Map][]) or 
+even external service(e.g. redis, database) to  coordinate the state.
 1. When importing Swing We Must specifiy `jvm_options "-Djava.awt.headless=true"` , otherwise the nginx will hang.
 1. By adding the location of your clojure source files to the classpath,then just issue "nginx -s reload" and changes to the sources get picked up!
 1. You can remove clojure-1.5.1.jar from class path and point at your "lein uberjar" to pick up a different version of clojure. 
@@ -149,7 +125,7 @@ Please Keep these in your mind:
 
 * By default if the initialization failed the nginx won't start successfully and the worker will exit after reporting an error message in error log file but the master keep running and take the port.
 * Because the maybe more than one nginx worker processes, so this code will run everytime per worker starting. 
-* If you use [SharedHashMap](https://github.com/OpenHFT/HugeCollections/wiki/Getting-Started)  to share data 
+* If you use [SharedHashMap/Chronicle-Map][]  to share data 
 among nginx worker processes, Java file lock can be used to let only one nginx worker process do the initialization.
 * If you enabled [coroutine support](#), nginx maybe will start successfully even if your initialization failed after some socket operations. If you case it, you can 
 use `nginx.clojure.core/without-coroutine` to wrap your handler, e.g.
@@ -265,6 +241,7 @@ public  class Hello implements NginxJavaRingHandler {
 		}
 	}
 ```
+In nginx.conf
 
 ```nginx
        location /myJava {
@@ -333,9 +310,9 @@ In nginx.conf, eg.
        }
 ```
 
-You should set your  JAR files to class path, see [2.1 JVM Path , Class Path & Other JVM Options](#21-jvm-path--class-path--other-jvm-options) .
+You should set your  JAR files or directory to class path, see [2.1 JVM Path , Class Path & Other JVM Options](#21-jvm-path--class-path--other-jvm-options) .
 
-2.4 Chose  Coroutine based Socket Or Asynchronous Socket Or Thread Pool for slow I/O operations
+2.4 Chose  Coroutine based Socket Or Asynchronous Socket/Channel Or Thread Pool for slow I/O operations
 -----------------
 
 If the http service should do some slow I/O operations such as access external http service, database, etc.  nginx worker will be blocked by those operations 
@@ -347,7 +324,7 @@ three choice :
 	* :smiley:It's non-blocking, cheap, fast and let one java main thread be able to handle thousands of connections.
 	* :smiley:Your old code **_need not be changed_** and those plain and old java socket based code such as Apache Http Client, MySQL mysql jdbc drivers etc. will be on the fly with epoll/kqueue on Linux/BSD!
 	* :worried:You must do some steps to get the right class waving configuration file and set it in the nginx conf file.
-1. Asynchronous Socket
+1. Asynchronous Socket/Channel
 	* :smiley:It's the fastest among those three choice and you can controll it finely.
 	* :smiley:It can work with default mode or Coroutine based Socket enabled mode but can't work with Thread Pool mode.
 	* :worried:Your old code **_must be changed_** to use the event driven pattern.
@@ -446,18 +423,12 @@ thread in java is costlier than coroutine, facing large amount of connections th
 	
 	Nginx won't blocked until nginx connections exhuasted or jvm OutOfMemory!
 
-### 2.4.2 Use Asynchronous Socket
+### 2.4.2 Use Asynchronous Socket/Channel
 
-Asynchronous Socket Can be used with default mode or coroutined enabled mode without any additional settings. It just a set of API.
-It uses event driven pattern and works with a java callback handler or clojure function for callback.
-Please check the source code and examples for more details.
+Asynchronous Socket/Channel Can be used with default mode or coroutined enabled mode without any additional settings. It just a set of API.
+It uses event driven pattern and works with a java callback handler or clojure function for callback. Asynchronous Channel is wrapper of Asynchronous Socket
+for more easier usage. More examples can be found from this section [Asynchronous Socket/Channel][]. 
 
-* source: [nginx.clojure.net.NginxClojureAsynSocket](src/java/nginx/clojure/net/NginxClojureAsynSocket.java)
-* example: 
-	* Java [nginx.clojure.net.SimpleHandler4TestNginxClojureAsynSocket](test/java/nginx/clojure/net/SimpleHandler4TestNginxClojureAsynSocket.java)
-	* Clojure [nginx.clojure.asyn-socket-handlers-for-test](test/clojure/nginx/clojure/asyn_socket_handlers_for_test.clj)
-
-In future we'll give more clojure style wrapper and examples. **_Pull requests are also welcome!_**
 
 ### 2.4.3 Use Thread Pool
 
@@ -629,83 +600,6 @@ public class MyHandler implements NginxJavaRingHandler {
 		}
 	
 	```
-
-3. More about Nginx-Clojure
-=================
-
-3.1 Handle Multiple Coroutine Based Sockets Parallel
------------------
-
-Sometimes we need invoke serveral remote services before completing the ring  response. For better performance we need a way to handle multiple sockets parallel in sub coroutines.
-
-e.g. fetch two page parallel by clj-http
-
-```clojure
-   (let [[r1, r2] 
-                (co-pvalues (client/get "http://service1-url") 
-                            (client/get "http://service2-url"))]
-    ;println bodies of two remote response
-    (println (str (:body r1) "====\n" (:body r2) ))
-```
-
-Here `co-pvalues` is also non-blocking and coroutine based. In fact it will create two sub coroutines to handle two sockets.
-
-For Java/Groovy, we can use `NginxClojureRT.coBatchCall` to do the same thing. Here 's a simple example for Groovy.
-
-```groovy
-     def (r1, r2) = NginxClojureRT.coBatchCall( 
-       {"http://mirror.bit.edu.cn/apache/httpcomponents/httpclient/".toURL().text},
-       {"http://mirror.bit.edu.cn/apache/httpcomponents/httpcore/".toURL().text})
-     return [200, ["Content-Type":"text/html"], r1 + r2];
-
-```
-
-3.2 Shared Map among Nginx Workers
------------------
-
-Generally use redis or memorycached is the better choice to implement a shared map among Nginx workers. We can do some initialization of the 
-shared map by following the guide of [2.2 Initialization Handler for nginx worker](#22-initialization-handler-for-nginx-worker).
-If you like shared map managed in nginx  process better than redis or memcached, you can choose [SharedHashMap](https://github.com/OpenHFT/HugeCollections/wiki)  
-which is fast and based on Memory Mapped File so that it can store  large amout of records and won't need too much java heap memory.
-
-3.3 User Defined Http Method
------------------
-
-Some web services need user defined http request method to define special operations beyond standard http request methods. 
-
-e.g. We use `MYUPLOAD` to upload a file and overwrite the one if it exists.  The `curl` command maybe is 
-
-```bash
-curl   -v  -X MYUPLOAD  --upload-file post-test-data \
-"http://localhost:8080/myservice" 
-```
-
-In the nginx.conf, we can use `always_read_body on;` to force nginx to read http body.
-
-```nginx
-
-location /myservice {
-         handler_type 'clojure';
-         always_read_body on;
-         handler_code '....';
-}
-
-```
-
-
-4. Useful Links
-=================
-
-* [Ring Documents](https://github.com/ring-clojure/ring/wiki)
-* [Comojure Documents](https://github.com/weavejester/compojure/wiki)
-* [Simple Examples](test/nginx-working-dir/conf/nginx.conf) in Nginx Clojure Testing Configuration & [Testing Client Code](test/clojure/nginx/clojure/test_all.clj)
-* [Nginx Clojure Ring Handlers Examples for Testing](test/clojure/nginx/clojure/ring_handlers_for_test.clj) (Testing with Ring Core 1.2.1)
-
-
-5. License
-=================
-Copyright © 2013-2014 Zhang, Yuexiang (xfeep) and released under the BSD 3-Clause license.
-
-This program uses:
-* Re-rooted ASM bytecode engineering library which is distributed under the BSD 3-Clause license
-* Modified Continuations Library Written by Matthias Mann  is distributed under the BSD 3-Clause license
+[nginx-clojure broadcast API]: https://github.com/nginx-clojure/nginx-clojure/issues/38
+[SharedHashMap/Chronicle-Map]: https://github.com/OpenHFT/Chronicle-Map
+[Asynchronous Socket/Channel]: 
