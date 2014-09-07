@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>/home/who/git/nginx-clojure.github.io/.QuickStart.md.html</title>
+
+
+<style type="text/css">
+
+.markdown-body {
+    border: 1px solid #CACACA;
+    padding: 30px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.markdown-body h2 {
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.markdown-body code {
+    white-space: nowrap;
+}
+
+.markdown-body code, .markdown-body tt {
+    background-color: #F8F8F8;
+    border: 1px solid #EAEAEA;
+    border-radius: 3px 3px 3px 3px;
+    margin: 0 2px;
+    padding: 0 5px;
+}
+
+.markdown-body .highlight pre, .markdown-body pre {
+    background-color: #F8F8F8;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px 3px 3px 3px;
+    font-size: 13px;
+    line-height: 19px;
+    overflow: auto;
+    padding: 6px 10px;
+}
+
+.markdown-body img {
+    border: 0 none;
+}
+
+pre, code, tt {
+    font-family: Consolas,"Liberation Mono",Courier,monospace;
+    font-size: 12px;
+}
+
+</style>
+
+
+<script type="text/javascript">
+
+function getDocumentScrollTop() 
+{
+   var res = document.body.scrollTop || document.documentElement.scrollTop || window.pageYOffset || 0;
+   // alert(res);
+   return res;
+}
+
+function setDocumentScrollTop(ypos) 
+{
+	window.scrollTo(0, ypos);
+}
+
+</script>
+
+
+</head>
+<body class="markdown-body">
+<h1> <a name="user-content-quick-start" class="anchor" href="..md.html#quick-start" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quick Start</h1> 
+<h2> <a name="user-content-download" class="anchor" href="..md.html#download" aria-hidden="true"><span class="octicon octicon-link"></span></a>Download</h2> 
+<ol> 
+ <li>Download the latest binaries release v0.2.5 from <a href="https://sourceforge.net/projects/nginx-clojure/files/">here</a>. </li> 
+ <li>Unzip the zip file downloaded then rename the file <code>nginx-${os-arc}</code> to <code>nginx</code>, eg. for linux is <code>nginx-linux-x64</code> </li> 
+</ol>
+<h2> <a name="user-content-configuration" class="anchor" href="..md.html#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h2> 
+<ol> 
+ <li>Open conf/nginx.conf file</li> 
+ <li> <p>Setting JVM path and class path within <code>http {</code> block in nginx.conf</p> 
+  <div class="highlight highlight-nginx">
+   <pre><span class="c1">### jvm dynamic library path</span>
+<span class="k">jvm_path</span> <span class="s">'/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so'</span><span class="p">;</span>
+
+<span class="c1">### my app jars e.g. clojure-1.5.1.jar , groovy-2.3.4.jar ,etc.</span>
+<span class="k">jvm_var</span> <span class="s">my_other_jars</span> <span class="s">'my_jar_dir/clojure-1.5.1.jar'</span><span class="p">;</span>
+
+<span class="c1">### my app classpath, windows user should use ';' as the separator</span>
+<span class="k">jvm_options</span> <span class="s">&quot;-Djava.class.path=jars/nginx-clojure-0.2.5.jar:</span><span class="c1">#{my_other_jars}&quot;;</span>
+</pre>
+  </div> </li> 
+ <li> <p>Setting Http Service Handler</p> <p>For Clojure:</p> 
+  <div class="highlight highlight-nginx">
+   <pre>
+   <span class="k">location</span> <span class="s">/clojure</span> <span class="p">{</span>
+      <span class="kn">handler_type</span> <span class="s">'clojure'</span><span class="p">;</span>
+      <span class="kn">handler_code</span> <span class="s">'</span> 
+                    <span class="s">(fn[req]</span>
+                      <span class="p">{</span>
+                        <span class="kn">:status</span> <span class="mi">200</span><span class="s">,</span>
+                        <span class="p">:</span><span class="s">headers</span> <span class="p">{</span><span class="kn">&quot;content-type&quot;</span> <span class="s">&quot;text/plain&quot;</span><span class="err">}</span><span class="s">,</span>
+                        <span class="p">:</span><span class="s">body</span>  <span class="s">&quot;Hello</span> <span class="s">Clojure</span> <span class="s">&amp;</span> <span class="s">Nginx!&quot;</span>
+                        <span class="err">}</span><span class="s">)</span>
+      <span class="s">'</span><span class="p">;</span>
+   <span class="p">}</span>
+</pre>
+  </div> <p>For Groovy:</p> 
+  <div class="highlight highlight-nginx">
+   <pre>
+   <span class="k">location</span> <span class="s">/groovy</span> <span class="p">{</span>
+      <span class="kn">handler_type</span> <span class="s">'groovy'</span><span class="p">;</span>
+      <span class="kn">handler_code</span> <span class="s">'</span> 
+           <span class="s">import</span> <span class="s">nginx.clojure.java.NginxJavaRingHandler</span><span class="p">;</span>
+           <span class="kn">import</span> <span class="s">java.util.Map</span><span class="p">;</span>
+           <span class="kn">public</span> <span class="s">class</span> <span class="s">HelloGroovy</span> <span class="s">implements</span> <span class="s">NginxJavaRingHandler</span> <span class="p">{</span>
+              <span class="kn">public</span> <span class="s">Object[]</span> <span class="s">invoke(Map&lt;String,</span> <span class="s">Object&gt;</span> <span class="s">request)</span><span class="p">{</span>
+                 <span class="kn">return</span> <span class="s">[200,</span> <span class="s">//http</span> <span class="s">status</span> <span class="mi">200</span>
+                         <span class="s">[&quot;Content-Type&quot;:&quot;text/html&quot;],</span> <span class="s">//headers</span> <span class="s">map</span>
+                         <span class="s">&quot;Hello,</span> <span class="s">Groovy</span> <span class="s">&amp;</span> <span class="s">Nginx!&quot;]</span><span class="p">;</span> <span class="kn">//response</span> <span class="s">body</span> <span class="s">can</span> <span class="s">be</span> <span class="s">string,</span> <span class="s">File</span> <span class="s">or</span> <span class="s">Array/Collection</span> <span class="s">of</span> <span class="s">them</span>
+              <span class="err">}</span>
+           <span class="err">}</span>
+      <span class="s">'</span><span class="p">;</span>
+   <span class="p">}</span>
+</pre>
+  </div> </li> 
+</ol>
+<h2> <a name="user-content-start-up" class="anchor" href="..md.html#start-up" aria-hidden="true"><span class="octicon octicon-link"></span></a>Start up</h2> 
+<div class="highlight highlight-nginx">
+ <pre>
+<span class="k">$</span> <span class="s">cd</span> <span class="s">nginx-clojure-0.2.5/nginx-1.6.0</span>
+$ <span class="s">./nginx</span>
+</pre>
+</div> 
+<p>If everything is ok, we can access our first http service by this url</p> 
+<div class="highlight highlight-nginx">
+ <pre><span class="c1">### For Clojure</span>
+<span class="k">http://localhost:8080/clojure</span>
+
+<span class="c1">### For Groovy</span>
+<span class="s">http://localhost:8080/groovy</span>
+</pre>
+</div> 
+<p>We can check the logs/error.log to see error information.</p> 
+<h2> <a name="user-content-reload" class="anchor" href="..md.html#reload" aria-hidden="true"><span class="octicon octicon-link"></span></a>Reload</h2> 
+<p>If we change some settings we can reload the settings without stoping our services.</p> 
+<div class="highlight highlight-nginx">
+ <pre><span class="k">$</span> <span class="s">./nginx</span> <span class="s">-s</span> <span class="s">reload</span>
+</pre>
+</div> 
+<h2> <a name="user-content-stop" class="anchor" href="..md.html#stop" aria-hidden="true"><span class="octicon octicon-link"></span></a>Stop</h2> 
+<div class="highlight highlight-nginx">
+ <pre><span class="k">$</span> <span class="s">./nginx</span> <span class="s">-s</span> <span class="s">stop</span>
+</pre>
+</div>
+</body>
+</html>
