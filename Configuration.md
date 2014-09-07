@@ -602,4 +602,4 @@ public class MyHandler implements NginxJavaRingHandler {
 	```
 [nginx-clojure broadcast API]: https://github.com/nginx-clojure/nginx-clojure/issues/38
 [SharedHashMap/Chronicle-Map]: https://github.com/OpenHFT/Chronicle-Map
-[Asynchronous Socket/Channel]: 
+[Asynchronous Socket/Channel]: more.html#user-content-36-asynchronous-channel

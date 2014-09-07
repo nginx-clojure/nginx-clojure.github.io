@@ -444,7 +444,7 @@ curl -v http://localhost:8080/dump
  <li> <p>restart nginx or reload nginx</p> <p>Now every nginx worker can handle thousands of connections easily! </p> <p>Those plain and old java socket based code such as Apache Http Client, MySQL mysql jdbc drivers etc. will be on the fly with epoll/kqueue on Linux/BSD!</p> <p>Nginx won't blocked until nginx connections exhuasted or jvm OutOfMemory!</p> </li> 
 </ul>
 <h3> <a name="user-content-242-use-asynchronous-socketchannel" class="anchor" href="..md.html#242-use-asynchronous-socketchannel" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.4.2 Use Asynchronous Socket/Channel</h3> 
-<p>Asynchronous Socket/Channel Can be used with default mode or coroutined enabled mode without any additional settings. It just a set of API. It uses event driven pattern and works with a java callback handler or clojure function for callback. Asynchronous Channel is wrapper of Asynchronous Socket for more easier usage. More examples can be found from this section [Asynchronous Socket/Channel][]. </p> 
+<p>Asynchronous Socket/Channel Can be used with default mode or coroutined enabled mode without any additional settings. It just a set of API. It uses event driven pattern and works with a java callback handler or clojure function for callback. Asynchronous Channel is wrapper of Asynchronous Socket for more easier usage. More examples can be found from this section <a href="more.html#user-content-36-asynchronous-channel">Asynchronous Socket/Channel</a>. </p> 
 <h3> <a name="user-content-243-use-thread-pool" class="anchor" href="..md.html#243-use-thread-pool" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.4.3 Use Thread Pool</h3> 
 <p>If your tasks are often blocked by slow I/O operations, the thread pool method can make the nginx worker not blocked until all threads are exhuasted. When facing large amount of connections this choice isn't as good as above coroutine based choice or asynchronous socket.</p> 
 <p>eg.</p> 
@@ -597,6 +597,5 @@ curl -v http://localhost:8080/dump
 </pre>
   </div> </li> 
 </ul>
-<p>[Asynchronous Socket/Channel]: </p>
 </body>
 </html>
