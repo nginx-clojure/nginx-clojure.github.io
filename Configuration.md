@@ -81,7 +81,7 @@ http {
 
 ###Advanced JVM Options for I/O
 
-Check [this section](#24-chose--coroutine-based-socket-or-asynchronous-socket-or-thread-pool-for-slow-io-operations) for more deitals about choice and configuration about `thread pool` , `coroutined` based socket or `asynchronous socket/channel`.
+Check [this section](configuration.html#user-content-24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations) for more deitals about choice and configuration about `thread pool` , `coroutined` based socket or `asynchronous socket/channel`.
 
 ###Some Useful Tips
 
@@ -127,7 +127,7 @@ Please Keep these in your mind:
 * Because the maybe more than one nginx worker processes, so this code will run everytime per worker starting. 
 * If you use [SharedHashMap/Chronicle-Map][]  to share data 
 among nginx worker processes, Java file lock can be used to let only one nginx worker process do the initialization.
-* If you enabled [coroutine support](#), nginx maybe will start successfully even if your initialization failed after some socket operations. If you case it, you can 
+* If you [enabled coroutine support][], nginx maybe will start successfully even if your initialization failed after some socket operations. If you case it, you can 
 use `nginx.clojure.core/without-coroutine` to wrap your handler, e.g.
 
 For clojure
@@ -310,7 +310,7 @@ In nginx.conf, eg.
        }
 ```
 
-You should set your  JAR files or directory to class path, see [2.1 JVM Path , Class Path & Other JVM Options](#21-jvm-path--class-path--other-jvm-options) .
+You should set your  JAR files or directory to class path, see [2.1 JVM Path , Class Path & Other JVM Options][] .
 
 2.4 Chose  Coroutine based Socket Or Asynchronous Socket/Channel Or Thread Pool for slow I/O operations
 -----------------
@@ -603,3 +603,5 @@ public class MyHandler implements NginxJavaRingHandler {
 [nginx-clojure broadcast API]: https://github.com/nginx-clojure/nginx-clojure/issues/38
 [SharedHashMap/Chronicle-Map]: https://github.com/OpenHFT/Chronicle-Map
 [Asynchronous Socket/Channel]: more.html#user-content-36-asynchronous-channel
+[2.1 JVM Path , Class Path & Other JVM Options]: configuration.html#user-content-21-jvm-path--class-path--other-jvm-options
+[enabled coroutine support]: configuration.html#user-content-24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations

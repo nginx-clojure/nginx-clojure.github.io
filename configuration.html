@@ -19,6 +19,9 @@
 		<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.0.min.js"></script>
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+		
+		<script src="javascripts/fix.js"></script>
+		
 		<link rel="stylesheet" type="text/css" media="screen" href="stylesheets/my.css">
     <title>Configuration</title>
   </head>
@@ -35,7 +38,9 @@
   $("#header").load("header.html");
   $("#main_content").load("Configuration.md.html", function(){
 	  $("a[href^='http']").attr("target","_blank");
+	  fixNavbarIssue();
   });
+  
   $("#footer").load("footer.html");
   </script>
 	<script type="text/javascript">

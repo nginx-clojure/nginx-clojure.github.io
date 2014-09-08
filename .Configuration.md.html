@@ -141,7 +141,7 @@ function setDocumentScrollTop(ypos)
 </pre>
 </div> 
 <h3> <a name="user-content-advanced-jvm-options-for-io" class="anchor" href="..md.html#advanced-jvm-options-for-io" aria-hidden="true"><span class="octicon octicon-link"></span></a>Advanced JVM Options for I/O</h3> 
-<p>Check <a href="..md.html#24-chose--coroutine-based-socket-or-asynchronous-socket-or-thread-pool-for-slow-io-operations">this section</a> for more deitals about choice and configuration about <code>thread pool</code> , <code>coroutined</code> based socket or <code>asynchronous socket/channel</code>.</p> 
+<p>Check <a href="configuration.html#user-content-24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations">this section</a> for more deitals about choice and configuration about <code>thread pool</code> , <code>coroutined</code> based socket or <code>asynchronous socket/channel</code>.</p> 
 <h3> <a name="user-content-some-useful-tips" class="anchor" href="..md.html#some-useful-tips" aria-hidden="true"><span class="octicon octicon-link"></span></a>Some Useful Tips</h3> 
 <p>These tips are really useful. Most of them are from real users. Thanks <a href="https://github.com/rickr-nook">Rickr Nook</a> who give us some useful tips.</p> 
 <ol> 
@@ -178,7 +178,7 @@ function setDocumentScrollTop(ypos)
  <li>By default if the initialization failed the nginx won't start successfully and the worker will exit after reporting an error message in error log file but the master keep running and take the port.</li> 
  <li>Because the maybe more than one nginx worker processes, so this code will run everytime per worker starting. </li> 
  <li>If you use <a href="https://github.com/OpenHFT/Chronicle-Map">SharedHashMap/Chronicle-Map</a> to share data among nginx worker processes, Java file lock can be used to let only one nginx worker process do the initialization.</li> 
- <li>If you enabled <a href="..md.html#">coroutine support</a>, nginx maybe will start successfully even if your initialization failed after some socket operations. If you case it, you can use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.</li> 
+ <li>If you <a href="configuration.html#user-content-24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations">enabled coroutine support</a>, nginx maybe will start successfully even if your initialization failed after some socket operations. If you case it, you can use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.</li> 
 </ul>
 <p>For clojure</p> 
 <div class="highlight highlight-nginx">
@@ -341,7 +341,7 @@ function setDocumentScrollTop(ypos)
        <span class="p">}</span>
 </pre>
 </div> 
-<p>You should set your JAR files or directory to class path, see <a href="..md.html#21-jvm-path--class-path--other-jvm-options">2.1 JVM Path , Class Path &amp; Other JVM Options</a> .</p> 
+<p>You should set your JAR files or directory to class path, see <a href="configuration.html#user-content-21-jvm-path--class-path--other-jvm-options">2.1 JVM Path , Class Path &amp; Other JVM Options</a> .</p> 
 <h2> <a name="user-content-24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations" class="anchor" href="..md.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.4 Chose Coroutine based Socket Or Asynchronous Socket/Channel Or Thread Pool for slow I/O operations</h2> 
 <p>If the http service should do some slow I/O operations such as access external http service, database, etc. nginx worker will be blocked by those operations and the new user request even static file request will be blocked. It really sucks！ Before v0.2.0 the only choice is using thread pool but now we have three choice :</p> 
 <ol> 

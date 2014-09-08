@@ -32,7 +32,7 @@ For Java/Groovy, we can use `NginxClojureRT.coBatchCall` to do the same thing. H
 -----------------
 
 Generally use redis or memorycached is the better choice to implement a shared map among Nginx workers. We can do some initialization of the 
-shared map by following the guide of [2.2 Initialization Handler for nginx worker](#22-initialization-handler-for-nginx-worker).
+shared map by following the guide of [2.2 Initialization Handler for nginx worker][].
 If you like shared map managed in nginx  processes better than redis or memcached, you can choose 
 [SharedHashMap/Chronicle-Map] which is fast and based on Memory Mapped File so that it can store  
 large amout of records and won't need too much java heap memory.
@@ -364,3 +364,5 @@ Here 's an example which is to get content from mirror.bit.edu.cn:8080 and sent 
 [SharedHashMap/Chronicle-Map]: https://github.com/OpenHFT/Chronicle-Map
 [hijack API]: https://github.com/nginx-clojure/nginx-clojure/issues/41
 [Asynchronous Channel API]: https://github.com/nginx-clojure/nginx-clojure/issues/37
+[2.2 Initialization Handler for nginx worker]: configuration.html#user-content-22-initialization-handler-for-nginx-worker
+
