@@ -92,7 +92,7 @@ function setDocumentScrollTop(ypos)
 <span class="k">jvm_options</span> <span class="s">&quot;-Djava.class.path=jars/nginx-clojure-0.2.5.jar:</span><span class="c1">#{my_other_jars}&quot;;</span>
 </pre>
   </div> </li> 
- <li> <p>Setting Http Service Handler</p> <p>For Clojure:</p> 
+ <li> <p>Setting inline Http Service Handler</p> <p>For Clojure:</p> 
   <div class="highlight highlight-nginx">
    <pre>
    <span class="k">location</span> <span class="s">/clojure</span> <span class="p">{</span>
@@ -127,6 +127,10 @@ function setDocumentScrollTop(ypos)
 </pre>
   </div> </li> 
 </ol>
+<hr />
+<blockquote> 
+ <p><strong>Note:</strong> For more advanced configurations such as external Http Service Handler, enable coroutine based socket, thread pool etc. Please check them from <a href="configuration.html">HERE</a>.</p> 
+</blockquote> 
 <h2> <a name="user-content-start-up" class="anchor" href="..md.html#start-up" aria-hidden="true"><span class="octicon octicon-link"></span></a>Start up</h2> 
 <div class="highlight highlight-nginx">
  <pre>

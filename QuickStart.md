@@ -23,7 +23,7 @@ Configuration
 	### my app classpath, windows user should use ';' as the separator
 	jvm_options "-Djava.class.path=jars/nginx-clojure-0.2.5.jar:#{my_other_jars}";
 	```
-1. Setting Http Service Handler
+1. Setting inline Http Service Handler
 
 	For Clojure:
 	```nginx
@@ -59,6 +59,11 @@ Configuration
           ';
        }
 	```
+
+-----------------------------------
+
+> **Note:**
+> For more advanced configurations such as external Http Service Handler,  enable coroutine based socket, thread pool  etc. Please check them from [HERE](configuration.html).
 
 Start up
 --------------
