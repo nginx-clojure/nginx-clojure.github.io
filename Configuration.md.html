@@ -467,7 +467,7 @@ curl -v http://localhost:8080/dump
 
        <span class="k">location</span> <span class="s">/rewritesimple</span> <span class="p">{</span>
           <span class="kn">handler_type</span> <span class="s">'clojure'</span><span class="p">;</span>
-          <span class="kn">handler_rewrite_code</span> <span class="s">'</span>
+          <span class="kn">rewrite_handler_code</span> <span class="s">'</span>
            <span class="s">(do</span> <span class="s">(use</span> <span class="s">\'[nginx.clojure.core])</span> 
                         <span class="s">(fn[req]</span>
                           <span class="s">(set-ngx-var!</span> <span class="s">req</span> <span class="s">&quot;myvar&quot;</span> <span class="s">&quot;Hello&quot;)</span>
@@ -496,7 +496,7 @@ curl -v http://localhost:8080/dump
 
        <span class="k">location</span> <span class="s">/myproxy</span> <span class="p">{</span>
           <span class="kn">handler_type</span> <span class="s">'clojure'</span><span class="p">;</span>
-          <span class="kn">handler_rewrite_code</span> <span class="s">'</span>
+          <span class="kn">rewrite_handler_code</span> <span class="s">'</span>
            <span class="s">(do</span> <span class="s">(use</span> <span class="s">\'[nginx.clojure.core])</span> 
                         <span class="s">(fn[req]</span>
                           <span class="p">;</span><span class="kn">compute</span> <span class="s">myhost</span> <span class="s">(upstream</span> <span class="s">name</span> <span class="s">or</span> <span class="s">real</span> <span class="s">host</span> <span class="s">name)</span> <span class="s">based</span> <span class="s">req</span> <span class="s">&amp;</span> <span class="s">remote</span> <span class="s">service,</span> <span class="s">e.g.</span>
@@ -520,7 +520,7 @@ curl -v http://localhost:8080/dump
         <span class="nd">@Override</span>
         <span class="kd">public</span> <span class="n">Object</span><span class="o">[]</span> <span class="nf">invoke</span><span class="o">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">req</span><span class="o">)</span> <span class="o">{</span>
             <span class="n">String</span> <span class="n">myhost</span> <span class="o">=</span> <span class="n">computeMyHost</span><span class="o">(</span><span class="n">req</span><span class="o">);</span>
-            <span class="n">NginxClojureRT</span><span class="o">.</span><span class="na">setNGXVariable</span><span class="o">(</span><span class="n">req</span><span class="o">.</span><span class="na">nativeRequest</span><span class="o">(),</span> <span class="s">&quot;myhost&quot;</span><span class="o">,</span> <span class="n">myhost</span><span class="o">);</span>
+            <span class="n">NginxClojureRT</span><span class="o">.</span><span class="na">setNGXVariable</span><span class="o">(((</span><span class="n">NginxJavaRequest</span><span class="o">)</span><span class="n">req</span><span class="o">).</span><span class="na">nativeRequest</span><span class="o">(),</span> <span class="s">&quot;myhost&quot;</span><span class="o">,</span> <span class="n">myhost</span><span class="o">);</span>
             <span class="k">return</span> <span class="n">PHRASE_DONE</span><span class="o">;</span>
         <span class="o">}</span>
 
@@ -538,7 +538,7 @@ curl -v http://localhost:8080/dump
 
        <span class="k">location</span> <span class="s">/myproxy</span> <span class="p">{</span>
           <span class="kn">handler_type</span> <span class="s">'java'</span><span class="p">;</span>
-          <span class="kn">handler_rewrite_name</span> <span class="s">'my.test.MyRewriteProxyPassHandler'</span><span class="p">;</span>
+          <span class="kn">rewrite_handler_name</span> <span class="s">'my.test.MyRewriteProxyPassHandler'</span><span class="p">;</span>
           <span class="kn">proxy_pass</span> <span class="nv">$myhost</span>
        <span class="err">}</span>    
 
@@ -548,7 +548,7 @@ curl -v http://localhost:8080/dump
 <p>For clojure</p> 
 <div class="highlight highlight-nginx">
  <pre> <span class="k">handler_type</span> <span class="s">'clojure'</span><span class="p">;</span>
- <span class="k">handler_rewrite_code</span> <span class="s">'</span>
+ <span class="k">rewrite_handler_code</span> <span class="s">'</span>
      <span class="s">(do</span> <span class="s">(use</span> <span class="s">\'[nginx.clojure.core])</span> 
            <span class="s">(import</span> <span class="s">\'[com\.test</span> <span class="s">AuthenticationHandler])</span> 
                 <span class="s">(fn[req]</span>
@@ -567,7 +567,7 @@ curl -v http://localhost:8080/dump
  <li> <p>nginx.conf</p> 
   <div class="highlight highlight-nginx">
    <pre>    <span class="k">handler_type</span> <span class="s">'java'</span><span class="p">;</span>
-    <span class="k">handler_rewrite_name</span> <span class="s">'com.test.MyHandler'</span><span class="p">;</span>
+    <span class="k">rewrite_handler_name</span> <span class="s">'com.test.MyHandler'</span><span class="p">;</span>
     <span class="k">proxy_pass</span> <span class="s">http://localhost:8084</span><span class="p">;</span>
 </pre>
   </div> </li> 

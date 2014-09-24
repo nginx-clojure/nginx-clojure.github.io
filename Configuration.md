@@ -466,7 +466,7 @@ Here's a simple clojure example for Nginx rewrite handler :
        
        location /rewritesimple {
           handler_type 'clojure';
-          handler_rewrite_code '
+          rewrite_handler_code '
            (do (use \'[nginx.clojure.core]) 
 						(fn[req]
 						  (set-ngx-var! req "myvar" "Hello")
@@ -497,7 +497,7 @@ We can alos use this feature to complete a simple dynamic balancer , e.g.
        
        location /myproxy {
           handler_type 'clojure';
-          handler_rewrite_code '
+          rewrite_handler_code '
            (do (use \'[nginx.clojure.core]) 
 						(fn[req]
 						  ;compute myhost (upstream name or real host name) based req & remote service, e.g.
@@ -522,7 +522,7 @@ import static nginx.clojure.java.Constants.*;
 		@Override
 		public Object[] invoke(Map<String, Object> req) {
 			String myhost = computeMyHost(req);
-			NginxClojureRT.setNGXVariable(req.nativeRequest(), "myhost", myhost);
+			NginxClojureRT.setNGXVariable(((NginxJavaRequest)req).nativeRequest(), "myhost", myhost);
 			return PHRASE_DONE;
 		}
 		
@@ -540,7 +540,7 @@ Then we set the java rewrtite handler in nginx.conf
        
        location /myproxy {
           handler_type 'java';
-          handler_rewrite_name 'my.test.MyRewriteProxyPassHandler';
+          rewrite_handler_name 'my.test.MyRewriteProxyPassHandler';
           proxy_pass $myhost
        }    
 
@@ -552,7 +552,7 @@ For clojure
 
 ```nginx
  handler_type 'clojure';
- handler_rewrite_code '
+ rewrite_handler_code '
      (do (use \'[nginx.clojure.core]) 
            (import \'[com\.test AuthenticationHandler]) 
                 (fn[req]
@@ -571,7 +571,7 @@ For Java
  
 	```nginx
 		handler_type 'java';
-		handler_rewrite_name 'com.test.MyHandler';
+		rewrite_handler_name 'com.test.MyHandler';
 		proxy_pass http://localhost:8084;
 	```
 		
