@@ -489,7 +489,7 @@ Here's a simple clojure example for Nginx rewrite handler :
 
 ### 2.5.2 Simple Dynamic Balancer By Nginx rewrite handler
 
-We can alos use this feature to complete a simple dynamic balancer , e.g.
+We can also  use this feature to complete a simple dynamic balancer , e.g.
 
 ```nginx
 
@@ -504,6 +504,23 @@ We can alos use this feature to complete a simple dynamic balancer , e.g.
 						  (let [myhost (compute-myhost req)])
 						  (set-ngx-var! req "myhost" myhost)
 						  phrase-done))
+          ';
+          proxy_pass $myhost
+       }    
+
+```
+
+> **Note:**
+>  The below example is wrong becuase so far Nginx-Clojure has do nothing about making sure Nginx-Clojure rewrite handler execution is before/after the execution of directive `set`.
+>   For more details about Nginx Variable please check this  [nginx tutorial](http://openresty.org/download/agentzh-nginx-tutorials-en.html)  which explains perfectly the variable scope.
+
+```nginx
+
+       location /myproxy {
+          ##WRONG!!! Because execution of directive `set` maybe is after the execution of Nginx-Clojure rewrite handler
+          set $myhost "";
+          handler_type 'clojure';
+          rewrite_handler_code ' ....
           ';
           proxy_pass $myhost
        }    

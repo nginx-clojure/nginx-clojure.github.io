@@ -360,6 +360,45 @@ Here 's an example which is to get content from mirror.bit.edu.cn:8080 and sent 
 * [Java Example](https://github.com/nginx-clojure/nginx-clojure/blob/master/test/java/nginx/clojure/net/SimpleHandler4TestNginxClojureAsynChannel.java)
 
 
+3.7  About Logging
+-----------------
+
+For logging with nginx-clojure  there are some ways
+
+1. Using System.err.print/println will write log to nginx error.log. This way is simplest but logging information will be mixed if you have more than one nginx worker.
+2. Using clojure tools.logging + logback or slf4j +  logback, we can get one log file per nginx worker.
+
+e.g
+
+in nginx.conf
+
+```nginx
+
+ jvm_options "-DMYPID=#{pno}";
+ ```
+
+
+
+in logback.xml
+
+```xml
+
+ <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- daily rollover -->
+      <fileNamePattern>logs/myapp.%d{yyyy-MM-dd}-${MYPID}.log</fileNamePattern>
+      <!-- keep 30 days' worth of history -->
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-10contextName %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+ ```
+
+Then we 'll get log files whose name just like myapp.2014-09-12-0.log,  myapp.2014-09-12-1.log.
+
 [nginx-clojure broadcast API]: https://github.com/nginx-clojure/nginx-clojure/issues/38
 [SharedHashMap/Chronicle-Map]: https://github.com/OpenHFT/Chronicle-Map
 [hijack API]: https://github.com/nginx-clojure/nginx-clojure/issues/41

@@ -209,7 +209,7 @@ function setDocumentScrollTop(ypos)
  <li>channel close function/method is invoked on this channel, e.g. (close! ch)</li> 
  <li>inner unrecoverable error happens with this channel, e.g. not enough memory to read/write</li> 
  <li>remote client connection is closed or broken.</li> 
-</ul>
+</ul> 
 <p>For Clojure</p> 
 <div class="highlight highlight-clojure">
  <pre>
@@ -239,13 +239,13 @@ function setDocumentScrollTop(ypos)
  <li>Client A connected to nginx worker A and subscribed to uri <code>/mychannel/sub</code> </li> 
  <li>Client B connected to nginx worker B and subscribed to uri <code>/mychannel/sub</code> </li> 
  <li>Client C connected to nginx worker C and publish a message to uri <code>/mychannel/pub</code> </li> 
-</ol>
+</ol> 
 <p>So the service at endpoint of <code>/mychannel/pub</code> must broadcast pub event to Client A and Client B. Although for large-scale application we can use sub/pub service from Redis on nginx-clojure , for small-scale or medium-scale application this feature will make the dev life easier.</p> 
 <p>This feature supports two kinds of events to broadcast, simple events and complex events.</p> 
 <ol> 
  <li>A simple event only has a event id which is a long integer and must be less than 0x0100000000000000L, it hasn't any body or its body is stored in some external stores, e.g. SharedHashMap, Memcached, Redis etc.</li> 
  <li>A complex event has a message with a length limitation <code>PIPE_BUF - 8</code>, generally on Linux/Windows is 4088, on MacosX is 504.</li> 
-</ol>
+</ol> 
 <p>Here's a simple Sub/Pub Service based on API of broadcast &amp; Server Sent Events. More details can be found from issue #38 and its comments <a href="https://github.com/nginx-clojure/nginx-clojure/issues/38">nginx-clojure broadcast API</a></p> 
 <p>For Clojure</p> 
 <div class="highlight highlight-clojure">
@@ -378,6 +378,37 @@ function setDocumentScrollTop(ypos)
 <ul> 
  <li><a href="https://github.com/nginx-clojure/nginx-clojure/blob/master/test/clojure/nginx/clojure/asyn_channel_handlers_for_test.clj">Clojure Example</a></li> 
  <li><a href="https://github.com/nginx-clojure/nginx-clojure/blob/master/test/java/nginx/clojure/net/SimpleHandler4TestNginxClojureAsynChannel.java">Java Example</a></li> 
-</ul>
+</ul> 
+<h2> <a name="user-content-37--about-logging" class="anchor" href="..md.html#37--about-logging" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.7 About Logging</h2> 
+<p>For logging with nginx-clojure there are some ways</p> 
+<ol> 
+ <li>Using System.err.print/println will write log to nginx error.log. This way is simplest but logging information will be mixed if you have more than one nginx worker.</li> 
+ <li>Using clojure tools.logging + logback or slf4j + logback, we can get one log file per nginx worker.</li> 
+</ol> 
+<p>e.g</p> 
+<p>in nginx.conf</p> 
+<div class="highlight highlight-nginx">
+ <pre>
+ <span class="k">jvm_options</span> <span class="s">&quot;-DMYPID=</span><span class="c1">#{pno}&quot;;</span>
+</pre>
+</div> 
+<p>in logback.xml</p> 
+<div class="highlight highlight-xml">
+ <pre>
+ <span class="nt">&lt;appender</span> <span class="na">name=</span><span class="s">&quot;FILE&quot;</span> <span class="na">class=</span><span class="s">&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;rollingPolicy</span> <span class="na">class=</span><span class="s">&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;</span><span class="nt">&gt;</span>
+      <span class="c">&lt;!-- daily rollover --&gt;</span>
+      <span class="nt">&lt;fileNamePattern&gt;</span>logs/myapp.%d{yyyy-MM-dd}-${MYPID}.log<span class="nt">&lt;/fileNamePattern&gt;</span>
+      <span class="c">&lt;!-- keep 30 days' worth of history --&gt;</span>
+      <span class="nt">&lt;maxHistory&gt;</span>30<span class="nt">&lt;/maxHistory&gt;</span>
+    <span class="nt">&lt;/rollingPolicy&gt;</span>
+
+    <span class="nt">&lt;encoder&gt;</span>
+      <span class="nt">&lt;pattern&gt;</span>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-10contextName %logger{36} - %msg%n<span class="nt">&lt;/pattern&gt;</span>
+    <span class="nt">&lt;/encoder&gt;</span>
+  <span class="nt">&lt;/appender&gt;</span>
+</pre>
+</div> 
+<p>Then we 'll get log files whose name just like myapp.2014-09-12-0.log, myapp.2014-09-12-1.log.</p>
 </body>
 </html>

@@ -72,11 +72,11 @@ function setDocumentScrollTop(ypos)
 </head>
 <body class="markdown-body">
 <h1> <a name="user-content-core-features" class="anchor" href="..md.html#core-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Core Features</h1> 
-<p>The latest release is v0.2.5, more detail changes about it can be found from <a href="downloads.html">Release History</a>.</p> 
+<p>The latest release is v0.2.6, more detail changes about it can be found from <a href="downloads.html">Release History</a>.</p> 
 <ol> 
  <li>Compatible with <a href="https://github.com/ring-clojure/ring/blob/master/SPEC">Ring</a> and obviously supports those Ring based frameworks, such as Compojure etc.</li> 
- <li>Use Clojure / Java / Groovy to write simple handlers for http services.</li> 
- <li>Use Clojure / Java / Groovy to write a simple nginx rewrite handler to set var or return errors before proxy pass or content ring handler</li> 
+ <li>Http Services by using Clojure / Java / Groovy to write simple handlers for http services.</li> 
+ <li>Dynamic proxying by using Clojure / Java / Groovy to write a simple nginx rewrite handler to set var or return errors before proxy pass or content ring handler</li> 
  <li>Non-blocking coroutine based socket which is Compatible with Java Socket API and works well with largely existing java library such as apache http client, mysql jdbc drivers. With this feature one java main thread can handle thousands of connections.</li> 
  <li>Handle multiple sockets parallel in sub coroutines, e.g. we can invoke two remote services at the same time.</li> 
  <li>Asynchronous callback API of socket/Channel(<strong><em>NEW</em></strong>) for some advanced usage</li> 
@@ -89,7 +89,7 @@ function setDocumentScrollTop(ypos)
  <li>Utilizes lazy headers and direct memory operation between <a href="http://nginx.org/">Nginx</a> and JVM to fast handle dynamic contents from Clojure or Java code.</li> 
  <li>Utilizes <a href="http://nginx.org/">Nginx</a> zero copy file sending mechanism to fast handle static contents controlled by Clojure or Java code.</li> 
  <li>Supports Linux x64, Linux x86 32bit, Win32, Win64(<strong><em>NEW</em></strong>) and Mac OS X. </li> 
-</ol>
+</ol> 
 <p>By the way it is very fast, the benchmarks can be found <a href="https://github.com/ptaoussanis/clojure-web-server-benchmarks">HERE</a> .</p> 
 <h1> <a name="user-content-license" class="anchor" href="..md.html#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h1> 
 <p>Copyright &copy; 2013-2014 Zhang, Yuexiang (xfeep) and released under the BSD 3-Clause license.</p> 

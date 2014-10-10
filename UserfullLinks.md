@@ -7,3 +7,4 @@
 * [Nginx Clojure Ring Handlers Examples for Testing](https://github.com/nginx-clojure/nginx-clojure/tree/master/test/clojure/nginx/clojure/ring_handlers_for_test.clj) (Testing with Ring Core 1.2.1)
 * [10 Lines of Clojure Code to Build A Simple Balancer With Nginx](http://java.dzone.com/articles/10-lines-clojure-code-build-0)
 * [Fast Clojure/Java Web Apps on Nginx Without Any Java Web Server](http://java.dzone.com/articles/develope-high-performance)
+* [Static File Best Practices on Nginx-Clojure](http://java.dzone.com/articles/static-file-best-practices)
