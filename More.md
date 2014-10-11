@@ -397,7 +397,7 @@ in logback.xml
   </appender>
  ```
 
-Then we 'll get log files whose name just like myapp.2014-09-12-0.log,  myapp.2014-09-12-1.log.
+Then we 'll get log files whose name just like myapp.2014-09-12-1.log,  myapp.2014-09-12-2.log.
 
 [nginx-clojure broadcast API]: https://github.com/nginx-clojure/nginx-clojure/issues/38
 [SharedHashMap/Chronicle-Map]: https://github.com/OpenHFT/Chronicle-Map
