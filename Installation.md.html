@@ -1,111 +1,58 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>/home/who/git/nginx-clojure.github.io/.Installation.md.html</title>
+<h1>
+<a name="user-content-1-installation" class="anchor" href="#1-installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Installation</h1>
 
+<p>The lastest release is 0.2.5. Please check the  <a href="HISTORY.md">Update History</a> for more details.</p>
 
-<style type="text/css">
+<h2>
+<a name="user-content-11-installation-by-binary" class="anchor" href="#11-installation-by-binary" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.1 Installation by Binary</h2>
 
-.markdown-body {
-    border: 1px solid #CACACA;
-    padding: 30px;
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-.markdown-body h2 {
-    border-bottom: 1px solid #CCCCCC;
-}
-
-.markdown-body code {
-    white-space: nowrap;
-}
-
-.markdown-body code, .markdown-body tt {
-    background-color: #F8F8F8;
-    border: 1px solid #EAEAEA;
-    border-radius: 3px 3px 3px 3px;
-    margin: 0 2px;
-    padding: 0 5px;
-}
-
-.markdown-body .highlight pre, .markdown-body pre {
-    background-color: #F8F8F8;
-    border: 1px solid #CCCCCC;
-    border-radius: 3px 3px 3px 3px;
-    font-size: 13px;
-    line-height: 19px;
-    overflow: auto;
-    padding: 6px 10px;
-}
-
-.markdown-body img {
-    border: 0 none;
-}
-
-pre, code, tt {
-    font-family: Consolas,"Liberation Mono",Courier,monospace;
-    font-size: 12px;
-}
-
-</style>
-
-
-<script type="text/javascript">
-
-function getDocumentScrollTop() 
-{
-   var res = document.body.scrollTop || document.documentElement.scrollTop || window.pageYOffset || 0;
-   // alert(res);
-   return res;
-}
-
-function setDocumentScrollTop(ypos) 
-{
-	window.scrollTo(0, ypos);
-}
-
-</script>
-
-
-</head>
-<body class="markdown-body">
-<h1> <a name="user-content-1-installation" class="anchor" href="..md.html#1-installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Installation</h1> 
-<p>The lastest release is 0.2.5. Please check the <a href=".HISTORY.md.html">Update History</a> for more details.</p> 
-<h2> <a name="user-content-11-installation-by-binary" class="anchor" href="..md.html#11-installation-by-binary" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.1 Installation by Binary</h2> 
-<ol> 
- <li>First you can download Release 0.2.5 from <a href="https://sourceforge.net/projects/nginx-clojure/files/">here</a>. The zip file includes Nginx-Clojure binaries about Linux x64, Linux i586, Win32, Win64 and Mac OS X.</li> 
- <li>Unzip the zip file downloaded then rename the file <code>nginx-${os-arc}</code> to <code>nginx</code>, eg. for linux is <code>nginx-linux-x64</code> </li> 
+<ol>
+<li>First you can download  Release 0.2.5  from <a href="https://sourceforge.net/projects/nginx-clojure/files/">here</a>. 
+The zip file includes Nginx-Clojure binaries about Linux x64, Linux i586, Win32, Win64 and Mac OS X.</li>
+<li>Unzip the zip file downloaded then rename the file <code>nginx-${os-arc}</code> to <code>nginx</code>, eg. for linux is <code>nginx-linux-x64</code>
+</li>
 </ol>
-<h2> <a name="user-content-12-installation-by-source" class="anchor" href="..md.html#12-installation-by-source" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.2 Installation by Source</h2> 
-<p>Nginx-Clojure may be compiled successfully on Linux x64, Linux x86 32bit, Win32, Win64 and Mac OS X x64.</p> 
-<ol> 
- <li>First download from <a href="http://nginx.org/en/download.html">nginx site</a> or check out nginx source by hg from <a href="http://hg.nginx.org/nginx">http://hg.nginx.org/nginx</a>. For Win32 users MUST check out nginx source by hg because the zipped source doesn't contain Win32 related code.</li> 
- <li>Check out Nginx-Clojure source from github OR download the zipped source code from <a href="https://github.com/xfeep/nginx-clojure/releases">https://github.com/xfeep/nginx-clojure/releases</a> </li> 
- <li>If you want to use Http SSL module, you should install openssl and openssl dev first.</li> 
- <li> <p>Setting Java header include path in nginx-clojure/src/c/config</p> 
-  <div class="highlight highlight-nginx">
-   <pre><span class="c1">#eg. on ubuntu</span>
-<span class="k">JNI_HEADER_1=&quot;/usr/lib/jvm/java-7-oracle/include&quot;</span>
-<span class="s">JNI_HEADER_2=&quot;</span><span class="nv">${JNI_HEADER_1}/linux&quot;</span>
-</pre>
-  </div> </li> 
- <li> <p>Add Nginx-Clojure module to Nginx configure command, here is a simplest example without more details about <a href="http://wiki.nginx.org/InstallOptions">InstallOptions</a></p> 
-  <div class="highlight highlight-bash">
-   <pre><span class="c">#If nginx source is checked out from hg, please replace ./configure with auto/configure</span>
+
+<h2>
+<a name="user-content-12-installation-by-source" class="anchor" href="#12-installation-by-source" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.2 Installation by Source</h2>
+
+<p>Nginx-Clojure may be compiled successfully on Linux x64, Linux x86 32bit, Win32, Win64 and Mac OS X x64.</p>
+
+<ol>
+<li>First download from <a href="http://nginx.org/en/download.html">nginx site</a> or check out nginx source by hg from <a href="http://hg.nginx.org/nginx">http://hg.nginx.org/nginx</a>. 
+For Win32 users MUST check out nginx source by hg because the zipped source doesn't contain Win32 related code.</li>
+<li>Check out Nginx-Clojure source from github OR download the zipped source code from <a href="https://github.com/xfeep/nginx-clojure/releases">https://github.com/xfeep/nginx-clojure/releases</a>
+</li>
+<li>If you want to use Http SSL module, you should install openssl and openssl dev first.</li>
+<li>
+<p>Setting Java header include path in nginx-clojure/src/c/config</p>
+
+<div class="highlight highlight-nginx"><pre><span class="c1">#eg. on ubuntu</span>
+<span class="k">JNI_HEADER_1="/usr/lib/jvm/java-7-oracle/include"</span>
+<span class="s">JNI_HEADER_2="</span><span class="nv">${JNI_HEADER_1}/linux"</span>
+</pre></div>
+</li>
+<li>
+<p>Add Nginx-Clojure module to Nginx configure command, here is a simplest example without more details about <a href="http://wiki.nginx.org/InstallOptions">InstallOptions</a></p>
+
+<div class="highlight highlight-bash"><pre><span class="c">#If nginx source is checked out from hg, please replace ./configure with auto/configure</span>
 <span class="nv">$.</span>/configure <span class="se">\</span>
     --add-module<span class="o">=</span>nginx-clojure/src/c
 <span class="nv">$ </span>make
 <span class="nv">$ </span>make install
-</pre>
-  </div> </li> 
- <li> <p>Create the jar file about Nginx-Clojure</p> <p>Please check the lein version <code>lein version</code>, it should be at least 2.0.0.</p> 
-  <div class="highlight highlight-bash">
-   <pre><span class="nv">$ </span><span class="nb">cd </span>nginx-clojure
+</pre></div>
+</li>
+<li>
+<p>Create the jar file about Nginx-Clojure</p>
+
+<p>Please check the lein version <code>lein version</code>, it should be at least 2.0.0.</p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span><span class="nb">cd </span>nginx-clojure
 <span class="nv">$ </span>lein jar
-</pre>
-  </div> <p>Then you'll find nginx-clojure-${version}.jar (eg. nginx-clojure-0.2.5.jar) in the target folder. The jar file is self contained. If your project use clojure it naturally depends on the clojure core jar, e.g clojure-1.5.1.jar. If your project use groovy it naturally depends on the groovy runtime jar, e.g. groovy-2.3.4.jar.</p> </li> 
+</pre></div>
+
+<p>Then you'll find nginx-clojure-${version}.jar (eg. nginx-clojure-0.2.5.jar) in the target folder. 
+The jar file is self contained. If your project use clojure  it naturally depends on the clojure core jar, e.g clojure-1.5.1.jar.
+If your project use groovy it naturally depends on the groovy runtime jar, e.g. groovy-2.3.4.jar.</p>
+</li>
 </ol>
-</body>
-</html>
