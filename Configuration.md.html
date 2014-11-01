@@ -21,7 +21,7 @@
     <span class="c1">###define class paths</span>
     <span class="c1">###for clojure, you should append clojure core jar</span>
     <span class="c1">###for groovy, you should append groovy runtime jar</span>
-    <span class="k">jvm_options</span> <span class="s">"-Djava.class.path=</span><span class="c1">#{my_jar_root}/nginx-clojure-0.2.4.jar";</span>
+    <span class="k">jvm_options</span> <span class="s">"-Djava.class.path=</span><span class="c1">#{my_jar_root}/nginx-clojure-0.2.6.jar";</span>
 
     <span class="c1">###uncomment next two line to define jvm heap memory</span>
     <span class="c1">#jvm_options "-Xms1024m";</span>
@@ -378,10 +378,10 @@ thread in java is costlier than coroutine, facing large amount of connections th
 <span class="s">worker_processes</span>  <span class="mi">1</span><span class="p">;</span>
 
 <span class="c1">#turn on run tool mode, t means Tool</span>
-<span class="kn">jvm_options</span> <span class="s">"-javaagent:jars/nginx-clojure-0.2.4.jar=tmb"</span><span class="p">;</span>
+<span class="kn">jvm_options</span> <span class="s">"-javaagent:jars/nginx-clojure-0.2.6.jar=tmb"</span><span class="p">;</span>
 
-<span class="c1">#for clojure, you should append clojure core jar, e.g -Djava.class.path=jars/nginx-clojure-0.2.4.jar:mypath-xxx/clojure-1.5.1.jar,please  replace ':' with ';' on windows</span>
-<span class="kn">jvm_options</span> <span class="s">"-Xbootclasspath/a:jars/nginx-clojure-0.2.4.jar"</span><span class="p">;</span>
+<span class="c1">#for clojure, you should append clojure core jar, e.g -Djava.class.path=jars/nginx-clojure-0.2.6.jar:mypath-xxx/clojure-1.5.1.jar,please  replace ':' with ';' on windows</span>
+<span class="kn">jvm_options</span> <span class="s">"-Xbootclasspath/a:jars/nginx-clojure-0.2.6.jar"</span><span class="p">;</span>
 <span class="kn">...</span>
   <span class="err">}</span>
 </pre></div>
@@ -432,11 +432,11 @@ curl -v http://localhost:8080/dump
 <span class="s">worker_processes</span>  <span class="mi">8</span><span class="p">;</span>
 
 <span class="c1">#turn on coroutine mode</span>
-<span class="kn">jvm_options</span> <span class="s">"-javaagent:jars/nginx-clojure-0.2.4.jar=mb"</span><span class="p">;</span>
+<span class="kn">jvm_options</span> <span class="s">"-javaagent:jars/nginx-clojure-0.2.6.jar=mb"</span><span class="p">;</span>
 
 <span class="c1">#append nginx-clojure &amp;  clojure runtime jars to jvm bootclasspath      </span>
-<span class="c1">#for win32, class path seperator is ";", e.g "-Xbootclasspath/a:jars/nginx-clojure-0.2.4.jar;jars/clojure-1.5.1.jar"</span>
-<span class="kn">jvm_options</span> <span class="s">"-Xbootclasspath/a:jars/nginx-clojure-0.2.4.jar:jars/clojure-1.5.1.jar"</span><span class="p">;</span>
+<span class="c1">#for win32, class path seperator is ";", e.g "-Xbootclasspath/a:jars/nginx-clojure-0.2.6.jar;jars/clojure-1.5.1.jar"</span>
+<span class="kn">jvm_options</span> <span class="s">"-Xbootclasspath/a:jars/nginx-clojure-0.2.6.jar:jars/clojure-1.5.1.jar"</span><span class="p">;</span>
 
 <span class="c1">#coroutine-udfs is a directory to put your User Defined Class Waving Configuration File</span>
 <span class="c1">#for win32, class path seperator is ";", e.g "-Djava.class.path=coroutine-udfs;YOUR_CLASSPATH_HERE"</span>
@@ -479,7 +479,7 @@ all threads are exhuasted. When facing large amount of connections this choice i
 
 <div class="highlight highlight-nginx"><pre>
 <span class="c1">#turn off coroutine mode,  n means do nothing. You can also comment this line to turn off coroutine mode </span>
-<span class="k">jvm_options</span> <span class="s">"-javaagent:jars/nginx-clojure-0.2.4.jar=nmb"</span><span class="p">;</span>
+<span class="k">jvm_options</span> <span class="s">"-javaagent:jars/nginx-clojure-0.2.6.jar=nmb"</span><span class="p">;</span>
 
 <span class="k">jvm_workers</span> <span class="mi">40</span><span class="p">;</span>
 </pre></div>

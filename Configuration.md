@@ -22,7 +22,7 @@ Setting JVM path and class path within `http {` block in  nginx.conf
     ###define class paths
     ###for clojure, you should append clojure core jar
     ###for groovy, you should append groovy runtime jar
-    jvm_options "-Djava.class.path=#{my_jar_root}/nginx-clojure-0.2.4.jar";
+    jvm_options "-Djava.class.path=#{my_jar_root}/nginx-clojure-0.2.6.jar";
     
     ###uncomment next two line to define jvm heap memory
     #jvm_options "-Xms1024m";
@@ -349,10 +349,10 @@ thread in java is costlier than coroutine, facing large amount of connections th
 	worker_processes  1;
 	
 	#turn on run tool mode, t means Tool
-	jvm_options "-javaagent:jars/nginx-clojure-0.2.4.jar=tmb";
+	jvm_options "-javaagent:jars/nginx-clojure-0.2.6.jar=tmb";
 	
-	#for clojure, you should append clojure core jar, e.g -Djava.class.path=jars/nginx-clojure-0.2.4.jar:mypath-xxx/clojure-1.5.1.jar,please  replace ':' with ';' on windows
-  jvm_options "-Xbootclasspath/a:jars/nginx-clojure-0.2.4.jar";
+	#for clojure, you should append clojure core jar, e.g -Djava.class.path=jars/nginx-clojure-0.2.6.jar:mypath-xxx/clojure-1.5.1.jar,please  replace ':' with ';' on windows
+  jvm_options "-Xbootclasspath/a:jars/nginx-clojure-0.2.6.jar";
   ...
 	}
 	```
@@ -396,11 +396,11 @@ thread in java is costlier than coroutine, facing large amount of connections th
 	worker_processes  8;
 			
 	#turn on coroutine mode
-	jvm_options "-javaagent:jars/nginx-clojure-0.2.4.jar=mb";
+	jvm_options "-javaagent:jars/nginx-clojure-0.2.6.jar=mb";
 	
 	#append nginx-clojure &  clojure runtime jars to jvm bootclasspath 		
-	#for win32, class path seperator is ";", e.g "-Xbootclasspath/a:jars/nginx-clojure-0.2.4.jar;jars/clojure-1.5.1.jar"
-	jvm_options "-Xbootclasspath/a:jars/nginx-clojure-0.2.4.jar:jars/clojure-1.5.1.jar";
+	#for win32, class path seperator is ";", e.g "-Xbootclasspath/a:jars/nginx-clojure-0.2.6.jar;jars/clojure-1.5.1.jar"
+	jvm_options "-Xbootclasspath/a:jars/nginx-clojure-0.2.6.jar:jars/clojure-1.5.1.jar";
 	
 	#coroutine-udfs is a directory to put your User Defined Class Waving Configuration File
 	#for win32, class path seperator is ";", e.g "-Djava.class.path=coroutine-udfs;YOUR_CLASSPATH_HERE"
@@ -440,7 +440,7 @@ eg.
 ```nginx
 
 #turn off coroutine mode,  n means do nothing. You can also comment this line to turn off coroutine mode 
-jvm_options "-javaagent:jars/nginx-clojure-0.2.4.jar=nmb";
+jvm_options "-javaagent:jars/nginx-clojure-0.2.6.jar=nmb";
 
 jvm_workers 40;
 ```
