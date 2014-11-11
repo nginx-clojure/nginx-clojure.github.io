@@ -1,7 +1,7 @@
 Core Features
 =================
 
-The latest release is v0.2.6, more detail changes about it can be found from [Release History](downloads.html).
+The latest release is v0.2.7, more detail changes about it can be found from [Release History](downloads.html).
 
 1. Compatible with [Ring](https://github.com/ring-clojure/ring/blob/master/SPEC) and obviously supports those Ring based frameworks, such as Compojure etc.
 1. Http Services by  using Clojure / Java / Groovy to write simple handlers for http services.
