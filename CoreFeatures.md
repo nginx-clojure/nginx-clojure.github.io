@@ -22,6 +22,43 @@ With this feature  one java main thread can handle thousands of connections.
 
 By the way it is very fast, the benchmarks can be found [HERE](https://github.com/ptaoussanis/clojure-web-server-benchmarks) .
 
+Jar Repository
+================
+
+Nginx-Clojure has already been published to https://clojars.org/ whose maven repository is 
+
+```xml
+<repository>
+  <id>clojars.org</id>
+  <url>http://clojars.org/repo</url>
+</repository>
+``` 
+
+After adding clojars repository, you can reference nginx-clojure 0.2.7 , e.g.
+
+ Leiningen (clojure, no need to add clojars repository which is a default repository for Leiningen) 
+-----------------
+ 
+```clojure
+[nginx-clojure "0.2.7"]
+```
+Gradle (groovy/java)
+-----------------
+ 
+```
+compile "nginx-clojure:nginx-clojure:0.2.7"
+```
+Maven
+-----------------
+ 
+```xml
+<dependency>
+  <groupId>nginx-clojure</groupId>
+  <artifactId>nginx-clojure</artifactId>
+  <version>0.2.7</version>
+</dependency>
+```
+
 License
 =================
 Copyright © 2013-2014 Zhang, Yuexiang (xfeep) and released under the BSD 3-Clause license.

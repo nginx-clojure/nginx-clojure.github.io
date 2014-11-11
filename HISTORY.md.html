@@ -1,5 +1,5 @@
 <h1>
-<a name="user-content-downloads--release-history" class="anchor" href="#downloads--release-history" aria-hidden="true"><span class="octicon octicon-link"></span></a>Downloads &amp; Release History</h1>
+<a id="user-content-downloads--release-history" class="anchor" href="#downloads--release-history" aria-hidden="true"><span class="octicon octicon-link"></span></a>Downloads &amp; Release History</h1>
 
 <ol>
 <li><a href="http://sourceforge.net/projects/nginx-clojure/files/">Binaries of Releases</a></li>
@@ -7,7 +7,16 @@
 </ol>
 
 <h2>
-<a name="user-content-026-2014-10-10" class="anchor" href="#026-2014-10-10" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.6 (2014-10-10)</h2>
+<a id="user-content-027-2014-11-11" class="anchor" href="#027-2014-11-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.7 (2014-11-11)</h2>
+
+<ol>
+<li>New Feature: Compiling option for  disabling all functions silently when JVM_PATH not configured. (issue #47)</li>
+<li>New Feature: Access request BODY in rewrite handler (issue #49)</li>
+<li>Enhancement : Optimization of encoding String to Nginx temp buffer chain to reduce  Java heap memory usage and improve the performance.</li>
+</ol>
+
+<h2>
+<a id="user-content-026-2014-10-10" class="anchor" href="#026-2014-10-10" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.6 (2014-10-10)</h2>
 
 <ol>
 <li>Fix Bug: rewrite handler does not handle write event correctly with thread pool mode or coroutine mode (issue #43)</li>
@@ -20,7 +29,7 @@
 </ol>
 
 <h2>
-<a name="user-content-025-2014-09-07" class="anchor" href="#025-2014-09-07" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.5 (2014-09-07)</h2>
+<a id="user-content-025-2014-09-07" class="anchor" href="#025-2014-09-07" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.5 (2014-09-07)</h2>
 
 <ol>
 <li>New Feature: Reference variables in jvm_options &amp; different jvm debug ports for jvm processes (issue #42)</li>
@@ -33,7 +42,7 @@
 </ol>
 
 <h2>
-<a name="user-content-024-2014-07-25" class="anchor" href="#024-2014-07-25" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.4 (2014-07-25)</h2>
+<a id="user-content-024-2014-07-25" class="anchor" href="#024-2014-07-25" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.4 (2014-07-25)</h2>
 
 <ol>
 <li>New Feature: Support Groovy - another dynamic jvm language (issue #34)</li>
@@ -45,7 +54,7 @@ Make Clojure/Java/Groovy handler configurations have the same form. e.g. The old
 </ol>
 
 <h2>
-<a name="user-content-023-2014-07-05" class="anchor" href="#023-2014-07-05" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.3 (2014-07-05)</h2>
+<a id="user-content-023-2014-07-05" class="anchor" href="#023-2014-07-05" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.3 (2014-07-05)</h2>
 
 <ol>
 <li>Fix issue After invoking on coroutine based socket nginx worker will exit and be recreated when network is disabled (issue #26)</li>
@@ -55,7 +64,7 @@ Make Clojure/Java/Groovy handler configurations have the same form. e.g. The old
 </ol>
 
 <h2>
-<a name="user-content-022-2014-05-31" class="anchor" href="#022-2014-05-31" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.2 (2014-05-31)</h2>
+<a id="user-content-022-2014-05-31" class="anchor" href="#022-2014-05-31" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.2 (2014-05-31)</h2>
 
 <ol>
 <li>Fix bug of with Compojure 1.1.5 + Apache Solrj 4.3.0 + httpclient 4.3.2 NPE happens first time then everything is OK (issue #22)</li>
@@ -63,7 +72,7 @@ Make Clojure/Java/Groovy handler configurations have the same form. e.g. The old
 </ol>
 
 <h2>
-<a name="user-content-021-2014-05-17" class="anchor" href="#021-2014-05-17" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.1 (2014-05-17)</h2>
+<a id="user-content-021-2014-05-17" class="anchor" href="#021-2014-05-17" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.1 (2014-05-17)</h2>
 
 <ol>
 <li>Support to close coroutine based socket from non-main thread (issue #19)</li>
@@ -75,7 +84,7 @@ Make Clojure/Java/Groovy handler configurations have the same form. e.g. The old
 </ol>
 
 <h2>
-<a name="user-content-020-2014-04-25" class="anchor" href="#020-2014-04-25" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.0 (2014-04-25)</h2>
+<a id="user-content-020-2014-04-25" class="anchor" href="#020-2014-04-25" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.0 (2014-04-25)</h2>
 
 <ol>
 <li>non-blocking socket based on coroutine and compatible with largely existing java library such as apache http client, mysql jdbc drivers</li>
@@ -87,7 +96,7 @@ Make Clojure/Java/Groovy handler configurations have the same form. e.g. The old
 </ol>
 
 <h2>
-<a name="user-content-012-2014-02-03" class="anchor" href="#012-2014-02-03" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.1.2 (2014-02-03)</h2>
+<a id="user-content-012-2014-02-03" class="anchor" href="#012-2014-02-03" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.1.2 (2014-02-03)</h2>
 
 <ol>
 <li>fix <a href="/nginx-clojure/nginx-clojure/issues/2">#2 Problems with HTTP Redirect 302</a>
@@ -97,7 +106,7 @@ Make Clojure/Java/Groovy handler configurations have the same form. e.g. The old
 </ol>
 
 <h2>
-<a name="user-content-011-2014-01-20" class="anchor" href="#011-2014-01-20" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.1.1 (2014-01-20)</h2>
+<a id="user-content-011-2014-01-20" class="anchor" href="#011-2014-01-20" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.1.1 (2014-01-20)</h2>
 
 <ol>
 <li>Supports InputStream, ISeq &amp; recursive ISeq in Response Body. </li>
@@ -105,7 +114,7 @@ Make Clojure/Java/Groovy handler configurations have the same form. e.g. The old
 </ol>
 
 <h2>
-<a name="user-content-010-2014-01-09" class="anchor" href="#010-2014-01-09" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.1.0 (2014-01-09)</h2>
+<a id="user-content-010-2014-01-09" class="anchor" href="#010-2014-01-09" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.1.0 (2014-01-09)</h2>
 
 <ol>
 <li>Compitiable with Ring Spec (1.1) </li>

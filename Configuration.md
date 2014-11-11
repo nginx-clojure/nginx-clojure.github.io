@@ -22,7 +22,7 @@ Setting JVM path and class path within `http {` block in  nginx.conf
     ###define class paths
     ###for clojure, you should append clojure core jar
     ###for groovy, you should append groovy runtime jar
-    jvm_options "-Djava.class.path=#{my_jar_root}/nginx-clojure-0.2.6.jar";
+    jvm_options "-Djava.class.path=#{my_jar_root}/nginx-clojure-0.2.7.jar";
     
     ###uncomment next two line to define jvm heap memory
     #jvm_options "-Xms1024m";
@@ -332,7 +332,7 @@ three choice :
 	* :smiley:It's a trade off choice and almost all Java server such as Jetty, Tomcat , Glassfish etc. use thread pool to handle http requests.
 	* :smiley:Your old code **_need not be changed_**.
 	* :worried:The nginx worker will be blocked after all threads are exhuasted by slow I/O operations.
-	* :worried:Becase the max number of threads is alwarys more smaller than the total number of socket connections supported by Operation Systems and
+	* :worried:Becase the max number of threads is always  more smaller than the total number of socket connections supported by Operation Systems and
 thread in java is costlier than coroutine, facing large amount of connections this choice isn't as good as Coroutine based choice.
 
 ### 2.4.1 Enable Coroutine based Socket
@@ -349,10 +349,10 @@ thread in java is costlier than coroutine, facing large amount of connections th
 	worker_processes  1;
 	
 	#turn on run tool mode, t means Tool
-	jvm_options "-javaagent:jars/nginx-clojure-0.2.6.jar=tmb";
+	jvm_options "-javaagent:jars/nginx-clojure-0.2.7.jar=tmb";
 	
-	#for clojure, you should append clojure core jar, e.g -Djava.class.path=jars/nginx-clojure-0.2.6.jar:mypath-xxx/clojure-1.5.1.jar,please  replace ':' with ';' on windows
-  jvm_options "-Xbootclasspath/a:jars/nginx-clojure-0.2.6.jar";
+	#for clojure, you should append clojure core jar, e.g -Djava.class.path=jars/nginx-clojure-0.2.7.jar:mypath-xxx/clojure-1.5.1.jar,please  replace ':' with ';' on windows
+  jvm_options "-Xbootclasspath/a:jars/nginx-clojure-0.2.7.jar";
   ...
 	}
 	```
@@ -396,11 +396,11 @@ thread in java is costlier than coroutine, facing large amount of connections th
 	worker_processes  8;
 			
 	#turn on coroutine mode
-	jvm_options "-javaagent:jars/nginx-clojure-0.2.6.jar=mb";
+	jvm_options "-javaagent:jars/nginx-clojure-0.2.7.jar=mb";
 	
 	#append nginx-clojure &  clojure runtime jars to jvm bootclasspath 		
-	#for win32, class path seperator is ";", e.g "-Xbootclasspath/a:jars/nginx-clojure-0.2.6.jar;jars/clojure-1.5.1.jar"
-	jvm_options "-Xbootclasspath/a:jars/nginx-clojure-0.2.6.jar:jars/clojure-1.5.1.jar";
+	#for win32, class path seperator is ";", e.g "-Xbootclasspath/a:jars/nginx-clojure-0.2.7.jar;jars/clojure-1.5.1.jar"
+	jvm_options "-Xbootclasspath/a:jars/nginx-clojure-0.2.7.jar:jars/clojure-1.5.1.jar";
 	
 	#coroutine-udfs is a directory to put your User Defined Class Waving Configuration File
 	#for win32, class path seperator is ";", e.g "-Djava.class.path=coroutine-udfs;YOUR_CLASSPATH_HERE"
@@ -440,7 +440,7 @@ eg.
 ```nginx
 
 #turn off coroutine mode,  n means do nothing. You can also comment this line to turn off coroutine mode 
-jvm_options "-javaagent:jars/nginx-clojure-0.2.6.jar=nmb";
+jvm_options "-javaagent:jars/nginx-clojure-0.2.7.jar=nmb";
 
 jvm_workers 40;
 ```
@@ -617,6 +617,26 @@ public class MyHandler implements NginxJavaRingHandler {
 		}
 	
 	```
+	
+	### 2.5.4 Access request BODY in Nginx rewrite handler
+	
+Try `always_read_body on;`  where about the location you want to access the request body in a JAVA rewrite handler.
+We also added an example(for unit testing) about this, in nginx.conf
+
+```nginx
+     
+      set $myup "";
+
+       location /javarewritebybodyproxy {
+          always_read_body on;
+          handler_type 'java';
+          rewrite_handler_name 'nginx.clojure.java.RewriteHandlerTestSet4NginxJavaRingHandler$SimpleRewriteByBodyHandler';
+          proxy_pass http://$myup;
+       }
+```
+
+The example java rewrite handler code can be found from https://github.com/nginx-clojure/nginx-clojure/blob/master/test/java/nginx/clojure/java/RewriteHandlerTestSet4NginxJavaRingHandler.java#L35  	
+	
 [nginx-clojure broadcast API]: https://github.com/nginx-clojure/nginx-clojure/issues/38
 [SharedHashMap/Chronicle-Map]: https://github.com/OpenHFT/Chronicle-Map
 [Asynchronous Socket/Channel]: more.html#user-content-36-asynchronous-channel
