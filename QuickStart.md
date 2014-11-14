@@ -4,7 +4,7 @@ Quick Start
 Download
 --------------
 
-1. Download the latest binaries release v0.2.6 from [here](https://sourceforge.net/projects/nginx-clojure/files/). 
+1. Download the latest binaries release v0.2.7 from [here](https://sourceforge.net/projects/nginx-clojure/files/). 
 1. Unzip the zip file downloaded then rename the file `nginx-${os-arc}` to `nginx`, eg. for linux is `nginx-linux-x64`
 
 
