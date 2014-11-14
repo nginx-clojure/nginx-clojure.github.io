@@ -1,20 +1,20 @@
 <h1>
-<a name="user-content-1-installation" class="anchor" href="#1-installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Installation</h1>
+<a id="user-content-1-installation" class="anchor" href="#1-installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Installation</h1>
 
-<p>The lastest release is 0.2.5. Please check the  <a href="HISTORY.md">Update History</a> for more details.</p>
+<p>The lastest release is 0.2.7. Please check the  <a href="HISTORY.md">Update History</a> for more details.</p>
 
 <h2>
-<a name="user-content-11-installation-by-binary" class="anchor" href="#11-installation-by-binary" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.1 Installation by Binary</h2>
+<a id="user-content-11-installation-by-binary" class="anchor" href="#11-installation-by-binary" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.1 Installation by Binary</h2>
 
 <ol>
-<li>First you can download  Release 0.2.5  from <a href="https://sourceforge.net/projects/nginx-clojure/files/">here</a>. 
+<li>First you can download  Release 0.2.7  from <a href="https://sourceforge.net/projects/nginx-clojure/files/">here</a>. 
 The zip file includes Nginx-Clojure binaries about Linux x64, Linux i586, Win32, Win64 and Mac OS X.</li>
 <li>Unzip the zip file downloaded then rename the file <code>nginx-${os-arc}</code> to <code>nginx</code>, eg. for linux is <code>nginx-linux-x64</code>
 </li>
 </ol>
 
 <h2>
-<a name="user-content-12-installation-by-source" class="anchor" href="#12-installation-by-source" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.2 Installation by Source</h2>
+<a id="user-content-12-installation-by-source" class="anchor" href="#12-installation-by-source" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.2 Installation by Source</h2>
 
 <p>Nginx-Clojure may be compiled successfully on Linux x64, Linux x86 32bit, Win32, Win64 and Mac OS X x64.</p>
 
@@ -27,31 +27,28 @@ For Win32 users MUST check out nginx source by hg because the zipped source does
 <li>
 <p>Setting Java header include path in nginx-clojure/src/c/config</p>
 
-<div class="highlight highlight-nginx"><pre><span class="c1">#eg. on ubuntu</span>
-<span class="k">JNI_HEADER_1="/usr/lib/jvm/java-7-oracle/include"</span>
-<span class="s">JNI_HEADER_2="</span><span class="nv">${JNI_HEADER_1}/linux"</span>
-</pre></div>
+<div class="highlight highlight-nginx"><pre><span class="pl-c">#eg. on ubuntu</span><span class="pl-pdv"></span>
+<span class="pl-pdv">JNI_HEADER_1=<span class="pl-s1">"/usr/lib/jvm/java-7-oracle/include"</span></span>
+<span class="pl-pdv">JNI_HEADER_2=<span class="pl-s1">"${JNI_HEADER_1}/linux"</span></span></pre></div>
 </li>
 <li>
 <p>Add Nginx-Clojure module to Nginx configure command, here is a simplest example without more details about <a href="http://wiki.nginx.org/InstallOptions">InstallOptions</a></p>
 
-<div class="highlight highlight-bash"><pre><span class="c">#If nginx source is checked out from hg, please replace ./configure with auto/configure</span>
-<span class="nv">$.</span>/configure <span class="se">\</span>
-    --add-module<span class="o">=</span>nginx-clojure/src/c
-<span class="nv">$ </span>make
-<span class="nv">$ </span>make install
-</pre></div>
+<div class="highlight highlight-bash"><pre><span class="pl-c"><span class="pl-pdc">#</span>If nginx source is checked out from hg, please replace ./configure with auto/configure</span>
+$./configure \
+    --add-module=nginx-clojure/src/c
+$ make
+$ make install</pre></div>
 </li>
 <li>
 <p>Create the jar file about Nginx-Clojure</p>
 
 <p>Please check the lein version <code>lein version</code>, it should be at least 2.0.0.</p>
 
-<div class="highlight highlight-bash"><pre><span class="nv">$ </span><span class="nb">cd </span>nginx-clojure
-<span class="nv">$ </span>lein jar
-</pre></div>
+<div class="highlight highlight-bash"><pre>$ <span class="pl-sf">cd</span> nginx-clojure
+$ lein jar</pre></div>
 
-<p>Then you'll find nginx-clojure-${version}.jar (eg. nginx-clojure-0.2.5.jar) in the target folder. 
+<p>Then you'll find nginx-clojure-${version}.jar (eg. nginx-clojure-0.2.7.jar) in the target folder. 
 The jar file is self contained. If your project use clojure  it naturally depends on the clojure core jar, e.g clojure-1.5.1.jar.
 If your project use groovy it naturally depends on the groovy runtime jar, e.g. groovy-2.3.4.jar.</p>
 </li>
