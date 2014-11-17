@@ -60,6 +60,41 @@ Configuration
        }
 	```
 
+For Java:
+
+```nginx
+
+       location /groovy {
+          handler_type 'java';
+          handler_name 'mytest.HelloService';
+       }
+
+
+```
+
+Make sure that the class of the below source is in the classpath.
+```java
+package mytest;
+
+import java.util.Map;
+
+import nginx.clojure.java.ArrayMap;
+import nginx.clojure.java.NginxJavaRingHandler;
+import static nginx.clojure.MiniConstants.*;
+
+public  class HelloService implements NginxJavaRingHandler {
+
+	@Override
+	public Object[] invoke(Map<String, Object> request) {
+		return new Object[] { 
+				NGX_HTTP_OK, //http status 200
+				ArrayMap.create(CONTENT_TYPE, "text/plain"), //headers map
+				"Hello, Java & Nginx!"  //response body can be string, File or Array/Collection of string or File
+				};
+	}
+}
+```
+
 -----------------------------------
 
 > **Note:**
@@ -82,6 +117,9 @@ http://localhost:8080/clojure
 
 ### For Groovy
 http://localhost:8080/groovy
+
+### For Java
+http://localhost:8080/java
 ```
 
 We can check the logs/error.log to see error information.
