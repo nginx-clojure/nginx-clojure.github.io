@@ -1,6 +1,42 @@
 3. More about Nginx-Clojure
 =================
 
+
+3.0 More about APIs
+-----------------
+
+### Request & Response 
+
+For Clojure the request map and response map are defined by the ring SEPC at https://github.com/ring-clojure/ring/blob/master/SPEC .
+
+For Java/Groovy , the reqest map contains serveral parts:
+
+1. server-port (Required, Integer) The port on which the request is being handled.
+1. server-name (Required, String) The resolved server name, or the server IP address.
+1. remote-addr (Required, String) The IP address of the client or the last proxy that sent the request.
+1. uri (Required, String) The request URI, excluding the query string and the "?" separator. Must start with "/".
+1. query-string (Optional, String) The query string, if present.
+1. scheme (Required, String) The transport protocol, must be one of http or https.
+1. request-method (Required, String) The HTTP request method, must be a lowercase keyword corresponding to a HTTP request method, such as :get or :post.
+1. content-type **DEPRECATED** (Optional, String)The MIME type of the request body, if known.
+1. content-length **DEPRECATED** (Optional, Integer) The number of bytes in the request body, if known.
+1. character-encoding **DEPRECATED** (Optional, String) The name of the character encoding used in the request body, if known.
+1. sl-client-cert (Optional, X509Certificate) The SSL client certificate, if supplied. This value  is not **supported** yet.
+1. headers (Required, Map) A map of header name Strings to corresponding header value Strings.
+1. body (Optional, InputStream) An InputStream for the request body, if present.
+
+The return response is an array of object, e.g
+
+```java
+
+ [200, //http status 200 
+   ArrayMap.create("Content-Type", "text/html", "", "" ), //headers map
+   "Hello, Java & Nginx!" //response body can be string, File or Array/Collection of string or File ]; 
+```
+
+>Note that If the rewrite/access handler returns phrase-done (Clojure) or Constants.PHRASE_DONE (Groovy/Java), nginx will continue to next phases (e.g. invoke proxy_pass or content ring handler). If the rewrite handler returns a general response, nginx will send this response to the client and stop to continue to next phases.
+
+
 3.1 Handle Multiple Coroutine Based Sockets Parallel
 -----------------
 
