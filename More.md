@@ -92,7 +92,7 @@ In the nginx.conf, we can use `always_read_body on;` to force nginx to read http
 location /myservice {
          handler_type 'clojure';
          always_read_body on;
-         handler_code '....';
+         content_handler_code '....';
 }
 
 ```

@@ -38,7 +38,7 @@
   $("#header").load("header.html");
   $("#main_content").load("Configuration.md.html", function(){
 	  $("a[href^='http']").attr("target","_blank");
-	  fixNavbarIssue();
+	  setTimeout("fixNavbarIssue();", 1000);
   });
   
   $("#footer").load("footer.html");

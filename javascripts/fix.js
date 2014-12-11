@@ -20,7 +20,8 @@ Usage
     
     if(hash!=""){
       //$(document).scrollTop(($(hash).offset().top) - $(".navbar-fixed-top").height());  
-    	$(document).scrollTop(($('a[name='+hash.substr(1)+']').position().top - 200));
+    	$(document).scrollTop(($('a[href='+hash+']').position().top - 200));
+//    	$(document).scrollTop(($(hash).position().top - 200));
     }
  
     // Here's the fix, if any <a> element points to a page section an offset function is called
@@ -41,7 +42,7 @@ Usage
     anchorsList[i].onclick=function(){
       $(originalOnClick);
 //      $(document).scrollTop(($(hash).offset().top) - $(".navbar-fixed-top").height());
-      $(document).scrollTop(($('a[name='+hash.substr(1)+']').position().top - 200));
+      $(document).scrollTop(($('a[href='+hash+']').position().top - 200));
       return false;
     };
   }

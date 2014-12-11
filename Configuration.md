@@ -637,6 +637,116 @@ We also added an example(for unit testing) about this, in nginx.conf
 
 The example java rewrite handler code can be found from https://github.com/nginx-clojure/nginx-clojure/blob/master/test/java/nginx/clojure/java/RewriteHandlerTestSet4NginxJavaRingHandler.java#L35  	
 	
+	
+2.6 Nginx Access Handler
+-----------------
+
+Although we can do similar things within a rewrite handler but using Nginx Access Handler will further define roles of all kind of handlers.
+Nginx Access Handler will run after Rewrite Handler and before Content Handler (e.g. general content ring handler ,  proxy_pass, etc.).
+Access Handler has the same form with Rewrite Handler. When it returns `PHASE_DONE`, nginx will continue the next phase otherwise nginx will response
+directly typically with some error information , e.g. `401 Unauthorized`, `403 Forbidden` .
+e.g.
+
+```nginx
+
+          location /basicAuth {
+               handler_type 'java';
+	             access_handler_name 'my.BasicAuthHandler';
+	             ....
+	          }
+```
+
+```java
+
+	/**
+	 * This is an  example of HTTP basic Authentication.
+	 * It will require visitor to input a user name (xfeep) and password (hello!) 
+	 * otherwise it will return 401 Unauthorized or BAD USER & PASSWORD 
+	 */
+	public  class BasicAuthHandler implements NginxJavaRingHandler {
+
+		@Override
+		public Object[] invoke(Map<String, Object> request) {
+			String auth = (String) ((Map)request.get(HEADERS)).get("authorization");
+			if (auth == null) {
+				return new Object[] { 401, ArrayMap.create("www-authenticate", "Basic realm=\"Secure Area\""),
+						"<HTML><BODY><H1>401 Unauthorized.</H1></BODY></HTML>" };
+			}
+			String[] up = new String(DatatypeConverter.parseBase64Binary(auth.substring("Basic ".length())), DEFAULT_ENCODING).split(":");
+			if (up[0].equals("xfeep") && up[1].equals("hello!")) {
+				return PHASE_DONE;
+			}
+			return new Object[] { 401, ArrayMap.create("www-authenticate", "Basic realm=\"Secure Area\""),
+			"<HTML><BODY><H1>401 Unauthorized BAD USER & PASSWORD.</H1></BODY></HTML>" };
+		} 
+	}
+```
+
+2.7 Niginx Header Filter
+-----------------
+
+We can use Nginx Header Filter written by  Java/Clojure/Groovy to do some useful things, e.g. 
+
+1.  monitor the time cost of requests processed  
+1.  modify the response header dynamically 
+1.  write user defined log 
+
+Header Filter Access Handler has the same return form with Rewrite Handler/ Access Handler.
+ When it returns `PHASE_DONE`, nginx will continue the next phase otherwise nginx will response
+ directly typically with some error information a.
+
+For Java/Groovy
+
+```nginx
+      location /javafilter {
+	          handler_type 'java';
+	          header_filter_name 'my.AddMoreHeaders';
+	           ..................
+	          }
+```
+
+```java
+package my;
+
+import nginx.clojure.java.NginxJavaRingHandler;
+import nginx.clojure.java.Constants;
+
+	public  class RemoveAndAddMoreHeaders implements NginxJavaHeaderFilter {
+		@Override
+		public Object[] doFilter(int status, Map<String, Object> request, Map<String, Object> responseHeaders) {
+			responseHeaders.remove("Content-Type");
+			responseHeaders.put("Content-Type", "text/html");
+			responseHeaders.put("Xfeep-Header", "Hello2!");
+			responseHeaders.put("Server", "My-Test-Server");
+			return Constants.PHASE_DONE;
+		}
+	}
+```
+
+For Clojure
+
+```nginx
+      location /javafilter {
+	          handler_type 'clojure';
+	          header_filter_name 'my/remove-and-add-more-headers';
+	           ..................
+	          }
+```
+
+```clojure
+(ns my
+  (:use [nginx.clojure.core])
+  (:require  [clj-http.client :as client]))
+  
+(defn remove-and-add-more-headers 
+[status request response-headers]
+  (dissoc!  response-headers "Content-Type") 
+  (assoc!  response-headers "Content-Type"  "text/html")
+  (assoc!  response-headers "Xfeep-Header"  "Hello2!")
+  (assoc!  response-headers "Server" "My-Test-Server") 
+  phase-done)
+```
+	
 [nginx-clojure broadcast API]: https://github.com/nginx-clojure/nginx-clojure/issues/38
 [SharedHashMap/Chronicle-Map]: https://github.com/OpenHFT/Chronicle-Map
 [Asynchronous Socket/Channel]: more.html#user-content-36-asynchronous-channel

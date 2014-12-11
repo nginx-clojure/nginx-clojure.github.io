@@ -7,6 +7,24 @@
 </ol>
 
 <h2>
+<a id="user-content-030-2014-12-11" class="anchor" href="#030-2014-12-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.3.0 (2014-12-11)</h2>
+
+<ol>
+<li>Discard: Directive <code>clojure</code>, <code>clojure_code</code> are no longer supported, use <code>handle_type</code>, <code>handle_name</code>, <code>handle_code</code> instead.</li>
+<li>Discard:  Now <code>handler_***</code> can not be used to declare a nginx worker  initialization handler, use `jvm_init_handler_*** instead.</li>
+<li>New Feature:  Supports  writing nginx access handler  by  java/clojure/groovy (issue #53)</li>
+<li>New Feature:  Supports  writing nginx header filter  by  java/clojure/groovy (issue #55)</li>
+<li>New Feature:  Add new directive <code>max_balanced_tcp_connections</code>  to make nginx auto set worker_connections.</li>
+<li>Enhancement:  For Java We can use  r.setVariable,  r.getVariable now if r is an instance of NginxJavaRequest.</li>
+<li>Deprecated Directives: handler_type, handler_name, handler_code  are deprecated and maybe will be removed in the next version, add new directive content_handler_type, content_handler_code, content_handler_code</li>
+<li>New Directives: rewrite_handler_type, access_handler_type, header_filter_type, body_filter_type</li>
+<li>New Feature: Supports nested locations (issue #56)</li>
+<li>Bug Fix : uppercase letters in nginx variable name can not work (issue #54)</li>
+<li>Bug Fix: The first registered handler will not work if there 's a asynchronous reading of request body (issue 51)</li>
+<li>Enhancement: <code>handlers_lazy_init</code> can be used to make handler initialized lazily or eagerly </li>
+</ol>
+
+<h2>
 <a id="user-content-027-2014-11-11" class="anchor" href="#027-2014-11-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.7 (2014-11-11)</h2>
 
 <ol>

@@ -5,6 +5,8 @@ The latest release is v0.2.7, more detail changes about it can be found from [Re
 
 1. Compatible with [Ring](https://github.com/ring-clojure/ring/blob/master/SPEC) and obviously supports those Ring based frameworks, such as Compojure etc.
 1. Http Services by  using Clojure / Java / Groovy to write simple handlers for http services.
+1. **_NEW_**: Nginx Access Handler by Clojure / Java / Groovy
+1. **_NEW_**: Nginx  Header Filter by Clojure / Java / Groovy
 1. Dynamic proxying by using Clojure / Java / Groovy to write a simple nginx rewrite handler to set var or return errors before proxy pass or content ring handler
 1. Non-blocking coroutine based socket which is Compatible with Java Socket API and works well with largely existing java library such as apache http client, mysql jdbc drivers. 
 With this feature  one java main thread can handle thousands of connections.

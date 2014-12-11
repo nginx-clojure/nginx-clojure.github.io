@@ -6,6 +6,10 @@
 <ol>
 <li>Compatible with <a href="https://github.com/ring-clojure/ring/blob/master/SPEC">Ring</a> and obviously supports those Ring based frameworks, such as Compojure etc.</li>
 <li>Http Services by  using Clojure / Java / Groovy to write simple handlers for http services.</li>
+<li>
+<strong><em>NEW</em></strong>: Nginx Access Handler by Clojure / Java / Groovy</li>
+<li>
+<strong><em>NEW</em></strong>: Nginx  Header Filter by Clojure / Java / Groovy</li>
 <li>Dynamic proxying by using Clojure / Java / Groovy to write a simple nginx rewrite handler to set var or return errors before proxy pass or content ring handler</li>
 <li>Non-blocking coroutine based socket which is Compatible with Java Socket API and works well with largely existing java library such as apache http client, mysql jdbc drivers. 
 With this feature  one java main thread can handle thousands of connections.</li>
@@ -31,17 +35,17 @@ With this feature  one java main thread can handle thousands of connections.</li
 
 <p>Nginx-Clojure has already been published to <a href="https://clojars.org/">https://clojars.org/</a> whose maven repository is </p>
 
-<div class="highlight highlight-xml"><pre>&lt;<span class="nt">repository</span>&gt;
-  &lt;<span class="nt">id</span>&gt;clojars.org&lt;/<span class="nt">id</span>&gt;
-  &lt;<span class="nt">url</span>&gt;http://clojars.org/repo&lt;/<span class="nt">url</span>&gt;
-&lt;/<span class="nt">repository</span>&gt;</pre></div>
+<div class="highlight highlight-xml"><pre>&lt;<span class="pl-ent">repository</span>&gt;
+  &lt;<span class="pl-ent">id</span>&gt;clojars.org&lt;/<span class="pl-ent">id</span>&gt;
+  &lt;<span class="pl-ent">url</span>&gt;http://clojars.org/repo&lt;/<span class="pl-ent">url</span>&gt;
+&lt;/<span class="pl-ent">repository</span>&gt;</pre></div>
 
 <p>After adding clojars repository, you can reference nginx-clojure 0.2.7 , e.g.</p>
 
 <h2>
 <a id="user-content--leiningen-clojure-no-need-to-add-clojars-repository-which-is-a-default-repository-for-leiningen-" class="anchor" href="#-leiningen-clojure-no-need-to-add-clojars-repository-which-is-a-default-repository-for-leiningen-" aria-hidden="true"><span class="octicon octicon-link"></span></a> Leiningen (clojure, no need to add clojars repository which is a default repository for Leiningen) </h2>
 
-<div class="highlight highlight-clojure"><pre>[nginx-clojure "0.2.7"]</pre></div>
+<div class="highlight highlight-clojure"><pre>[nginx-clojure <span class="pl-s1"><span class="pl-pds">"</span>0.2.7<span class="pl-pds">"</span></span>]</pre></div>
 
 <h2>
 <a id="user-content-gradle-groovyjava" class="anchor" href="#gradle-groovyjava" aria-hidden="true"><span class="octicon octicon-link"></span></a>Gradle (groovy/java)</h2>
@@ -52,11 +56,11 @@ With this feature  one java main thread can handle thousands of connections.</li
 <h2>
 <a id="user-content-maven" class="anchor" href="#maven" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maven</h2>
 
-<div class="highlight highlight-xml"><pre>&lt;<span class="nt">dependency</span>&gt;
-  &lt;<span class="nt">groupId</span>&gt;nginx-clojure&lt;/<span class="nt">groupId</span>&gt;
-  &lt;<span class="nt">artifactId</span>&gt;nginx-clojure&lt;/<span class="nt">artifactId</span>&gt;
-  &lt;<span class="nt">version</span>&gt;0.2.7&lt;/<span class="nt">version</span>&gt;
-&lt;/<span class="nt">dependency</span>&gt;</pre></div>
+<div class="highlight highlight-xml"><pre>&lt;<span class="pl-ent">dependency</span>&gt;
+  &lt;<span class="pl-ent">groupId</span>&gt;nginx-clojure&lt;/<span class="pl-ent">groupId</span>&gt;
+  &lt;<span class="pl-ent">artifactId</span>&gt;nginx-clojure&lt;/<span class="pl-ent">artifactId</span>&gt;
+  &lt;<span class="pl-ent">version</span>&gt;0.2.7&lt;/<span class="pl-ent">version</span>&gt;
+&lt;/<span class="pl-ent">dependency</span>&gt;</pre></div>
 
 <h1>
 <a id="user-content-license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h1>
