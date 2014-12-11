@@ -14,18 +14,16 @@
 <li>Non-blocking coroutine based socket which is Compatible with Java Socket API and works well with largely existing java library such as apache http client, mysql jdbc drivers. 
 With this feature  one java main thread can handle thousands of connections.</li>
 <li>Handle multiple sockets parallel in sub coroutines, e.g. we can invoke two remote services at the same time.</li>
-<li>Asynchronous callback API of socket/Channel(<strong><em>NEW</em></strong>) for some advanced usage</li>
-<li>
-<strong><em>NEW</em></strong>: Long Polling &amp; Server Sent Events</li>
-<li>
-<strong><em>NEW</em></strong>: More easier to archive  Sub/Pub services with broadcast events API</li>
+<li>Asynchronous callback API of socket/Channel  for some advanced usage</li>
+<li>Long Polling &amp; Server Sent Events</li>
+<li>More easier to archive  Sub/Pub services with broadcast events API</li>
 <li>Run initialization clojure code when nginx worker starting</li>
 <li>Support user defined http request method</li>
 <li>Compatible with the Nginx lastest stable version 1.6.0. (Nginx 1.4.x is also ok, older version is not tested and maybe works.)</li>
 <li>One of  benifits of <a href="http://nginx.org/">Nginx</a> is worker processes are automatically restarted by a master process if they crash</li>
 <li>Utilizes lazy headers and direct memory operation between <a href="http://nginx.org/">Nginx</a> and JVM to fast handle dynamic contents from Clojure or Java code.</li>
 <li>Utilizes <a href="http://nginx.org/">Nginx</a> zero copy file sending mechanism to fast handle static contents controlled by Clojure or Java code.</li>
-<li>Supports Linux x64, Linux x86 32bit, Win32, Win64(<strong><em>NEW</em></strong>) and Mac OS X. </li>
+<li>Supports Linux x64, Linux x86 32bit, Win32, Win64  and Mac OS X. </li>
 </ol>
 
 <p>By the way it is very fast, the benchmarks can be found <a href="https://github.com/ptaoussanis/clojure-web-server-benchmarks">HERE</a> .</p>
