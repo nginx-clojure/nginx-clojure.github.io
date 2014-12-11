@@ -1,0 +1,153 @@
+<h1>
+<a id="user-content-static-file-best-practices-on-nginx-clojure-" class="anchor" href="#static-file-best-practices-on-nginx-clojure-" aria-hidden="true"><span class="octicon octicon-link"></span></a>Static File Best Practices on Nginx-Clojure </h1>
+
+<p><a href="http://nginx-clojure.github.io/">Nginx-Clojure</a> make it possible to write HTTP services by Clojure/Java/Groovy on <a href="http://nginx.org/">Nginx</a> which is a free, open-source, high-performance HTTP server and reverse proxy, as well as an IMAP/POP3 proxy server. All benefits from <a href="http://nginx.org/">Nginx</a> can be used together with Nginx-Clojure. This article will discuss static file best practices on Nginx-Clojure.</p>
+
+<hr>
+
+<h2>
+<a id="user-content-1-enable-gzip-on-text-files" class="anchor" href="#1-enable-gzip-on-text-files" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Enable gzip on Text Files</h2>
+
+<p>When we enable gzip on text files, such as .txt, .html, .js, .xml, .css etc, the file content will be compressed before send to the http client. Because text files can get high compress ratio enabling gzip on text files will reduce bandwidth and responses' transfer time.</p>
+
+<div class="highlight highlight-nginx"><pre><span class="pl-st">http</span> {
+
+...
+
+<span class="pl-k">gzip</span><span class="pl-c1"> on</span>;
+
+<span class="pl-c">#setting what type of content will be compressed</span>
+gzip_types text/plain text/css application/x-javascript text/
+xml application/xml application/xml+rss text/javascript application/
+javascript application/json;
+
+<span class="pl-c">#only compress files whose length is &gt;= 4096</span>
+gzip_min_length <span class="pl-s1">4096</span>;
+
+<span class="pl-c">#disable gzip with IE6 which shouldn't receive a compressed response </span>
+<span class="pl-k">gzip_disable</span> msie6;
+
+}</pre></div>
+
+<blockquote>
+<p><strong>Note:</strong>
+ Now not only static files but also dynamic content from Clojure/Java/Groovy code will also be compressed if the  condition matches. If we want to only enable gzip on parts of context we can 
+only put these gzip related directives into some <code>location {</code> blocks.   </p>
+</blockquote>
+
+<p>The complete reference can be found from <a href="http://nginx.org/en/docs/http/ngx_http_gzip_module.html">Nginx GZip Module Page</a></p>
+
+<h2>
+<a id="user-content-2-turn-on-sendfile" class="anchor" href="#2-turn-on-sendfile" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. Turn on Sendfile</h2>
+
+<p><code>sendfile</code> is a Linux System Call and used to copy data between one file descriptor and another (typically socket descriptor). When we use it to send file to the network because this copying is done directly within the kernel, it is more efficient than the combination of read and write, which would require copying data to and from user space.</p>
+
+<div class="highlight highlight-nginx"><pre><span class="pl-st">http</span> {
+  ...
+  <span class="pl-k">sendfile</span><span class="pl-c1"> on</span>;
+  <span class="pl-k">tcp_nopush</span><span class="pl-c1"> on</span>;
+}</pre></div>
+
+<p><code>tcp_nopush</code> is only useful  after enabling <code>sendfile</code>. It enables or disables the use of the TCP_NOPUSH socket option on FreeBSD or the TCP_CORK socket option on Linux.  Enabling the option allows</p>
+
+<ul>
+<li>sending the response header and the beginning of a file in one packet, on Linux and FreeBSD 4.*;</li>
+<li>sending a file in full packets.</li>
+</ul>
+
+<blockquote>
+<p><strong>Note:</strong>
+ When gzip enabled , the text files which match gzip rules won't be sent by sendfile because they must be compressed before sending.</p>
+</blockquote>
+
+<h2>
+<a id="user-content-3-dynamically-combined-files" class="anchor" href="#3-dynamically-combined-files" aria-hidden="true"><span class="octicon octicon-link"></span></a>3. Dynamically Combined files</h2>
+
+<p>Combined files can reduce the number of HTTP requests and speedup response. Of course we can combine files by static way before publishing our web site. But the static way maybe need much more disk space and is a little complex to handle modification time stamp and less flexible.
+Dynamically combined files is quite easy with Nginx-Clojure, just return a ring response whose body is a seq of Files. e.g.</p>
+
+<div class="highlight highlight-clojure"><pre>(<span class="pl-k">defn</span> <span class="pl-e">concat-a-and-b</span> [req]
+  <span class="pl-c">;file-a, file-a are instances of java.io.File</span>
+  {<span class="pl-c1">:status</span> <span class="pl-c1">200</span>, <span class="pl-c1">:body</span> [file-a, file-b], <span class="pl-c1">:headers</span> {<span class="pl-s1"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>text/html<span class="pl-pds">"</span></span>} })</pre></div>
+
+<p>With above example Nginx-Clojure will set the HTTP header<code>Last-Modified</code> to the newest modification time stamp of those combined files so  that Nginx can only return headers about 304 Not-Modified instead of the whole content when the browser requests the same file again and the file has not been changed since last access.</p>
+
+<blockquote>
+<p><strong>Note:</strong>
+ When <code>gzip</code> &amp; <code>sendfile</code>  are enabled, if the content type of combined result matches <code>gzip</code> rules combined result will be compressed too, otherwise multiple <code>sendfile</code> will be invoked to send those files one by one. </p>
+</blockquote>
+
+<h2>
+<a id="user-content-4-track-static-html-files-by-google-analytics" class="anchor" href="#4-track-static-html-files-by-google-analytics" aria-hidden="true"><span class="octicon octicon-link"></span></a>4. Track Static Html Files by Google Analytics</h2>
+
+<p>It's very useful to know access analyzing about our static files. For better performance we can store the code of  Google Analytics to a static file, e.g. files/ga-code.html.</p>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">html</span>&gt;
+<span class="pl-s2">    &lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s1"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span>&gt;</span>
+<span class="pl-s2">        <span class="pl-s">var</span> gaJsHost <span class="pl-k">=</span> ((<span class="pl-s1"><span class="pl-pds">"</span>https:<span class="pl-pds">"</span></span> <span class="pl-k">==</span> <span class="pl-s3">document</span>.<span class="pl-sc">location</span>.<span class="pl-sc">protocol</span>) <span class="pl-k">?</span> <span class="pl-s1"><span class="pl-pds">"</span>https://ssl.<span class="pl-pds">"</span></span></span>
+<span class="pl-s2">                <span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">"</span>http://www.<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s2">        <span class="pl-s3">document</span></span>
+<span class="pl-s2">                .<span class="pl-s3">write</span>(<span class="pl-s3">unescape</span>(<span class="pl-s1"><span class="pl-pds">"</span>%3Cscript src='<span class="pl-pds">"</span></span></span>
+<span class="pl-s2">                        <span class="pl-k">+</span> gaJsHost</span>
+<span class="pl-s2">                        <span class="pl-k">+</span> <span class="pl-s1"><span class="pl-pds">"</span>google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E<span class="pl-pds">"</span></span>));</span>
+<span class="pl-s2">    &lt;/<span class="pl-ent">script</span>&gt;</span>
+<span class="pl-s2">    &lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s1"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span>&gt;</span>
+<span class="pl-s2">        <span class="pl-k">try</span> {</span>
+<span class="pl-s2">            <span class="pl-s">var</span> pageTracker <span class="pl-k">=</span> _gat._getTracker(<span class="pl-s1"><span class="pl-pds">"</span>UA-XXXXXXX-X<span class="pl-pds">"</span></span>);</span>
+<span class="pl-s2">            pageTracker._trackPageview();</span>
+<span class="pl-s2">        } <span class="pl-k">catch</span> (err) {</span>
+<span class="pl-s2">        }</span>
+<span class="pl-s2">    &lt;/<span class="pl-ent">script</span>&gt;</span>
+&lt;/<span class="pl-ent">html</span>&gt;</pre></div>
+
+<p>The we can use dynamically combined files mentioned in the previous chapter to append the content to the feet or insert the content to the header.</p>
+
+<div class="highlight highlight-clojure"><pre>
+(<span class="pl-k">defn</span> <span class="pl-e">ga-in-feeter</span> [req]
+ {<span class="pl-c1">:status</span> <span class="pl-c1">200</span>,
+  <span class="pl-c1">:headers</span> {<span class="pl-s1"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>text/html<span class="pl-pds">"</span></span>},
+  <span class="pl-c">;;suppose the uri is prefixed with "/testfiles/"</span>
+  <span class="pl-c">;;and we do nothing about security for this simple example</span>
+  <span class="pl-c1">:body</span> [(clojure.java.io/file <span class="pl-s1"><span class="pl-pds">"</span>files/<span class="pl-pds">"</span></span> (subs (<span class="pl-c1">:uri</span> req) (.length <span class="pl-s1"><span class="pl-pds">"</span>/testfiles/<span class="pl-pds">"</span></span>))), 
+         (clojure.java.io/file <span class="pl-s1"><span class="pl-pds">"</span>files/ga-code.html<span class="pl-pds">"</span></span>)]})</pre></div>
+
+<p>If you have already got a ring handler which can handle some static html files we can wrap the handler by </p>
+
+<div class="highlight highlight-clojure"><pre>(<span class="pl-k">defn</span> <span class="pl-e">ga-wrapper</span> 
+<span class="pl-s1"><span class="pl-pds">"</span>f is a ring handler<span class="pl-pds">"</span></span>
+[f]
+(<span class="pl-s">fn</span> [req]
+  (<span class="pl-s">let</span> [{<span class="pl-c1">:keys</span> [status body headers] <span class="pl-c1">:as</span> result} (f req)]
+    (<span class="pl-s">if</span> body
+      {<span class="pl-c1">:status</span> status, <span class="pl-c1">:body</span> [body, ga-code-file], <span class="pl-c1">:headers</span> headers
+      result}))))
+</pre></div>
+
+<h2>
+<a id="user-content-5-limit-download-speed" class="anchor" href="#5-limit-download-speed" aria-hidden="true"><span class="octicon octicon-link"></span></a>5. Limit Download Speed</h2>
+
+<p><code>limit_rate</code> can be used to limit download speed, e.g. For those uris are prefixed with <code>/downloads/</code>  files limit the download speed up to 256kB/s. </p>
+
+<div class="highlight highlight-nginx"><pre>
+<span class="pl-st">location</span> <span class="pl-en">/downlaods/ </span>{
+  ....
+  <span class="pl-k">limit_rate</span> <span class="pl-c1">256k</span>;
+}
+</pre></div>
+
+<p>If we want to set different download speed for different users, we can use rewrite handler and <code>set-ngx-var!</code> to set <code>limit_rate</code> dynamically for different users.   e.g.  VIPs get 500kB/s speed and the others get 100kB/s speed. </p>
+
+<div class="highlight highlight-clojure"><pre>(<span class="pl-k">ns</span> <span class="pl-e">my-simple-limiter</span>
+  (<span class="pl-c1">:use</span> [nginx.clojure.core]))
+(<span class="pl-k">defn</span> <span class="pl-e">speed-limiter</span> [req]
+  (<span class="pl-s">if</span> (= <span class="pl-s1"><span class="pl-pds">"</span>VIP<span class="pl-pds">"</span></span> (compute-user-role req))
+    (set-ngx-var! req <span class="pl-s1"><span class="pl-pds">"</span>limit_rate<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>500k<span class="pl-pds">"</span></span>)
+    (set-ngx-var! req <span class="pl-s1"><span class="pl-pds">"</span>limit_rate<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>100k<span class="pl-pds">"</span></span>))
+  phrase-done)</pre></div>
+
+<div class="highlight highlight-nginx"><pre>
+<span class="pl-st">location</span> <span class="pl-en">/downlaods/ </span>{
+     ....
+     handler_type <span class="pl-s1">'clojure'</span>;
+     rewrite_handler_name <span class="pl-s1">'my-simple-limiter/speed-limiter'</span>;  
+}</pre></div>

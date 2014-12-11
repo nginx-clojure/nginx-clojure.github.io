@@ -17,7 +17,8 @@
 (defn render-all-updated
   [dir]
   (doseq [f (file-seq (clojure.java.io/file dir)) 
-                    hf (md-html  f)
+          :let [hf (md-html  f)]
           :when (and (.endsWith (.getName f) ".md")
                      (> (.lastModified f) (.lastModified  (md-html  f) )))]
-      (println (.getAbsolutePath f))))
+      (println (.getAbsolutePath f))
+      (render-md-file f)))

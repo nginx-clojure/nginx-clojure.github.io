@@ -1,7 +1,7 @@
 Core Features
 =================
 
-The latest release is v0.2.7, more detail changes about it can be found from [Release History](downloads.html).
+The latest release is v0.3.0, more detail changes about it can be found from [Release History](downloads.html).
 
 1. Compatible with [Ring](https://github.com/ring-clojure/ring/blob/master/SPEC) and obviously supports those Ring based frameworks, such as Compojure etc.
 1. Http Services by  using Clojure / Java / Groovy to write simple handlers for http services.
@@ -36,19 +36,19 @@ Nginx-Clojure has already been published to https://clojars.org/ whose maven rep
 </repository>
 ``` 
 
-After adding clojars repository, you can reference nginx-clojure 0.2.7 , e.g.
+After adding clojars repository, you can reference nginx-clojure 0.3.0 , e.g.
 
  Leiningen (clojure, no need to add clojars repository which is a default repository for Leiningen) 
 -----------------
  
 ```clojure
-[nginx-clojure "0.2.7"]
+[nginx-clojure "0.3.0"]
 ```
 Gradle (groovy/java)
 -----------------
  
 ```
-compile "nginx-clojure:nginx-clojure:0.2.7"
+compile "nginx-clojure:nginx-clojure:0.3.0"
 ```
 Maven
 -----------------
@@ -57,7 +57,7 @@ Maven
 <dependency>
   <groupId>nginx-clojure</groupId>
   <artifactId>nginx-clojure</artifactId>
-  <version>0.2.7</version>
+  <version>0.3.0</version>
 </dependency>
 ```
 
