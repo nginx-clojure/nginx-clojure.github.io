@@ -10,7 +10,8 @@
 <a id="user-content-030-2014-12-11" class="anchor" href="#030-2014-12-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.3.0 (2014-12-11)</h2>
 
 <ol>
-<li>Discard: Directive <code>clojure</code>, <code>clojure_code</code> are no longer supported, use <code>handle_type</code>, <code>handle_name</code>, <code>handle_code</code> instead.</li>
+<li>Discard: Directive <code>clojure</code>, <code>clojure_code</code> are no longer supported, use <code>handler_type</code>/<code>content_handler_type</code>, 
+<code>handler_name</code>/<code>content_handler_name</code>, <code>handler_code</code>/<code>content_handler_code</code> instead.</li>
 <li>Discard:  Now <code>handler_***</code> can not be used to declare a nginx worker  initialization handler, use `jvm_init_handler_*** instead.</li>
 <li>New Feature:  Supports  writing nginx access handler  by  java/clojure/groovy (issue #53)</li>
 <li>New Feature:  Supports  writing nginx header filter  by  java/clojure/groovy (issue #55)</li>
