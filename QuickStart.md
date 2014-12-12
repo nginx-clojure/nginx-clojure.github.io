@@ -1,12 +1,13 @@
 Quick Start
 =============
 
-Download
+Installation
 --------------
 
 1. Download the latest binaries release v0.3.0 from [here](https://sourceforge.net/projects/nginx-clojure/files/). 
 1. Unzip the zip file downloaded then rename the file `nginx-${os-arc}` to `nginx`, eg. for linux is `nginx-linux-x64`
 
+>If you want to compile it with your own nginx please check [HERE](installation.html)
 
 Configuration
 --------------
