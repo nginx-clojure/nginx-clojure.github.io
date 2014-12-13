@@ -81,7 +81,7 @@ http {
 
 ###Advanced JVM Options for I/O
 
-Check [this section](configuration.html#user-content-24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations) for more deitals about choice and configuration about `thread pool` , `coroutined` based socket or `asynchronous socket/channel`.
+Check [this section](configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations) for more deitals about choice and configuration about `thread pool` , `coroutined` based socket or `asynchronous socket/channel`.
 
 ###Some Useful Tips
 
@@ -749,6 +749,6 @@ For Clojure
 	
 [nginx-clojure broadcast API]: https://github.com/nginx-clojure/nginx-clojure/issues/38
 [SharedHashMap/Chronicle-Map]: https://github.com/OpenHFT/Chronicle-Map
-[Asynchronous Socket/Channel]: more.html#user-content-36-asynchronous-channel
-[2.1 JVM Path , Class Path & Other JVM Options]: configuration.html#user-content-21-jvm-path--class-path--other-jvm-options
-[enabled coroutine support]: configuration.html#user-content-24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations
+[Asynchronous Socket/Channel]: more.html#content-36-asynchronous-channel
+[2.1 JVM Path , Class Path & Other JVM Options]: configuration.html#21-jvm-path--class-path--other-jvm-options
+[enabled coroutine support]: configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations

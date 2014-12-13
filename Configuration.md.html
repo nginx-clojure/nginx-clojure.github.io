@@ -77,7 +77,7 @@ e.g. When <code>worker_processes</code> is 8, the debug ports will range from po
 <h3>
 <a id="user-content-advanced-jvm-options-for-io" class="anchor" href="#advanced-jvm-options-for-io" aria-hidden="true"><span class="octicon octicon-link"></span></a>Advanced JVM Options for I/O</h3>
 
-<p>Check <a href="configuration.html#user-content-24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations">this section</a> for more deitals about choice and configuration about <code>thread pool</code> , <code>coroutined</code> based socket or <code>asynchronous socket/channel</code>.</p>
+<p>Check <a href="configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations">this section</a> for more deitals about choice and configuration about <code>thread pool</code> , <code>coroutined</code> based socket or <code>asynchronous socket/channel</code>.</p>
 
 <h3>
 <a id="user-content-some-useful-tips" class="anchor" href="#some-useful-tips" aria-hidden="true"><span class="octicon octicon-link"></span></a>Some Useful Tips</h3>
@@ -125,7 +125,7 @@ For more detail example of ring handler please see the next secion.</p>
 <li>Because the maybe more than one nginx worker processes, so this code will run everytime per worker starting. </li>
 <li>If you use <a href="https://github.com/OpenHFT/Chronicle-Map">SharedHashMap/Chronicle-Map</a>  to share data 
 among nginx worker processes, Java file lock can be used to let only one nginx worker process do the initialization.</li>
-<li>If you <a href="configuration.html#user-content-24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations">enabled coroutine support</a>, nginx maybe will start successfully even if your initialization failed after some socket operations. If you case it, you can 
+<li>If you <a href="configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations">enabled coroutine support</a>, nginx maybe will start successfully even if your initialization failed after some socket operations. If you case it, you can 
 use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.</li>
 </ul>
 
@@ -295,7 +295,7 @@ It is also OK if you do not compile the Clojure/Groovy to java class file and ju
 <span class="pl-s1">          '</span>;
        }</pre></div>
 
-<p>You should set your  JAR files or directory to class path, see <a href="configuration.html#user-content-21-jvm-path--class-path--other-jvm-options">2.1 JVM Path , Class Path &amp; Other JVM Options</a> .</p>
+<p>You should set your  JAR files or directory to class path, see <a href="configuration.html#21-jvm-path--class-path--other-jvm-options">2.1 JVM Path , Class Path &amp; Other JVM Options</a> .</p>
 
 <h2>
 <a id="user-content-24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations" class="anchor" href="#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.4 Chose  Coroutine based Socket Or Asynchronous Socket/Channel Or Thread Pool for slow I/O operations</h2>
@@ -446,7 +446,7 @@ jvm_options <span class="pl-s1">"-Dnginx.clojure.wave.udfs=my-wave-cfg.txt"</spa
 
 <p>Asynchronous Socket/Channel Can be used with default mode or coroutined enabled mode without any additional settings. It just a set of API.
 It uses event driven pattern and works with a java callback handler or clojure function for callback. Asynchronous Channel is wrapper of Asynchronous Socket
-for more easier usage. More examples can be found from this section <a href="more.html#user-content-36-asynchronous-channel">Asynchronous Socket/Channel</a>. </p>
+for more easier usage. More examples can be found from this section <a href="more.html#content-36-asynchronous-channel">Asynchronous Socket/Channel</a>. </p>
 
 <h3>
 <a id="user-content-243-use-thread-pool" class="anchor" href="#243-use-thread-pool" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.4.3 Use Thread Pool</h3>
