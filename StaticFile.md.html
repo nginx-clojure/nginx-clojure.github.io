@@ -143,7 +143,7 @@ Dynamically combined files is quite easy with Nginx-Clojure, just return a ring 
   (<span class="pl-s">if</span> (= <span class="pl-s1"><span class="pl-pds">"</span>VIP<span class="pl-pds">"</span></span> (compute-user-role req))
     (set-ngx-var! req <span class="pl-s1"><span class="pl-pds">"</span>limit_rate<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>500k<span class="pl-pds">"</span></span>)
     (set-ngx-var! req <span class="pl-s1"><span class="pl-pds">"</span>limit_rate<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>100k<span class="pl-pds">"</span></span>))
-  phrase-done)</pre></div>
+  phase-done)</pre></div>
 
 <div class="highlight highlight-nginx"><pre>
 <span class="pl-st">location</span> <span class="pl-en">/downlaods/ </span>{

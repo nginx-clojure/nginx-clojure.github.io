@@ -98,25 +98,46 @@ even external service(e.g. redis, database) to  coordinate the state.
 -----------------
 
 You can embed clojure/groovy code in the `http { ` block to do initialization when nginx worker starting. e.g
+    
+For Clojure
 
 ```nginx
 http {
 ......
-    handler_type 'clojure'; # or handler_type 'groovy'
-    handler_code '....';  #the same with Ring Handler for Location (details in next section)
+    jvm_handler_type 'clojure'; 
+    # or for external handler  we can use jvm_init_handler_name my.test/InitHandler;
+    # below is a clojure example for incline clojure  handler
+    jvm_init_handler_code '
+	      (fn[ctx]
+	        (.println System/err "init2 on http clojure context")
+	        {:status 200}
+	        )
+    '; 
 ....
 }
 ```
-Or you can reference an exteranl clojure/java/groovy ring handler for initialization when nginx worker starting.
+
+For Java/groovy
 
 ```nginx
 http {
 ......
-    handler_type 'clojure'; # or handler_type 'java' / handler_type 'groovy'
-    handler_name 'my.test/InitHandler';  # or for java it maybe 'my.test.MyJavaInitHandler'
+    jvm_handler_type 'java'; # or handler_type 'groovy'
+    jvm_init_handler_name 'my.test/InitHandler'; 
 ....
 }
 ```
+
+```java
+	public static class JVMInitHandler implements NginxJavaRingHandler {
+		@Override
+		public Object[] invoke(Map<String, Object> ctx) {
+			NginxClojureRT.log.info("JVMInitHandler invoked!");
+			return null; // or return new Object[] {500, null, null}; for  an error
+		}
+	}
+```
+
 
 The ring handler can use status 500 and body to report some errors or just return nothing.
 For more detail example of ring handler please see the next secion.
@@ -145,13 +166,13 @@ For clojure
 ```
 
 
-2.3 Ring Handler for Location
+2.3 Content Ring Handler for Location
 -----------------
 
 Within `location` block, 
-* Directive `handler_type` is used to setting a type of handler.
-* Directive `handler_code` is used to setting an inline Ring handler.
-* Directive `handler_name` is used to setting an external Ring handler which is in a certain jar file included by your classpath.
+* Directive `content_handler_type` is used to setting a type of handler.
+* Directive `content_handler_code` is used to setting an inline Ring handler.
+* Directive `content_handler_name` is used to setting an external Ring handler which is in a certain jar file included by your classpath.
 
 
 ###2.3.1 Inline Ring Handler
@@ -177,8 +198,8 @@ For Groovy :
 
 ```nginx
        location /groovy {
-          handler_type 'groovy';
-          handler_code ' 
+          content_handler_type 'groovy';
+          content_handler_code ' 
                import nginx.clojure.java.NginxJavaRingHandler;
                import java.util.Map;
                public class HelloGroovy implements NginxJavaRingHandler {
@@ -215,8 +236,8 @@ Then we can reference it in nginx.conf
 
 ```nginx
        location /myClojure {
-          handler_type 'clojure';
-          handler_name 'my.hello/hello-world';
+         content_ handler_type 'clojure';
+          content_handler_name 'my.hello/hello-world';
        }
 ```
 For more details and more useful examples for [Compojure](https://github.com/weavejester/compojure) which is a small routing library for Ring that allows web applications to be composed of small, independent parts. Please refer to https://github.com/weavejester/compojure
@@ -245,8 +266,8 @@ In nginx.conf
 
 ```nginx
        location /myJava {
-          handler_type 'java';
-          handler_name 'mytest.Hello';
+          content_handler_type 'java';
+          content_handler_name 'mytest.Hello';
        }
 ```
 
@@ -267,48 +288,6 @@ For Groovy
    }
 ```
 
-###2.3.3 Pure Java Handler
-
-The section is **__deprecated__**. Please check the above section and use new derective `handler_type` and `handler_name` for easier work.
-
-```java
-package my;
-
-import nginx.clojure.Constants;
-import clojure.lang.AFn;
-import clojure.lang.IPersistentMap;
-import clojure.lang.PersistentArrayMap;
-
-public class HelloHandler extends AFn {
-	
-	@Override
-	public Object invoke(Object r) {
-		IPersistentMap req = (IPersistentMap)r;
-		
-		//get some info from req. eg. req.valAt(Constants.QUERY_STRING)
-		//....
-		
-		//prepare resps, more details about Ring handler on this site https://github.com/ring-clojure/ring/blob/master/SPEC
-		Object[] resps = new Object[] {Constants.STATUS, 200, 
-				Constants.HEADERS, new PersistentArrayMap(new Object[]{Constants.CONTENT_TYPE.getName(),"text/plain"}),
-				Constants.BODY, "Hello Java & Nginx!"};
-		return new PersistentArrayMap(resps);
-	}
-	
-}
-```
-
-
-In nginx.conf, eg.
-
-```nginx
-	location /java {
-          clojure;
-          clojure_code ' 
-               (do (import \'[my HelloHandler]) (HelloHandler.) )
-          ';
-       }
-```
 
 You should set your  JAR files or directory to class path, see [2.1 JVM Path , Class Path & Other JVM Options][] .
 
@@ -367,8 +346,8 @@ thread in java is costlier than coroutine, facing large amount of connections th
 
 	```nginx
       location /dump {
-         handler_type 'java';
-         handler_name 'nginx.clojure.java.WaveConfigurationDumpHandler';       
+         content_handler_type 'java';
+         content_handler_name 'nginx.clojure.java.WaveConfigurationDumpHandler';       
       }
 	```
 * Start Nginx which Compiled with Nginx Clojure Module
@@ -451,7 +430,7 @@ a bigger number.
 -----------------
 
 A nginx rewrite handler can be used to set var or return errors before proxy pass or content ring handler. 
-If the rewrite handler returns `phrase-done` (Clojure) or  `PHRASE_DONE` (Groovy/Java), nginx will continue to invoke proxy_pass or 
+If the rewrite handler returns `phase-done` (Clojure) or  `PHASE_DONE` (Groovy/Java), nginx will continue to invoke proxy_pass or 
 content ring handler.
 If the rewrite handler returns a general response, nginx will send this response to the client and stop to continue to invoke proxy_pass or 
 content ring handler.
@@ -465,12 +444,12 @@ Here's a simple clojure example for Nginx rewrite handler :
        set $myvar "";
        
        location /rewritesimple {
-          handler_type 'clojure';
+         rewrite_ handler_type 'clojure';
           rewrite_handler_code '
            (do (use \'[nginx.clojure.core]) 
 						(fn[req]
 						  (set-ngx-var! req "myvar" "Hello")
-						  phrase-done))
+						  phase-done))
           ';
           handler_code '
            (do (use \'[nginx.clojure.core]) 
@@ -496,14 +475,14 @@ We can also  use this feature to complete a simple dynamic balancer , e.g.
        set $myhost "";
        
        location /myproxy {
-          handler_type 'clojure';
+          rewrite_handler_type 'clojure';
           rewrite_handler_code '
            (do (use \'[nginx.clojure.core]) 
 						(fn[req]
 						  ;compute myhost (upstream name or real host name) based req & remote service, e.g.
 						  (let [myhost (compute-myhost req)])
 						  (set-ngx-var! req "myhost" myhost)
-						  phrase-done))
+						  phase-done))
           ';
           proxy_pass $myhost
        }    
@@ -519,7 +498,7 @@ We can also  use this feature to complete a simple dynamic balancer , e.g.
        location /myproxy {
           ##WRONG!!! Because execution of directive `set` maybe is after the execution of Nginx-Clojure rewrite handler
           set $myhost "";
-          handler_type 'clojure';
+          rewrite_handler_type 'clojure';
           rewrite_handler_code ' ....
           ';
           proxy_pass $myhost
@@ -540,7 +519,7 @@ import static nginx.clojure.java.Constants.*;
 		public Object[] invoke(Map<String, Object> req) {
 			String myhost = computeMyHost(req);
 			NginxClojureRT.setNGXVariable(((NginxJavaRequest)req).nativeRequest(), "myhost", myhost);
-			return PHRASE_DONE;
+			return PHASE_DONE;
 		}
 		
 		private String computeMyHost(Map<String, Object> req) {
@@ -556,7 +535,7 @@ Then we set the java rewrtite handler in nginx.conf
        set $myhost "";
        
        location /myproxy {
-          handler_type 'java';
+          rewrite_handler_type 'java';
           rewrite_handler_name 'my.test.MyRewriteProxyPassHandler';
           proxy_pass $myhost
        }    
@@ -575,7 +554,7 @@ For clojure
                 (fn[req]
                           (if ((AuthenticationHandler.)  req)
                              ;AuthenticationHandler returns true so we go to proxy_pass
-                             phrase-done 
+                             phase-done 
                              ;else return 403
                              {:status 403}
                              )))
@@ -587,7 +566,7 @@ For Java
 * nginx.conf
  
 	```nginx
-		handler_type 'java';
+		rewrite_handler_type 'java';
 		rewrite_handler_name 'com.test.MyHandler';
 		proxy_pass http://localhost:8084;
 	```
@@ -604,7 +583,7 @@ public class MyHandler implements NginxJavaRingHandler {
 		   /*do some computing here*/
 		   
 		    if (goto-proxy-pass) {
-		           return  PHRASE_DONE;
+		           return  PHASE_DONE;
 		    }else {  //return 403
 		          return Object[] resps = new Object[] {
 		                          Constants.STATUS, 403, 
@@ -629,7 +608,7 @@ We also added an example(for unit testing) about this, in nginx.conf
 
        location /javarewritebybodyproxy {
           always_read_body on;
-          handler_type 'java';
+          rewrite_handler_type 'java';
           rewrite_handler_name 'nginx.clojure.java.RewriteHandlerTestSet4NginxJavaRingHandler$SimpleRewriteByBodyHandler';
           proxy_pass http://$myup;
        }
@@ -650,7 +629,7 @@ e.g.
 ```nginx
 
           location /basicAuth {
-               handler_type 'java';
+               access_handler_type 'java';
 	             access_handler_name 'my.BasicAuthHandler';
 	             ....
 	          }
@@ -699,7 +678,7 @@ For Java/Groovy
 
 ```nginx
       location /javafilter {
-	          handler_type 'java';
+	          header_filter_type 'java';
 	          header_filter_name 'my.AddMoreHeaders';
 	           ..................
 	          }
@@ -727,7 +706,7 @@ For Clojure
 
 ```nginx
       location /javafilter {
-	          handler_type 'clojure';
+	          header_filter_type 'clojure';
 	          header_filter_name 'my/remove-and-add-more-headers';
 	           ..................
 	          }

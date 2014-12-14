@@ -155,7 +155,7 @@ If we want to set different download speed for different users, we can use rewri
   (if (= "VIP" (compute-user-role req))
     (set-ngx-var! req "limit_rate" "500k")
     (set-ngx-var! req "limit_rate" "100k"))
-  phrase-done)
+  phase-done)
 ```
 
 ```nginx
