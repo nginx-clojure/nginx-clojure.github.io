@@ -38,8 +38,8 @@ jvm_options <span class="pl-s1">"-Djava.class.path=jars/nginx-clojure-0.2.5.jar:
 
 <div class="highlight highlight-nginx"><pre>
    <span class="pl-st">location</span> <span class="pl-en">/clojure </span>{
-      handler_type <span class="pl-s1">'clojure'</span>;
-      handler_code <span class="pl-s1">' </span>
+      content_handler_type <span class="pl-s1">'clojure'</span>;
+      content_handler_code <span class="pl-s1">' </span>
 <span class="pl-s1">                    (fn[req]</span>
 <span class="pl-s1">                      {</span>
 <span class="pl-s1">                        :status 200,</span>
@@ -53,8 +53,8 @@ jvm_options <span class="pl-s1">"-Djava.class.path=jars/nginx-clojure-0.2.5.jar:
 
 <div class="highlight highlight-nginx"><pre>
    <span class="pl-st">location</span> <span class="pl-en">/groovy </span>{
-      handler_type <span class="pl-s1">'groovy'</span>;
-      handler_code <span class="pl-s1">' </span>
+      content_handler_type <span class="pl-s1">'groovy'</span>;
+      content_handler_code <span class="pl-s1">' </span>
 <span class="pl-s1">           import nginx.clojure.java.NginxJavaRingHandler;</span>
 <span class="pl-s1">           import java.util.Map;</span>
 <span class="pl-s1">           public class HelloGroovy implements NginxJavaRingHandler {</span>
@@ -73,8 +73,8 @@ jvm_options <span class="pl-s1">"-Djava.class.path=jars/nginx-clojure-0.2.5.jar:
 
 <div class="highlight highlight-nginx"><pre>
        <span class="pl-st">location</span> <span class="pl-en">/groovy </span>{
-          handler_type <span class="pl-s1">'java'</span>;
-          handler_name <span class="pl-s1">'mytest.HelloService'</span>;
+          content_handler_type <span class="pl-s1">'java'</span>;
+          content_handler_name <span class="pl-s1">'mytest.HelloService'</span>;
        }
 
 </pre></div>

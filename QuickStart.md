@@ -30,8 +30,8 @@ Configuration
 	```nginx
 
        location /clojure {
-          handler_type 'clojure';
-          handler_code ' 
+          content_handler_type 'clojure';
+          content_handler_code ' 
 						(fn[req]
 						  {
 						    :status 200,
@@ -46,8 +46,8 @@ Configuration
 	```nginx
 
        location /groovy {
-          handler_type 'groovy';
-          handler_code ' 
+          content_handler_type 'groovy';
+          content_handler_code ' 
                import nginx.clojure.java.NginxJavaRingHandler;
                import java.util.Map;
                public class HelloGroovy implements NginxJavaRingHandler {
@@ -66,8 +66,8 @@ For Java:
 ```nginx
 
        location /groovy {
-          handler_type 'java';
-          handler_name 'mytest.HelloService';
+          content_handler_type 'java';
+          content_handler_name 'mytest.HelloService';
        }
 
 
