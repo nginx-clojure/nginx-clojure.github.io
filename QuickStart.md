@@ -107,7 +107,7 @@ Start up
 
 ```nginx
 
-$ cd nginx-clojure-0.2.6/nginx-1.6.0
+$ cd nginx-clojure-0.3.0/nginx-1.6.2
 $ ./nginx
 ``` 
 If everything is ok, we can access our first http service by this url

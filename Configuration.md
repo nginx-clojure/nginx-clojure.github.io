@@ -728,6 +728,6 @@ For Clojure
 	
 [nginx-clojure broadcast API]: https://github.com/nginx-clojure/nginx-clojure/issues/38
 [SharedHashMap/Chronicle-Map]: https://github.com/OpenHFT/Chronicle-Map
-[Asynchronous Socket/Channel]: more.html#content-36-asynchronous-channel
+[Asynchronous Socket/Channel]: more.html#36-asynchronous-channel
 [2.1 JVM Path , Class Path & Other JVM Options]: configuration.html#21-jvm-path--class-path--other-jvm-options
 [enabled coroutine support]: configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations
