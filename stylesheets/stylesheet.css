@@ -422,7 +422,7 @@ body {
 Small Device Styles
 *******************************************************************************/
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 800px) {
   body {
     font-size:14px;
   }
@@ -436,6 +436,10 @@ Small Device Styles
 }
 
 .external-link-buttons {
+	display: none;
+}
+
+#header_logo_title {
 	display: none;
 }
 
