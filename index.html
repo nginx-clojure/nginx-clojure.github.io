@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta content="True" name="HandheldFriendly">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width">    
     <meta name="description" content="nginx-clojure.github.io : Nginx module for embedding Clojure / Java / Groovy programs, typically those Ring based handlers">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
@@ -22,28 +22,153 @@
 		<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.0.min.js"></script>
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-
+		
+		<script src="javascripts/fix.js"></script>
+		
 		<link rel="stylesheet" type="text/css" media="screen" href="stylesheets/my.css">
-    <title>nginx-clojure.github.io</title>
+    <title>Configuration</title>
   </head>
 
   <body>
-  
-  <div id="header"></div>
+  <div id="header">
+       <!-- HEADER -->
+    <nav id="header_wrap" class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <header id="header_logo_title"  class="inner container">
+          <ul class="external-link-buttons">
+	          <li>
+             <a id="forkme_banner" href="https://github.com/nginx-clojure/nginx-clojure" target="_blank">View on GitHub</a>
+            </li>
+            <li>
+             <a id="google_group_banner" href="https://groups.google.com/forum/#!forum/nginx-clojure" target="_blank">Google Group</a>
+            </li>
+	        </ul>
+          <div id="project_logo">
+          <h1 id="project_title">nginx-clojure</h1>
+          <ul class="social-buttons">
+	          <li>
+	            <iframe class="github-btn" src="github-btn.html?user=nginx-clojure&repo=nginx-clojure&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="102px" height="20px"></iframe>
+	          </li>
+	          <li>
+	            <iframe class="github-btn" src="github-btn.html?user=nginx-clojure&repo=nginx-clojure&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
+	          </li>
+	        </ul></div>
+          <h6 id="project_tagline">Nginx module for embedding Clojure / Java / Groovy programs, typically those Ring based handlers</h6>
+        </header>
+         <div class="btn-group" style="border-top-width: 1px;border-top-color: #fff;">
+          <a href="index.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-home"></span> Home</a>
+          <a href="quickstart.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-flash"></span> Quick Start</a>
+          <a href="downloads.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-download-alt"></span> Downloads</a>
+          <a href="configuration.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-cog"></span> Configuration</a>
+          <button type="button" class="btn btn-sample btn-lg dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Documents <span class="caret"></span></button>
+					<ul class="dropdown-menu dropdown-menu-right" role="menu"
+						style="right: 0; left: auto;">
+<!-- 						<li><a href="quickstart.html"><span class="glyphicon glyphicon-flash"></span> Quick Start</a></li> -->
+						<li><a href="installation.html"><span class="glyphicon glyphicon-hdd"></span> Installation</a></li>
+						<li><a href="configuration.html"><span class="glyphicon glyphicon-cog"></span> Configuration</a></li>
+						<li><a href="more.html#34-long-polling--server-sent-events-sse"><span class="glyphicon glyphicon-envelope"></span> Long Polling & Server Sent Events</a></li>
+						<li><a href="more.html#35-subpub--broadcast-event"><span class="glyphicon glyphicon-signal"></span> Sub/Pub services with Broadcast Events</a></li>
+						<li><a href="more.html#36-asynchronous-channel"><span class="glyphicon glyphicon-road"></span> Asynchronous Channel</a></li>
+						<li><a href="more.html"><span class="glyphicon glyphicon-th-list"></span> More about Nginx-Clojure</a></li>
+					</ul>
+
+			<a href="userfullLinks.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-share-alt"></span> Useful Links</a>
+          </div>  
+    </nav>
+
+  </div>
       <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
+           <h1>
+<a id="user-content-core-features" class="anchor" href="#core-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Core Features</h1>
+
+<p>The latest release is v0.3.0, more detail changes about it can be found from <a href="downloads.html">Release History</a>.</p>
+
+<ol>
+<li>Compatible with <a href="https://github.com/ring-clojure/ring/blob/master/SPEC">Ring</a> and obviously supports those Ring based frameworks, such as Compojure etc.</li>
+<li>Http Services by  using Clojure / Java / Groovy to write simple handlers for http services.</li>
+<li>
+<strong><em>NEW</em></strong>: Nginx Access Handler by Clojure / Java / Groovy</li>
+<li>
+<strong><em>NEW</em></strong>: Nginx  Header Filter by Clojure / Java / Groovy</li>
+<li>Dynamic proxying by using Clojure / Java / Groovy to write a simple nginx rewrite handler to set var or return errors before proxy pass or content ring handler</li>
+<li>Non-blocking coroutine based socket which is Compatible with Java Socket API and works well with largely existing java library such as apache http client, mysql jdbc drivers. 
+With this feature  one java main thread can handle thousands of connections.</li>
+<li>Handle multiple sockets parallel in sub coroutines, e.g. we can invoke two remote services at the same time.</li>
+<li>Asynchronous callback API of socket/Channel  for some advanced usage</li>
+<li>Long Polling &amp; Server Sent Events</li>
+<li>More easier to archive  Sub/Pub services with broadcast events API</li>
+<li>Run initialization clojure code when nginx worker starting</li>
+<li>Support user defined http request method</li>
+<li>Compatible with the Nginx lastest stable version 1.6.x. (Nginx 1.4.x is also ok, older version is not tested and maybe works.)</li>
+<li>One of  benifits of <a href="http://nginx.org/">Nginx</a> is worker processes are automatically restarted by a master process if they crash</li>
+<li>Utilizes lazy headers and direct memory operation between <a href="http://nginx.org/">Nginx</a> and JVM to fast handle dynamic contents from Clojure or Java code.</li>
+<li>Utilizes <a href="http://nginx.org/">Nginx</a> zero copy file sending mechanism to fast handle static contents controlled by Clojure or Java code.</li>
+<li>Supports Linux x64, Linux x86 32bit, Win32, Win64  and Mac OS X. </li>
+</ol>
+
+<p>By the way it is very fast, the benchmarks can be found <a href="https://github.com/ptaoussanis/clojure-web-server-benchmarks/">HERE(Small number of connections)</a> and <a href="https://github.com/ptaoussanis/clojure-web-server-benchmarks/issues/21">HERE (Large number of connections) </a> .</p>
+
+<h1>
+<a id="user-content-jar-repository" class="anchor" href="#jar-repository" aria-hidden="true"><span class="octicon octicon-link"></span></a>Jar Repository</h1>
+
+<p>Nginx-Clojure has already been published to <a href="https://clojars.org/">https://clojars.org/</a> whose maven repository is </p>
+
+<div class="highlight highlight-xml"><pre>&lt;<span class="pl-ent">repository</span>&gt;
+  &lt;<span class="pl-ent">id</span>&gt;clojars.org&lt;/<span class="pl-ent">id</span>&gt;
+  &lt;<span class="pl-ent">url</span>&gt;http://clojars.org/repo&lt;/<span class="pl-ent">url</span>&gt;
+&lt;/<span class="pl-ent">repository</span>&gt;</pre></div>
+
+<p>After adding clojars repository, you can reference nginx-clojure 0.3.0 , e.g.</p>
+
+<h2>
+<a id="user-content--leiningen-clojure-no-need-to-add-clojars-repository-which-is-a-default-repository-for-leiningen-" class="anchor" href="#-leiningen-clojure-no-need-to-add-clojars-repository-which-is-a-default-repository-for-leiningen-" aria-hidden="true"><span class="octicon octicon-link"></span></a> Leiningen (clojure, no need to add clojars repository which is a default repository for Leiningen) </h2>
+
+<div class="highlight highlight-clojure"><pre>[nginx-clojure <span class="pl-s1"><span class="pl-pds">"</span>0.3.0<span class="pl-pds">"</span></span>]</pre></div>
+
+<h2>
+<a id="user-content-gradle-groovyjava" class="anchor" href="#gradle-groovyjava" aria-hidden="true"><span class="octicon octicon-link"></span></a>Gradle (groovy/java)</h2>
+
+<pre><code>compile "nginx-clojure:nginx-clojure:0.3.0"
+</code></pre>
+
+<h2>
+<a id="user-content-maven" class="anchor" href="#maven" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maven</h2>
+
+<div class="highlight highlight-xml"><pre>&lt;<span class="pl-ent">dependency</span>&gt;
+  &lt;<span class="pl-ent">groupId</span>&gt;nginx-clojure&lt;/<span class="pl-ent">groupId</span>&gt;
+  &lt;<span class="pl-ent">artifactId</span>&gt;nginx-clojure&lt;/<span class="pl-ent">artifactId</span>&gt;
+  &lt;<span class="pl-ent">version</span>&gt;0.3.0&lt;/<span class="pl-ent">version</span>&gt;
+&lt;/<span class="pl-ent">dependency</span>&gt;</pre></div>
+
+<h1>
+<a id="user-content-license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h1>
+
+<p>Copyright © 2013-2014 Zhang, Yuexiang (xfeep) and released under the BSD 3-Clause license.</p>
+
+<p>This program uses:</p>
+
+<ul>
+<li>Re-rooted ASM bytecode engineering library which is distributed under the BSD 3-Clause license</li>
+<li>Modified Continuations Library Written by Matthias Mann  is distributed under the BSD 3-Clause license</li>
+</ul>
+
         </section>
     </div>
-    <div id="footer"></div>
-  <script type="text/javascript">
-  $("#header").load("header.html");
-  $("#main_content").load("CoreFeatures.md.html", function(){
-	  $("a[href^='http']").attr("target","_blank");
-  });
-  $("#footer").load("footer.html");
-  </script>
+ <div id="footer">
+    <!-- FOOTER  -->
+	<div id="footer_wrap" class="outer">
+		<footer class="inner">
+			<p>
+				Powered by <a href="http://getbootstrap.com/">Twitter Bootstrap</a>
+			</p>
+		</footer>
+	</div>
+ </div>
+  
 	<script type="text/javascript">
+	  $("a[href^='http']").attr("target","_blank");
+	  setTimeout("fixNavbarIssue();", 1000);
 		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl."
 				: "http://www.");
 		document
@@ -58,7 +183,5 @@
 		} catch (err) {
 		}
 	</script>
-
-
-  </body>
-</html>
+</body>
+  </html>

@@ -22,27 +22,95 @@
 		<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.0.min.js"></script>
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-
+		
+		<script src="javascripts/fix.js"></script>
+		
 		<link rel="stylesheet" type="text/css" media="screen" href="stylesheets/my.css">
-    <title>Usefull Links</title>
+    <title>Configuration</title>
   </head>
 
   <body>
-  <div id="header"></div>
+  <div id="header">
+       <!-- HEADER -->
+    <nav id="header_wrap" class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <header id="header_logo_title"  class="inner container">
+          <ul class="external-link-buttons">
+	          <li>
+             <a id="forkme_banner" href="https://github.com/nginx-clojure/nginx-clojure" target="_blank">View on GitHub</a>
+            </li>
+            <li>
+             <a id="google_group_banner" href="https://groups.google.com/forum/#!forum/nginx-clojure" target="_blank">Google Group</a>
+            </li>
+	        </ul>
+          <div id="project_logo">
+          <h1 id="project_title">nginx-clojure</h1>
+          <ul class="social-buttons">
+	          <li>
+	            <iframe class="github-btn" src="github-btn.html?user=nginx-clojure&repo=nginx-clojure&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="102px" height="20px"></iframe>
+	          </li>
+	          <li>
+	            <iframe class="github-btn" src="github-btn.html?user=nginx-clojure&repo=nginx-clojure&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
+	          </li>
+	        </ul></div>
+          <h6 id="project_tagline">Nginx module for embedding Clojure / Java / Groovy programs, typically those Ring based handlers</h6>
+        </header>
+         <div class="btn-group" style="border-top-width: 1px;border-top-color: #fff;">
+          <a href="index.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-home"></span> Home</a>
+          <a href="quickstart.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-flash"></span> Quick Start</a>
+          <a href="downloads.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-download-alt"></span> Downloads</a>
+          <a href="configuration.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-cog"></span> Configuration</a>
+          <button type="button" class="btn btn-sample btn-lg dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Documents <span class="caret"></span></button>
+					<ul class="dropdown-menu dropdown-menu-right" role="menu"
+						style="right: 0; left: auto;">
+<!-- 						<li><a href="quickstart.html"><span class="glyphicon glyphicon-flash"></span> Quick Start</a></li> -->
+						<li><a href="installation.html"><span class="glyphicon glyphicon-hdd"></span> Installation</a></li>
+						<li><a href="configuration.html"><span class="glyphicon glyphicon-cog"></span> Configuration</a></li>
+						<li><a href="more.html#34-long-polling--server-sent-events-sse"><span class="glyphicon glyphicon-envelope"></span> Long Polling & Server Sent Events</a></li>
+						<li><a href="more.html#35-subpub--broadcast-event"><span class="glyphicon glyphicon-signal"></span> Sub/Pub services with Broadcast Events</a></li>
+						<li><a href="more.html#36-asynchronous-channel"><span class="glyphicon glyphicon-road"></span> Asynchronous Channel</a></li>
+						<li><a href="more.html"><span class="glyphicon glyphicon-th-list"></span> More about Nginx-Clojure</a></li>
+					</ul>
+
+			<a href="userfullLinks.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-share-alt"></span> Useful Links</a>
+          </div>  
+    </nav>
+
+  </div>
       <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
+           <h1>
+<a name="user-content-4-useful-links" class="anchor" href="#4-useful-links" aria-hidden="true"><span class="octicon octicon-link"></span></a>4. Useful Links</h1>
+
+<ul>
+<li><a href="https://github.com/ring-clojure/ring/wiki">Ring Documents</a></li>
+<li><a href="https://github.com/weavejester/compojure/wiki">Comojure Documents</a></li>
+<li>
+<a href="https://github.com/nginx-clojure/nginx-clojure/tree/master/test/nginx-working-dir/conf/nginx-coroutine.conf">Simple Examples</a> in Nginx Clojure Testing Configuration &amp; <a href="https://github.com/nginx-clojure/nginx-clojure/tree/master/test/clojure/nginx/clojure/test_all.clj">Testing Client Code</a>
+</li>
+<li>
+<a href="https://github.com/nginx-clojure/nginx-clojure/tree/master/test/clojure/nginx/clojure/ring_handlers_for_test.clj">Nginx Clojure Ring Handlers Examples for Testing</a> (Testing with Ring Core 1.2.1)</li>
+<li><a href="http://java.dzone.com/articles/10-lines-clojure-code-build-0">10 Lines of Clojure Code to Build A Simple Balancer With Nginx</a></li>
+<li><a href="http://java.dzone.com/articles/develope-high-performance">Fast Clojure/Java Web Apps on Nginx Without Any Java Web Server</a></li>
+<li><a href="http://java.dzone.com/articles/static-file-best-practices">Static File Best Practices on Nginx-Clojure</a></li>
+</ul>
+
         </section>
     </div>
-    <div id="footer"></div>
-  <script type="text/javascript">
-  $("#header").load("header.html");
-  $("#main_content").load("UserfullLinks.md.html", function(){
-	  $("a[href^='http']").attr("target","_blank");
-  });
-  $("#footer").load("footer.html");
-  </script>
+ <div id="footer">
+    <!-- FOOTER  -->
+	<div id="footer_wrap" class="outer">
+		<footer class="inner">
+			<p>
+				Powered by <a href="http://getbootstrap.com/">Twitter Bootstrap</a>
+			</p>
+		</footer>
+	</div>
+ </div>
+  
 	<script type="text/javascript">
+	  $("a[href^='http']").attr("target","_blank");
+	  setTimeout("fixNavbarIssue();", 1000);
 		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl."
 				: "http://www.");
 		document

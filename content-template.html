@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta content="True" name="HandheldFriendly">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="viewport" content="width=device-width">    
+    <meta name="description" content="nginx-clojure.github.io : Nginx module for embedding Clojure / Java / Groovy programs, typically those Ring based handlers">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    
+
+
+		<!-- bootstrap cdn -->
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+		
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+		<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.0.min.js"></script>
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+		
+		<script src="javascripts/fix.js"></script>
+		
+		<link rel="stylesheet" type="text/css" media="screen" href="stylesheets/my.css">
+    <title>Configuration</title>
+  </head>
+
+  <body>
+  <div id="header">
+   #{header}
+  </div>
+      <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+           #{content}
+        </section>
+    </div>
+ <div id="footer">
+  #{footer}
+ </div>
+  
+	<script type="text/javascript">
+	  $("a[href^='http']").attr("target","_blank");
+	  setTimeout("fixNavbarIssue();", 1000);
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl."
+				: "http://www.");
+		document
+				.write(unescape("%3Cscript src='"
+						+ gaJsHost
+						+ "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		try {
+			var pageTracker = _gat._getTracker("UA-53526038-1");
+			pageTracker._trackPageview();
+		} catch (err) {
+		}
+	</script>
+</body>
+  </html>

@@ -22,27 +22,135 @@
 		<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.0.min.js"></script>
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-
+		
+		<script src="javascripts/fix.js"></script>
+		
 		<link rel="stylesheet" type="text/css" media="screen" href="stylesheets/my.css">
-    <title>nginx-clojure.github.io--Installation</title>
+    <title>Configuration</title>
   </head>
 
   <body>
-  <div id="header"></div>
+  <div id="header">
+       <!-- HEADER -->
+    <nav id="header_wrap" class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <header id="header_logo_title"  class="inner container">
+          <ul class="external-link-buttons">
+	          <li>
+             <a id="forkme_banner" href="https://github.com/nginx-clojure/nginx-clojure" target="_blank">View on GitHub</a>
+            </li>
+            <li>
+             <a id="google_group_banner" href="https://groups.google.com/forum/#!forum/nginx-clojure" target="_blank">Google Group</a>
+            </li>
+	        </ul>
+          <div id="project_logo">
+          <h1 id="project_title">nginx-clojure</h1>
+          <ul class="social-buttons">
+	          <li>
+	            <iframe class="github-btn" src="github-btn.html?user=nginx-clojure&repo=nginx-clojure&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="102px" height="20px"></iframe>
+	          </li>
+	          <li>
+	            <iframe class="github-btn" src="github-btn.html?user=nginx-clojure&repo=nginx-clojure&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
+	          </li>
+	        </ul></div>
+          <h6 id="project_tagline">Nginx module for embedding Clojure / Java / Groovy programs, typically those Ring based handlers</h6>
+        </header>
+         <div class="btn-group" style="border-top-width: 1px;border-top-color: #fff;">
+          <a href="index.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-home"></span> Home</a>
+          <a href="quickstart.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-flash"></span> Quick Start</a>
+          <a href="downloads.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-download-alt"></span> Downloads</a>
+          <a href="configuration.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-cog"></span> Configuration</a>
+          <button type="button" class="btn btn-sample btn-lg dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Documents <span class="caret"></span></button>
+					<ul class="dropdown-menu dropdown-menu-right" role="menu"
+						style="right: 0; left: auto;">
+<!-- 						<li><a href="quickstart.html"><span class="glyphicon glyphicon-flash"></span> Quick Start</a></li> -->
+						<li><a href="installation.html"><span class="glyphicon glyphicon-hdd"></span> Installation</a></li>
+						<li><a href="configuration.html"><span class="glyphicon glyphicon-cog"></span> Configuration</a></li>
+						<li><a href="more.html#34-long-polling--server-sent-events-sse"><span class="glyphicon glyphicon-envelope"></span> Long Polling & Server Sent Events</a></li>
+						<li><a href="more.html#35-subpub--broadcast-event"><span class="glyphicon glyphicon-signal"></span> Sub/Pub services with Broadcast Events</a></li>
+						<li><a href="more.html#36-asynchronous-channel"><span class="glyphicon glyphicon-road"></span> Asynchronous Channel</a></li>
+						<li><a href="more.html"><span class="glyphicon glyphicon-th-list"></span> More about Nginx-Clojure</a></li>
+					</ul>
+
+			<a href="userfullLinks.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-share-alt"></span> Useful Links</a>
+          </div>  
+    </nav>
+
+  </div>
       <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
+           <h1>
+<a id="user-content-1-installation" class="anchor" href="#1-installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Installation</h1>
+
+<p>The lastest release is 0.3.0. Please check the  <a href="downloads.html">Update History</a> for more details.</p>
+
+<h2>
+<a id="user-content-11-installation-by-binary" class="anchor" href="#11-installation-by-binary" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.1 Installation by Binary</h2>
+
+<ol>
+<li>First you can download  Release 0.3.0  from <a href="https://sourceforge.net/projects/nginx-clojure/files/">here</a>. 
+The zip file includes Nginx-Clojure binaries about Linux x64, Linux i586, Win32, Win64 and Mac OS X.</li>
+<li>Unzip the zip file downloaded then rename the file <code>nginx-${os-arc}</code> to <code>nginx</code>, eg. for linux is <code>nginx-linux-x64</code>
+</li>
+</ol>
+
+<h2>
+<a id="user-content-12-installation-by-source" class="anchor" href="#12-installation-by-source" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.2 Installation by Source</h2>
+
+<p>Nginx-Clojure may be compiled successfully on Linux x64, Linux x86 32bit, Win32, Win64 and Mac OS X x64.</p>
+
+<ol>
+<li>First download from <a href="http://nginx.org/en/download.html">nginx site</a> or check out nginx source by hg from <a href="http://hg.nginx.org/nginx">http://hg.nginx.org/nginx</a>. 
+For Win32 users MUST check out nginx source by hg because the zipped source doesn't contain Win32 related code.</li>
+<li>Check out Nginx-Clojure source from github OR download the zipped source code from <a href="https://github.com/xfeep/nginx-clojure/releases">https://github.com/xfeep/nginx-clojure/releases</a>
+</li>
+<li>If you want to use Http SSL module, you should install openssl and openssl dev first.</li>
+<li>
+<p>Setting Java header include path in nginx-clojure/src/c/config</p>
+
+<div class="highlight highlight-nginx"><pre><span class="pl-c">#eg. on ubuntu</span>
+JNI_HEADER_1=<span class="pl-s1">"/usr/lib/jvm/java-7-oracle/include"</span>
+JNI_HEADER_2=<span class="pl-s1">"${JNI_HEADER_1}/linux"</span></pre></div>
+</li>
+<li>
+<p>Add Nginx-Clojure module to Nginx configure command, here is a simplest example without more details about <a href="http://wiki.nginx.org/InstallOptions">InstallOptions</a></p>
+
+<div class="highlight highlight-bash"><pre><span class="pl-c">#If nginx source is checked out from hg, please replace ./configure with auto/configure</span>
+$./configure \
+    --add-module=nginx-clojure/src/c
+$ make
+$ make install</pre></div>
+</li>
+<li>
+<p>Create the jar file about Nginx-Clojure</p>
+
+<p>Please check the lein version <code>lein version</code>, it should be at least 2.0.0.</p>
+
+<div class="highlight highlight-bash"><pre>$ <span class="pl-s3">cd</span> nginx-clojure
+$ lein jar</pre></div>
+
+<p>Then you'll find nginx-clojure-${version}.jar (eg. nginx-clojure-0.3.0.jar) in the target folder. 
+The jar file is self contained. If your project use clojure  it naturally depends on the clojure core jar, e.g clojure-1.5.1.jar.
+If your project use groovy it naturally depends on the groovy runtime jar, e.g. groovy-2.3.4.jar.</p>
+</li>
+</ol>
+
         </section>
     </div>
-    <div id="footer"></div>
-  <script type="text/javascript">
-  $("#header").load("header.html");
-  $("#main_content").load("Installation.md.html", function(){
-	  $("a[href^='http']").attr("target","_blank");
-  });
-  $("#footer").load("footer.html");
-  </script>
+ <div id="footer">
+    <!-- FOOTER  -->
+	<div id="footer_wrap" class="outer">
+		<footer class="inner">
+			<p>
+				Powered by <a href="http://getbootstrap.com/">Twitter Bootstrap</a>
+			</p>
+		</footer>
+	</div>
+ </div>
+  
 	<script type="text/javascript">
+	  $("a[href^='http']").attr("target","_blank");
+	  setTimeout("fixNavbarIssue();", 1000);
 		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl."
 				: "http://www.");
 		document

@@ -3,10 +3,10 @@
 
   <head>
     <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta content="True" name="HandheldFriendly">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta name="viewport" content="width=device-width">    
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <meta name="description" content="nginx-clojure.github.io : Nginx module for embedding Clojure / Java / Groovy programs, typically those Ring based handlers">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
@@ -22,27 +22,222 @@
 		<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.0.min.js"></script>
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-
+		
+		<script src="javascripts/fix.js"></script>
+		
 		<link rel="stylesheet" type="text/css" media="screen" href="stylesheets/my.css">
-    <title>Downloads & Release History</title>
+    <title>Configuration</title>
   </head>
 
   <body>
-  <div id="header"></div>
+  <div id="header">
+       <!-- HEADER -->
+    <nav id="header_wrap" class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <header id="header_logo_title"  class="inner container">
+          <ul class="external-link-buttons">
+	          <li>
+             <a id="forkme_banner" href="https://github.com/nginx-clojure/nginx-clojure" target="_blank">View on GitHub</a>
+            </li>
+            <li>
+             <a id="google_group_banner" href="https://groups.google.com/forum/#!forum/nginx-clojure" target="_blank">Google Group</a>
+            </li>
+	        </ul>
+          <div id="project_logo">
+          <h1 id="project_title">nginx-clojure</h1>
+          <ul class="social-buttons">
+	          <li>
+	            <iframe class="github-btn" src="github-btn.html?user=nginx-clojure&repo=nginx-clojure&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="102px" height="20px"></iframe>
+	          </li>
+	          <li>
+	            <iframe class="github-btn" src="github-btn.html?user=nginx-clojure&repo=nginx-clojure&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
+	          </li>
+	        </ul></div>
+          <h6 id="project_tagline">Nginx module for embedding Clojure / Java / Groovy programs, typically those Ring based handlers</h6>
+        </header>
+         <div class="btn-group" style="border-top-width: 1px;border-top-color: #fff;">
+          <a href="index.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-home"></span> Home</a>
+          <a href="quickstart.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-flash"></span> Quick Start</a>
+          <a href="downloads.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-download-alt"></span> Downloads</a>
+          <a href="configuration.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-cog"></span> Configuration</a>
+          <button type="button" class="btn btn-sample btn-lg dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Documents <span class="caret"></span></button>
+					<ul class="dropdown-menu dropdown-menu-right" role="menu"
+						style="right: 0; left: auto;">
+<!-- 						<li><a href="quickstart.html"><span class="glyphicon glyphicon-flash"></span> Quick Start</a></li> -->
+						<li><a href="installation.html"><span class="glyphicon glyphicon-hdd"></span> Installation</a></li>
+						<li><a href="configuration.html"><span class="glyphicon glyphicon-cog"></span> Configuration</a></li>
+						<li><a href="more.html#34-long-polling--server-sent-events-sse"><span class="glyphicon glyphicon-envelope"></span> Long Polling & Server Sent Events</a></li>
+						<li><a href="more.html#35-subpub--broadcast-event"><span class="glyphicon glyphicon-signal"></span> Sub/Pub services with Broadcast Events</a></li>
+						<li><a href="more.html#36-asynchronous-channel"><span class="glyphicon glyphicon-road"></span> Asynchronous Channel</a></li>
+						<li><a href="more.html"><span class="glyphicon glyphicon-th-list"></span> More about Nginx-Clojure</a></li>
+					</ul>
+
+			<a href="userfullLinks.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-share-alt"></span> Useful Links</a>
+          </div>  
+    </nav>
+
+  </div>
       <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
+           <h1>
+<a id="user-content-downloads--release-history" class="anchor" href="#downloads--release-history" aria-hidden="true"><span class="octicon octicon-link"></span></a>Downloads &amp; Release History</h1>
+
+<ol>
+<li><a href="http://sourceforge.net/projects/nginx-clojure/files/">Binaries of Releases</a></li>
+<li><a href="https://github.com/nginx-clojure/nginx-clojure/releases">Sources of Releases</a></li>
+</ol>
+
+<h2>
+<a id="user-content-030-2014-12-11" class="anchor" href="#030-2014-12-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.3.0 (2014-12-11)</h2>
+
+<ol>
+<li>Discard: Directive <code>clojure</code>, <code>clojure_code</code> are no longer supported, use <code>handler_type</code>/<code>content_handler_type</code>, 
+<code>handler_name</code>/<code>content_handler_name</code>, <code>handler_code</code>/<code>content_handler_code</code> instead.</li>
+<li>Discard:  Now <code>handler_***</code> can not be used to declare a nginx worker  initialization handler, use `jvm_init_handler_*** instead.</li>
+<li>New Feature:  Supports  writing nginx access handler  by  java/clojure/groovy (issue #53)</li>
+<li>New Feature:  Supports  writing nginx header filter  by  java/clojure/groovy (issue #55)</li>
+<li>New Feature:  Add new directive <code>max_balanced_tcp_connections</code>  to make nginx auto set worker_connections.</li>
+<li>Enhancement:  For Java We can use  r.setVariable,  r.getVariable now if r is an instance of NginxJavaRequest.</li>
+<li>Deprecated Directives: handler_type, handler_name, handler_code  are deprecated and maybe will be removed in the next version, add new directive content_handler_type, content_handler_code, content_handler_code</li>
+<li>New Directives: rewrite_handler_type, access_handler_type, header_filter_type, body_filter_type</li>
+<li>New Feature: Supports nested locations (issue #56)</li>
+<li>Bug Fix : uppercase letters in nginx variable name can not work (issue #54)</li>
+<li>Bug Fix: The first registered handler will not work if there 's a asynchronous reading of request body (issue #51)</li>
+<li>Enhancement: <code>handlers_lazy_init</code> can be used to make handler initialized lazily or eagerly  (issue #52)</li>
+</ol>
+
+<h2>
+<a id="user-content-027-2014-11-11" class="anchor" href="#027-2014-11-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.7 (2014-11-11)</h2>
+
+<ol>
+<li>New Feature: Compiling option for  disabling all functions silently when JVM_PATH not configured. (issue #47)</li>
+<li>New Feature: Access request BODY in rewrite handler (issue #49)</li>
+<li>Enhancement : Optimization of encoding String to Nginx temp buffer chain to reduce  Java heap memory usage and improve the performance.</li>
+</ol>
+
+<h2>
+<a id="user-content-026-2014-10-10" class="anchor" href="#026-2014-10-10" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.6 (2014-10-10)</h2>
+
+<ol>
+<li>Fix Bug: rewrite handler does not handle write event correctly with thread pool mode or coroutine mode (issue #43)</li>
+<li>Fix Bug: built-in jvm variable #{pno} doesn't work (issue #44)</li>
+<li>Fix Bug: rewrite_handler_name does not work without content handler (issue #45). Thanks <a href="https://github.com/ekubacki">Eric Kubacki</a> for finding this bug.</li>
+<li>Fix Bug: rewrite handler does not handle write event correctly with thread pool mode or coroutine mode (issue #43)</li>
+<li>Documents : Correct some inaccuracies and add section about logging in Chapter <a href="http://nginx-clojure.github.io/more.html#user-content-37--about-logging">More about Nginx-Clojure</a>
+</li>
+<li>Binaries: built with The lastest stable Nginx v1.6.2 which released at 2014-09-16.</li>
+</ol>
+
+<h2>
+<a id="user-content-025-2014-09-07" class="anchor" href="#025-2014-09-07" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.5 (2014-09-07)</h2>
+
+<ol>
+<li>New Feature: Reference variables in jvm_options &amp; different jvm debug ports for jvm processes (issue #42)</li>
+<li>New Feature: Server Sent Events(SSE) &amp; Long polling (issue #41, issue #36)</li>
+<li>New Feature: Supports 64-bit JDK on 64-bit Windows (issue #40)</li>
+<li>New Feature: Coroutine based socket supports JDK8 (issue #39)</li>
+<li>New Feature: More easier to archive Sub/Pub services with Broadcast Events to all Nginx workers (issue #39)</li>
+<li>New Feature: Asynchronous Channel a wrapper of asynchronous socket to make the usage easier (issue #37)</li>
+<li>Enhancement: Fix--On Windows a little many write events happen and these events seem useless (issue #35)</li>
+</ol>
+
+<h2>
+<a id="user-content-024-2014-07-25" class="anchor" href="#024-2014-07-25" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.4 (2014-07-25)</h2>
+
+<ol>
+<li>New Feature: Support Groovy - another dynamic jvm language (issue #34)</li>
+<li>Fix bug: Slow Memory Leak for Coroutine based Socket bug (issue #32 )</li>
+<li>Fix bug: Should Clone ThreadLocals for Coroutines (issue #31)</li>
+<li>New Feature: More friendly to java users who maybe know nothing about clojure feature (issue #29)</li>
+<li>Five new nginx directives <code>handler_type</code>, <code>handler_name</code>, <code>handler_code</code>, <code>rewrite_handler_name</code>, <code>rewrite_handler_code</code>. 
+Make Clojure/Java/Groovy handler configurations have the same form. e.g. The old pair of nginx directives <code>clojure</code>, <code>clojure_code</code> is equivalent to <code>handler_type='clojure'</code> + <code>handler_code</code>.</li>
+</ol>
+
+<h2>
+<a id="user-content-023-2014-07-05" class="anchor" href="#023-2014-07-05" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.3 (2014-07-05)</h2>
+
+<ol>
+<li>Fix issue After invoking on coroutine based socket nginx worker will exit and be recreated when network is disabled (issue #26)</li>
+<li>Fix issue PATCH loses the data payload (issue #27)</li>
+<li>Support user defined http request method (issue #28 )</li>
+<li>Fix issue Nginx worker crashes when to fetch http header "authorization" from request (issue #30)</li>
+</ol>
+
+<h2>
+<a id="user-content-022-2014-05-31" class="anchor" href="#022-2014-05-31" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.2 (2014-05-31)</h2>
+
+<ol>
+<li>Fix bug of with Compojure 1.1.5 + Apache Solrj 4.3.0 + httpclient 4.3.2 NPE happens first time then everything is OK (issue #22)</li>
+<li>Verifying option for auto generated waving configurations needed by coroutine based socket (issue #23)</li>
+</ol>
+
+<h2>
+<a id="user-content-021-2014-05-17" class="anchor" href="#021-2014-05-17" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.1 (2014-05-17)</h2>
+
+<ol>
+<li>Support to close coroutine based socket from non-main thread (issue #19)</li>
+<li>Auto generated waving class configurations about Proxy InvocationHandler instance (issue #17 )</li>
+<li>Supports auto turn on thread pool mode when turning on Run Tool Mode feature (issue #16 )</li>
+<li>Fix bug of reading from coroutine based socket inputstream returns 0 when eof, should return -1 (issue #15)</li>
+<li>Handle multiple sockets parallel in sub coroutines, e.g. we can invoke two remote services at the same time feature (issue #14)</li>
+<li>Support nginx rewrite handler to set var before proxy pass (issue #3)</li>
+</ol>
+
+<h2>
+<a id="user-content-020-2014-04-25" class="anchor" href="#020-2014-04-25" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.2.0 (2014-04-25)</h2>
+
+<ol>
+<li>non-blocking socket based on coroutine and compatible with largely existing java library such as apache http client, mysql jdbc drivers</li>
+<li>asynchronous callback API of socket for some advanced usage</li>
+<li>run initialization clojure code when nginx worker starting</li>
+<li>provide a build-in tool to make setting of coroutine based socket easier</li>
+<li>support Linux 32bit x86 now</li>
+<li>publish <a href="https://sourceforge.net/projects/nginx-clojure/files/">binary release compiled with lastes stable nginx 1.6.0</a> about Linux x64, Linux i586, Win32 &amp; MacOS X</li>
+</ol>
+
+<h2>
+<a id="user-content-012-2014-02-03" class="anchor" href="#012-2014-02-03" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.1.2 (2014-02-03)</h2>
+
+<ol>
+<li>fix <a href="/nginx-clojure/nginx-clojure/issues/2">#2 Problems with HTTP Redirect 302</a>
+</li>
+<li>header names are  case-insensitive now.</li>
+<li>publish <a href="https://sourceforge.net/projects/nginx-clojure/files/">binary release</a> about Linux x64, Win32 &amp; MacOS X</li>
+</ol>
+
+<h2>
+<a id="user-content-011-2014-01-20" class="anchor" href="#011-2014-01-20" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.1.1 (2014-01-20)</h2>
+
+<ol>
+<li>Supports InputStream, ISeq &amp; recursive ISeq in Response Body. </li>
+<li>Auto maintains HTTP last-modified header for multiple files in Response Body</li>
+</ol>
+
+<h2>
+<a id="user-content-010-2014-01-09" class="anchor" href="#010-2014-01-09" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.1.0 (2014-01-09)</h2>
+
+<ol>
+<li>Compitiable with Ring Spec (1.1) </li>
+<li>Supports Java Thread Pool for handle request</li>
+<li>Fast Static File Service</li>
+</ol>
+
         </section>
     </div>
-    <div id="footer"></div>
-  <script type="text/javascript">
-  $("#header").load("header.html");
-  $("#main_content").load("HISTORY.md.html", function(){
-	  $("a[href^='http']").attr("target","_blank");
-  });
-  $("#footer").load("footer.html");
-  </script>
+ <div id="footer">
+    <!-- FOOTER  -->
+	<div id="footer_wrap" class="outer">
+		<footer class="inner">
+			<p>
+				Powered by <a href="http://getbootstrap.com/">Twitter Bootstrap</a>
+			</p>
+		</footer>
+	</div>
+ </div>
+  
 	<script type="text/javascript">
+	  $("a[href^='http']").attr("target","_blank");
+	  setTimeout("fixNavbarIssue();", 1000);
 		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl."
 				: "http://www.");
 		document
