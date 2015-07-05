@@ -97,7 +97,8 @@ location /myservice {
 
 ```
 
-3.4 Long Polling & Server Sent Events (SSE)
+
+3.4 Server Channel for Long Polling & Server Sent Events (SSE)
 -----------------
 
 Since v0.2.5, nginx-clojure provides union form of [hijack API][] to do with Long Polling & Server Sent Events (SSE).
@@ -143,6 +144,20 @@ For Java
 			return null;
 		}
 	}
+	
+The complete java doc about hijack is below
+
+```java
+	/**
+	 * Get a hijacked Server Channel used to send message later typically in another thread
+	 * If ignoreFilter is true all data output to channel won't be filtered
+	 * by any nginx HTTP header/body filters such as gzip filter, chucked filter, etc.
+	 * @param req the request object
+	 * @param ignoreFilter whether we need ignore nginx filter or not.
+	 * @return hijacked channel used to send message later
+	 */
+	public NginxHttpServerChannel hijack(NginxRequest req, boolean ignoreFilter);
+```
 
 ```
 
@@ -382,10 +397,10 @@ For Java
 
 ```
 
-3.6 Asynchronous Channel
+3.6 Asynchronous Client Channel
 -----------------
 
-Asynchronous Channel is wrapper of Asynchronous Socket for more easier usage. 
+Asynchronous Client Channel is wrapper of Asynchronous Client Socket for more easier usage. 
 So far Asynchronous Channel *cann't* work with thread pool mode. The Asynchronous Channel 
 API is a little like Java 7 NIO.2 Asynchronous Channel and more details can be found from issue #37 and it comments
 [Asynchronous Channel API][].
@@ -434,6 +449,274 @@ in logback.xml
  ```
 
 Then we 'll get log files whose name just like myapp.2014-09-12-1.log,  myapp.2014-09-12-2.log.
+
+3.8  Sever Side WebSocket
+-----------------
+Sever Side WebSocket, like long polling/Server Sent Events, also use hijack API to get a NginxHttpServerChannel to send / receive messages.
+ 
+Here we give a echo service example.
+
+In nginx.conf
+
+```nginx
+location /my-ws {
+        auto_upgrade_ws on;
+        content_handler_type java; ###or clojure,groovy
+        content_handler_name 'nginx.clojure.java.WSEcho'; ###or ring handler for clojure
+        .....
+}
+```
+
+For clojure
+
+```clojure
+(defn echo [^NginxRequest req]
+         (-> req
+             (hijack! true)
+             (add-listener! { :on-open (fn [ch] (log "uri:%s, on-open!" (:uri req)))
+                              :on-message (fn [ch msg rem?] (send! ch msg (not rem?) false))
+                              :on-close (fn [ch reason] (log "uri:%s, on-close:%s" (:uri req) reason))
+                              :on-error (fn [ch error] (log "uri:%s, on-error:%s" (:uri req)  error))
+                             })))
+```
+
+For java 
+
+```java
+package nginx.clojure.java;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.Map;
+
+import nginx.clojure.MessageAdapter;
+import nginx.clojure.NginxClojureRT;
+import nginx.clojure.NginxHttpServerChannel;
+
+public class WSEcho implements NginxJavaRingHandler {
+
+	@Override
+	public Object[] invoke(Map<String, Object> request) {
+		NginxJavaRequest r = (NginxJavaRequest)request;
+		NginxHttpServerChannel sc = r.handler().hijack(r, true);
+		sc.addListener(sc, new MessageAdapter<NginxHttpServerChannel>() {
+			int total = 0;
+			@Override
+			public void onOpen(NginxHttpServerChannel data) {
+				NginxClojureRT.log.debug("WSEcho onOpen!");
+			}
+
+			@Override
+			public void onTextMessage(NginxHttpServerChannel sc, String message, boolean remaining) throws IOException {
+				if (NginxClojureRT.log.isDebugEnabled()) {
+					NginxClojureRT.log.debug("WSEcho onTextMessage: msg=%s, rem=%s", message, remaining);
+				}
+				total += message.length();
+				sc.send(message, !remaining, false);
+			}
+			
+			@Override
+			public void onBinaryMessage(NginxHttpServerChannel sc, ByteBuffer message, boolean remining) throws IOException {
+				if (NginxClojureRT.log.isDebugEnabled()) {
+					NginxClojureRT.log.debug("WSEcho onBinaryMessage: msg=%s, rem=%s, total=%d", message, remining, total);
+				}
+				total += message.remaining();
+				sc.send(message, !remining, false);
+			}
+			
+			@Override
+			public void onClose(NginxHttpServerChannel req, long status, String reason) {
+				if (NginxClojureRT.log.isDebugEnabled()) {
+				  NginxClojureRT.log.info("WSEcho onClose2: total=%d, status=%d, reason=%s", total, status, reason);
+				}
+			}
+			
+			@Override
+			public void onError(NginxHttpServerChannel data, long status) {
+				if (NginxClojureRT.log.isDebugEnabled()) {
+					  NginxClojureRT.log.info("WSEcho onError: total=%d, status=%d", total, status);
+					}
+			}
+
+		});
+		return null;
+	}
+
+}
+
+```
+
+3.9  Java standard RESTful web services with Jersey
+-----------------
+
+in nginx.conf
+
+```nginx
+      location /jersey {
+          content_handler_name 'nginx.clojure.bridge.NginxBridgeHandler';
+          content_handler_property system.m2rep '/home/who/.m2/repository';
+          
+          ##we can put jars into some dir then all of their path will be appended into the classpath
+          #content_handler_property bridge.lib.dirs 'my-jersey-libs-dir:myother-dir';
+          
+          ##we can also put jars or classes directory one by one here.
+          ##the path of nginx-jersey-x.x.x.jar must be included in the below classpath or one of above #{bridge.lib.dirs}
+          content_handler_property bridge.lib.cp 'my-nginx-jersey-jar-path:/home/who/git/jersey/examples/json-jackson/target/classes:#{m2rep}/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:#{m2rep}/org/glassfish/jersey/core/jersey-common/2.17/jersey-common-2.17.jar:#{m2rep}/org/glassfish/jersey/media/jersey-media-json-jackson/2.17/jersey-media-json-jackson-2.17.jar:#{m2rep}/org/glassfish/jersey/core/jersey-server/2.17/jersey-server-2.17.jar:#{m2rep}/org/glassfish/jersey/ext/jersey-entity-filtering/2.17/jersey-entity-filtering-2.17.jar:#{m2rep}/org/glassfish/hk2/external/javax.inject/2.4.0-b10/javax.inject-2.4.0-b10.jar:#{m2rep}/clojure-complete/clojure-complete/0.2.3/clojure-complete-0.2.3.jar:#{m2rep}/junit/junit/4.11/junit-4.11.jar:#{m2rep}/org/glassfish/hk2/hk2-locator/2.4.0-b10/hk2-locator-2.4.0-b10.jar:#{m2rep}/javax/ws/rs/javax.ws.rs-api/2.0.1/javax.ws.rs-api-2.0.1.jar:#{m2rep}/javax/annotation/javax.annotation-api/1.2/javax.annotation-api-1.2.jar:#{m2rep}/org/glassfish/hk2/hk2-api/2.4.0-b10/hk2-api-2.4.0-b10.jar:#{m2rep}/org/glassfish/jersey/core/jersey-client/2.17/jersey-client-2.17.jar:#{m2rep}/com/fasterxml/jackson/jaxrs/jackson-jaxrs-base/2.3.2/jackson-jaxrs-base-2.3.2.jar:#{m2rep}/com/fasterxml/jackson/module/jackson-module-jaxb-annotations/2.3.2/jackson-module-jaxb-annotations-2.3.2.jar:#{m2rep}/com/fasterxml/jackson/jaxrs/jackson-jaxrs-json-provider/2.3.2/jackson-jaxrs-json-provider-2.3.2.jar:#{m2rep}/org/glassfish/hk2/osgi-resource-locator/1.0.1/osgi-resource-locator-1.0.1.jar:#{m2rep}/com/fasterxml/jackson/core/jackson-databind/2.3.2/jackson-databind-2.3.2.jar:#{m2rep}/org/glassfish/jersey/bundles/repackaged/jersey-guava/2.17/jersey-guava-2.17.jar:#{m2rep}/org/glassfish/hk2/hk2-utils/2.4.0-b10/hk2-utils-2.4.0-b10.jar:#{m2rep}/org/glassfish/jersey/media/jersey-media-jaxb/2.17/jersey-media-jaxb-2.17.jar:#{m2rep}/org/clojure/tools.nrepl/0.2.6/tools.nrepl-0.2.6.jar:#{m2rep}/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final.jar:#{m2rep}/com/fasterxml/jackson/core/jackson-annotations/2.3.2/jackson-annotations-2.3.2.jar:#{m2rep}/com/fasterxml/jackson/core/jackson-core/2.3.2/jackson-core-2.3.2.jar:#{m2rep}/org/javassist/javassist/3.18.1-GA/javassist-3.18.1-GA.jar:#{m2rep}/org/glassfish/hk2/external/aopalliance-repackaged/2.4.0-b10/aopalliance-repackaged-2.4.0-b10.jar';
+          content_handler_property bridge.imp 'nginx.clojure.jersey.NginxJerseyContainer';
+          
+          ##aplication path usually it is the same with nginx location 
+          content_handler_property jersey.app.path '/jersey';
+          
+          ##application resources which can be either of JAX-RS resources, providers
+          content_handler_property jersey.app.resources '
+                org.glassfish.jersey.examples.jackson.EmptyArrayResource,
+                org.glassfish.jersey.examples.jackson.NonJaxbBeanResource,
+                org.glassfish.jersey.examples.jackson.CombinedAnnotationResource,
+                org.glassfish.jersey.examples.jackson.MyObjectMapperProvider,
+                org.glassfish.jersey.examples.jackson.ExceptionMappingTestResource,
+                org.glassfish.jersey.jackson.JacksonFeature
+          ';
+          gzip on;
+          gzip_types application/javascript application/xml text/plain text/css 'text/html;charset=UTF-8'; 
+      }
+```
+
+All sources about this example can be found from jersey github repository 's example [json-jackson](https://github.com/jersey/jersey/tree/2.17/examples/json-jackson/src/main/java/org/glassfish/jersey/examples/jackson).
+
+then we test the JAX-RS services by curl
+
+```shell
+$ curl  -v http://localhost:8080/jersey/emptyArrayResource
+> GET /jersey/emptyArrayResource HTTP/1.1
+> User-Agent: curl/7.35.0
+> Host: localhost:8080
+> Accept: */*
+> 
+< HTTP/1.1 200 OK
+< Date: Sat, 23 May 2015 17:47:14 GMT
+< Content-Type: application/json
+< Transfer-Encoding: chunked
+< Connection: keep-alive
+* Server nginx-clojure is not blacklisted
+< Server: nginx-clojure
+< 
+{
+  "emtpyArray" : [ ]
+}
+```
+
+```shell
+$ curl -v http://localhost:8080/jersey/nonJaxbResource
+> GET /jersey/nonJaxbResource HTTP/1.1
+> User-Agent: curl/7.35.0
+> Host: localhost:8080
+> Accept: */*
+> 
+< HTTP/1.1 200 OK
+< Date: Sat, 23 May 2015 17:46:17 GMT
+< Content-Type: application/javascript
+< Transfer-Encoding: chunked
+< Connection: keep-alive
+* Server nginx-clojure is not blacklisted
+< Server: nginx-clojure
+< 
+callback({
+  "name" : "non-JAXB-bean",
+  "description" : "I am not a JAXB bean, just an unannotated POJO",
+  "array" : [ 1, 1, 2, 3, 5, 8, 13, 21 ]
+* Connection #0 to host localhost left intact
+})
+```
+
+
+3.10 Embeding Tomcat
+-----------------
+
+in nginx.conf
+
+```nginx
+      location / {
+      
+          content_handler_name 'nginx.clojure.bridge.NginxBridgeHandler';
+          
+          ##Tomcat 8 installation path
+          content_handler_property system.catalina.home '/home/who/share/apps/apache-tomcat-8.0.20';
+          content_handler_property system.catalina.base '#{catalina.home}';
+          
+          ##uncomment this to disable websocket perframe-compression
+          #content_handler_property system.org.apache.tomcat.websocket.DISABLE_BUILTIN_EXTENSIONS true;
+          
+          ##log manger
+          content_handler_property system.java.util.logging.manager 'org.apache.juli.ClassLoaderLogManager';
+          
+          ## all jars or direct child directories will be appended into the classpath of this bridge handler's class-loader
+          content_handler_property bridge.lib.dirs '#{catalina.home}/lib:#{catalina.home}/bin';
+          
+          ##set nginx tomcat8 bridge implementation jar and other jars can also be appended here
+          content_handler_property bridge.lib.cp 'my-jar-path/nginx-tomcat8-x.x.x.jar';
+          
+          ##The implementation class of nginx-clojure bridge handler for Tomcat 8
+          content_handler_property bridge.imp 'nginx.clojure.tomcat8.NginxTomcatBridge';
+          
+          ##ignore nginx filter, default is false
+          #content_handler_property ignoreNginxFilter false;
+          
+          ##when dispatch is false tomcat servlet will be executed in main thread.By default dispatch is false
+          ##when use websocket with tomcat it must be set true otherwise maybe deadlock will happen.
+          #content_handler_property dispatch false;
+          
+          gzip on;
+          gzip_types text/plain text/css 'text/html;charset=ISO-8859-1' 'text/html;charset=UTF-8'; 
+          
+          ##if for small message, e.g. small json/websocket message write_page_size can set to be a small value
+          #write_page_size 2k;
+      }
+```
+
+### For performance
+
+#### Disable Tomcat Access Log
+
+When we need access log , use Nginx access log instead of Tomcat access log.
+
+In server.xml comment AccessLogValve configuration to disable Tomcat access log.
+
+```xml
+<!--
+        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+               prefix="localhost_access_log" suffix=".txt"
+               pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+-->
+```
+
+#### Disable logging to console
+
+Because Tomcat console log is duplicate with other log such as catalina log, manager log ,etc, so it can be disabled.
+In conf/logging.properties remove all `java.util.logging.ConsoleHandler`
+
+```shell
+handlers = 1catalina.org.apache.juli.AsyncFileHandler, 2localhost.org.apache.juli.AsyncFileHandler, 3manager.org.apache.juli.AsyncFileHandler, 4host-manager.org.apache.juli.AsyncFileHandler
+
+.handlers = 1catalina.org.apache.juli.AsyncFileHandler
+```
+
+#### Don't Enable Tomcat Compression
+
+By default compression is off , do not turn it on.
+
+```xml
+<Connector port="8080" protocol="HTTP/1.1" compression="off"
+```
+If we need compression use nginx gzip filter instead. e.g. In nginx.conf
+
+```nginx
+location /examples {
+    gzip on;
+    gzip_types text/plain text/css 'text/html;charset=ISO-8859-1' 'text/html;charset=UTF-8'; 
+}
+```
+`gzip` can also appear at http, server blocks. More details can be found [HERE](http://nginx.org/en/docs/http/ngx_http_gzip_module.html)
+
 
 [nginx-clojure broadcast API]: https://github.com/nginx-clojure/nginx-clojure/issues/38
 [SharedHashMap/Chronicle-Map]: https://github.com/OpenHFT/Chronicle-Map

@@ -30,22 +30,23 @@
   </head>
 
   <body>
-  <div id="header">
-   #{header}
-  </div>
+  <div id="header"></div>
       <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-           #{content}
         </section>
     </div>
- <div id="footer">
-  #{footer}
- </div>
-  
-	<script type="text/javascript">
+    <div id="footer"></div>
+  <script type="text/javascript">
+  $("#header").load("header.html");
+  $("#main_content").load("Configuration.md.html", function(){
 	  $("a[href^='http']").attr("target","_blank");
-	  setTimeout("fixNavbarIssue();", 100);
+	  setTimeout("fixNavbarIssue();", 1000);
+  });
+  
+  $("#footer").load("footer.html");
+  </script>
+	<script type="text/javascript">
 		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl."
 				: "http://www.");
 		document

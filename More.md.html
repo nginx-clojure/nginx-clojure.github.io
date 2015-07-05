@@ -31,8 +31,8 @@
 
 <div class="highlight highlight-java"><pre>
  [<span class="pl-c1">200</span>, <span class="pl-c">//http status 200 </span>
-   <span class="pl-stj">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-s1"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>text/html<span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> ), <span class="pl-c">//headers map</span>
-   <span class="pl-s1"><span class="pl-pds">"</span>Hello, Java &amp; Nginx!<span class="pl-pds">"</span></span> <span class="pl-c">//response body can be string, File or Array/Collection of string or File ]; </span></pre></div>
+   <span class="pl-smi">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-s"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>text/html<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> ), <span class="pl-c">//headers map</span>
+   <span class="pl-s"><span class="pl-pds">"</span>Hello, Java &amp; Nginx!<span class="pl-pds">"</span></span> <span class="pl-c">//response body can be string, File or Array/Collection of string or File ]; </span></pre></div>
 
 <blockquote>
 <p>Note that If the rewrite/access handler returns phase-done (Clojure) or Constants.PHRASE_DONE (Groovy/Java), nginx will continue to next phases (e.g. invoke proxy_pass or content ring handler). If the rewrite handler returns a general response, nginx will send this response to the client and stop to continue to next phases.</p>
@@ -45,20 +45,20 @@
 
 <p>e.g. fetch two page parallel by clj-http</p>
 
-<div class="highlight highlight-clojure"><pre>   (<span class="pl-s">let</span> [[r1, r2] 
-                (co-pvalues (client/get <span class="pl-s1"><span class="pl-pds">"</span>http://service1-url<span class="pl-pds">"</span></span>) 
-                            (client/get <span class="pl-s1"><span class="pl-pds">"</span>http://service2-url<span class="pl-pds">"</span></span>))]
+<div class="highlight highlight-clojure"><pre>   (<span class="pl-k">let</span> [[r1, r2] 
+                (<span class="pl-en">co-pvalues</span> (<span class="pl-en">client/get</span> <span class="pl-s"><span class="pl-pds">"</span>http://service1-url<span class="pl-pds">"</span></span>) 
+                            (<span class="pl-en">client/get</span> <span class="pl-s"><span class="pl-pds">"</span>http://service2-url<span class="pl-pds">"</span></span>))]
     <span class="pl-c">;println bodies of two remote response</span>
-    (println (str (<span class="pl-c1">:body</span> r1) <span class="pl-s1"><span class="pl-pds">"</span>====<span class="pl-cce">\n</span><span class="pl-pds">"</span></span> (<span class="pl-c1">:body</span> r2) ))</pre></div>
+    (<span class="pl-en">println</span> (<span class="pl-en">str</span> (<span class="pl-c1">:body</span> r1) <span class="pl-s"><span class="pl-pds">"</span>====<span class="pl-cce">\n</span><span class="pl-pds">"</span></span> (<span class="pl-c1">:body</span> r2) ))</pre></div>
 
 <p>Here <code>co-pvalues</code> is also non-blocking and coroutine based. In fact it will create two sub coroutines to handle two sockets.</p>
 
 <p>For Java/Groovy, we can use <code>NginxClojureRT.coBatchCall</code> to do the same thing. Here 's a simple example for Groovy.</p>
 
-<div class="highlight highlight-groovy"><pre>     <span class="pl-st">def</span> (r1, r2) <span class="pl-k">=</span> <span class="pl-st">NginxClojureRT</span><span class="pl-k">.</span>coBatchCall( 
-       {<span class="pl-s1"><span class="pl-pds">"</span>http://mirror.bit.edu.cn/apache/httpcomponents/httpclient/<span class="pl-pds">"</span></span><span class="pl-k">.</span>toURL()<span class="pl-k">.</span>text},
-       {<span class="pl-s1"><span class="pl-pds">"</span>http://mirror.bit.edu.cn/apache/httpcomponents/httpcore/<span class="pl-pds">"</span></span><span class="pl-k">.</span>toURL()<span class="pl-k">.</span>text})
-     <span class="pl-k">return</span> [<span class="pl-c1">200</span>, [<span class="pl-s1"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>:<span class="pl-s1"><span class="pl-pds">"</span>text/html<span class="pl-pds">"</span></span>], r1 <span class="pl-k">+</span> r2];
+<div class="highlight highlight-groovy"><pre>     <span class="pl-k">def</span> (r1, r2) <span class="pl-k">=</span> <span class="pl-k">NginxClojureRT</span><span class="pl-k">.</span>coBatchCall( 
+       {<span class="pl-s"><span class="pl-pds">"</span>http://mirror.bit.edu.cn/apache/httpcomponents/httpclient/<span class="pl-pds">"</span></span><span class="pl-k">.</span>toURL()<span class="pl-k">.</span>text},
+       {<span class="pl-s"><span class="pl-pds">"</span>http://mirror.bit.edu.cn/apache/httpcomponents/httpcore/<span class="pl-pds">"</span></span><span class="pl-k">.</span>toURL()<span class="pl-k">.</span>text})
+     <span class="pl-k">return</span> [<span class="pl-c1">200</span>, [<span class="pl-s"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>text/html<span class="pl-pds">"</span></span>], r1 <span class="pl-k">+</span> r2];
 </pre></div>
 
 <h2>
@@ -78,20 +78,20 @@ large amout of records and won't need too much java heap memory.</p>
 <p>e.g. We use <code>MYUPLOAD</code> to upload a file and overwrite the one if it exists.  The <code>curl</code> command maybe is </p>
 
 <div class="highlight highlight-bash"><pre>curl   -v  -X MYUPLOAD  --upload-file post-test-data \
-<span class="pl-s1"><span class="pl-pds">"</span>http://localhost:8080/myservice<span class="pl-pds">"</span></span> </pre></div>
+<span class="pl-s"><span class="pl-pds">"</span>http://localhost:8080/myservice<span class="pl-pds">"</span></span> </pre></div>
 
 <p>In the nginx.conf, we can use <code>always_read_body on;</code> to force nginx to read http body.</p>
 
 <div class="highlight highlight-nginx"><pre>
-<span class="pl-st">location</span> <span class="pl-en">/myservice </span>{
-         handler_type <span class="pl-s1">'clojure'</span>;
-         always_read_body<span class="pl-c1"> on</span>;
-         content_handler_code <span class="pl-s1">'....'</span>;
+<span class="pl-k">location</span> <span class="pl-en">/myservice </span>{
+         <span class="pl-k">handler_type</span> <span class="pl-s">'clojure'</span>;
+         <span class="pl-k">always_read_body</span> on;
+         <span class="pl-k">content_handler_code</span> <span class="pl-s">'....'</span>;
 }
 </pre></div>
 
 <h2>
-<a id="user-content-34-long-polling--server-sent-events-sse" class="anchor" href="#34-long-polling--server-sent-events-sse" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.4 Long Polling &amp; Server Sent Events (SSE)</h2>
+<a id="user-content-34-server-channel-for-long-polling--server-sent-events-sse" class="anchor" href="#34-server-channel-for-long-polling--server-sent-events-sse" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.4 Server Channel for Long Polling &amp; Server Sent Events (SSE)</h2>
 
 <p>Since v0.2.5, nginx-clojure provides union form of <a href="https://github.com/nginx-clojure/nginx-clojure/issues/41">hijack API</a> to do with Long Polling &amp; Server Sent Events (SSE).</p>
 
@@ -103,8 +103,8 @@ large amout of records and won't need too much java heap memory.</p>
 <p>For Clojure</p>
 
 <div class="highlight highlight-clojure"><pre>
-(<span class="pl-s">fn</span> my-handler[req]
-         (<span class="pl-s">let</span> [ch (hijack! req <span class="pl-c1">true</span>)]
+(<span class="pl-k">fn</span> my-handler[req]
+         (<span class="pl-k">let</span> [ch (<span class="pl-en">hijack!</span> req <span class="pl-c1">true</span>)]
           <span class="pl-c">;;; save channel ch to use it later     </span>
 ))</pre></div>
 
@@ -112,44 +112,58 @@ large amout of records and won't need too much java heap memory.</p>
 
 <div class="highlight highlight-clojure"><pre>
 (<span class="pl-k">defn</span> <span class="pl-e">hijack!</span> 
-  <span class="pl-s1"><span class="pl-pds">"</span>Hijack a nginx request and return a server channel.</span>
-<span class="pl-s1">   After being hijacked, the ring handler's result will be ignored.</span>
-<span class="pl-s1">   If ignore-nginx-filter? is true all data output to channel won't be filtered</span>
-<span class="pl-s1">   by any nginx HTTP header/body filters such as gzip filter, chucked filter, etc.</span>
-<span class="pl-s1">   We can use this function to implement long polling / Server Sent Events (SSE) easily.<span class="pl-pds">"</span></span>
+  <span class="pl-s"><span class="pl-pds">"</span>Hijack a nginx request and return a server channel.</span>
+<span class="pl-s">   After being hijacked, the ring handler's result will be ignored.</span>
+<span class="pl-s">   If ignore-nginx-filter? is true all data output to channel won't be filtered</span>
+<span class="pl-s">   by any nginx HTTP header/body filters such as gzip filter, chucked filter, etc.</span>
+<span class="pl-s">   We can use this function to implement long polling / Server Sent Events (SSE) easily.<span class="pl-pds">"</span></span>
   [^NginxRequest req ignore-nginx-filter?])</pre></div>
 
 <p>For Java</p>
 
 <div class="highlight highlight-java"><pre>
-    <span class="pl-s">public</span>  <span class="pl-s">class</span> <span class="pl-en">MyHandler</span> <span class="pl-s">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
+    <span class="pl-k">public</span>  <span class="pl-k">class</span> <span class="pl-en">MyHandler</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
 
-        <span class="pl-st">@Override</span>
-        <span class="pl-s">public</span> <span class="pl-st">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-st">Map&lt;<span class="pl-stj">String</span>, <span class="pl-stj">Object</span>&gt;</span> <span class="pl-v">request</span>) {
-            <span class="pl-stj">NginxJavaRequest</span> r <span class="pl-k">=</span> ((<span class="pl-stj">NginxJavaRequest</span>)request);
-            <span class="pl-stj">NginxHttpServerChannel</span> channel <span class="pl-k">=</span> r<span class="pl-k">.</span>handler()<span class="pl-k">.</span>hijack(r, <span class="pl-c1">true</span>);           
+        <span class="pl-k">@Override</span>
+        <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>) {
+            <span class="pl-smi">NginxJavaRequest</span> r <span class="pl-k">=</span> ((<span class="pl-smi">NginxJavaRequest</span>)request);
+            <span class="pl-smi">NginxHttpServerChannel</span> channel <span class="pl-k">=</span> r<span class="pl-k">.</span>handler()<span class="pl-k">.</span>hijack(r, <span class="pl-c1">true</span>);           
             <span class="pl-c">//save channel ch to use it later    </span>
             <span class="pl-c">//nginx-clojure will ignore this return because we have hijacked the request.</span>
             <span class="pl-k">return</span> <span class="pl-c1">null</span>;
         }
     }
-</pre></div>
 
-<h3>
-<a id="user-content-send-a-complete-response-for-long-polling" class="anchor" href="#send-a-complete-response-for-long-polling" aria-hidden="true"><span class="octicon octicon-link"></span></a>Send a Complete Response for Long Polling</h3>
+<span class="pl-smi">The</span> complete java doc about hijack is below
 
-<p>When some event happen which let a complete response must be sent to the Long Polling request client we can use <code>send-response!</code>(Clojure) or sendResponse (Java/Groovy) to send a complete response. This action is non-blocking and after completion the channel will be closed automatically.</p>
+```java
+    <span class="pl-c">/**</span>
+<span class="pl-c">     * Get a hijacked Server Channel used to send message later typically in another thread</span>
+<span class="pl-c">     * If ignoreFilter is true all data output to channel won't be filtered</span>
+<span class="pl-c">     * by any nginx HTTP header/body filters such as gzip filter, chucked filter, etc.</span>
+<span class="pl-c">     * @param req the request object</span>
+<span class="pl-c">     * @param ignoreFilter whether we need ignore nginx filter or not.</span>
+<span class="pl-c">     * @return hijacked channel used to send message later</span>
+<span class="pl-c">     */</span>
+    <span class="pl-k">public</span> <span class="pl-smi">NginxHttpServerChannel</span> hijack(<span class="pl-smi">NginxRequest</span> req, <span class="pl-k">boolean</span> ignoreFilter);</pre></div>
 
-<p>For Clojure</p>
+<pre><code>
+### Send a Complete Response for Long Polling
 
-<div class="highlight highlight-clojure"><pre>
-(send-response! ch {<span class="pl-c1">:status</span> <span class="pl-c1">200</span>, <span class="pl-c1">:headers</span> {<span class="pl-s1"><span class="pl-pds">"</span>content-type<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>text/plain<span class="pl-pds">"</span></span>}, <span class="pl-c1">:body</span> data}</pre></div>
+When some event happen which let a complete response must be sent to the Long Polling request client we can use `send-response!`(Clojure) or sendResponse (Java/Groovy) to send a complete response. This action is non-blocking and after completion the channel will be closed automatically.
+
+For Clojure
+
+```clojure
+
+(send-response! ch {:status 200, :headers {"content-type" "text/plain"}, :body data}
+</code></pre>
 
 <p>For Java</p>
 
 <div class="highlight highlight-Java"><pre>
-channel<span class="pl-k">.</span>sendResponse(<span class="pl-k">new</span> <span class="pl-stj">Object</span>[] { <span class="pl-c1">NGX_HTTP_OK</span>,
-                <span class="pl-stj">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-s1"><span class="pl-pds">"</span>content-type<span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>text/json<span class="pl-pds">"</span></span>),
+channel<span class="pl-k">.</span>sendResponse(<span class="pl-k">new</span> <span class="pl-smi">Object</span>[] { <span class="pl-c1">NGX_HTTP_OK</span>,
+                <span class="pl-smi">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-s"><span class="pl-pds">"</span>content-type<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>text/json<span class="pl-pds">"</span></span>),
                 message});</pre></div>
 
 <h3>
@@ -163,28 +177,28 @@ function is used to flush message or close channel after sending current message
 
 <div class="highlight highlight-Clojure"><pre>
  <span class="pl-c">;;; send header and retry hint of SSE</span>
- (send-header! ch <span class="pl-c1">200</span> {<span class="pl-s1"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>text/event-stream<span class="pl-pds">"</span></span>} <span class="pl-c1">false</span> <span class="pl-c1">false</span>)
- (send! ch <span class="pl-s1"><span class="pl-pds">"</span>retry: 4500<span class="pl-cce">\r\n</span><span class="pl-pds">"</span></span> <span class="pl-c1">true</span> <span class="pl-c1">false</span>)
+ (<span class="pl-en">send-header!</span> ch <span class="pl-c1">200</span> {<span class="pl-s"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>text/event-stream<span class="pl-pds">"</span></span>} <span class="pl-c1">false</span> <span class="pl-c1">false</span>)
+ (<span class="pl-en">send!</span> ch <span class="pl-s"><span class="pl-pds">"</span>retry: 4500<span class="pl-cce">\r\n</span><span class="pl-pds">"</span></span> <span class="pl-c1">true</span> <span class="pl-c1">false</span>)
 
  <span class="pl-c">;;; send the message and do flush </span>
- (send! ch <span class="pl-s1"><span class="pl-pds">"</span>data: Are you ok?<span class="pl-cce">\r\n</span><span class="pl-pds">"</span></span> <span class="pl-c1">true</span> <span class="pl-c1">false</span>)
+ (<span class="pl-en">send!</span> ch <span class="pl-s"><span class="pl-pds">"</span>data: Are you ok?<span class="pl-cce">\r\n</span><span class="pl-pds">"</span></span> <span class="pl-c1">true</span> <span class="pl-c1">false</span>)
 
  <span class="pl-c">;;; send the last message, identical to (send! ch data true false) (close! ch)</span>
- (send! ch <span class="pl-s1"><span class="pl-pds">"</span>data: Bye, bye.<span class="pl-cce">\r\n</span><span class="pl-pds">"</span></span> <span class="pl-c1">true</span> <span class="pl-c1">true</span>)
+ (<span class="pl-en">send!</span> ch <span class="pl-s"><span class="pl-pds">"</span>data: Bye, bye.<span class="pl-cce">\r\n</span><span class="pl-pds">"</span></span> <span class="pl-c1">true</span> <span class="pl-c1">true</span>)
 </pre></div>
 
 <p>For Java:</p>
 
 <div class="highlight highlight-Java"><pre>
 <span class="pl-c">//send header and retry hint of SSE</span>
-channel<span class="pl-k">.</span>sendHeader(<span class="pl-c1">200</span>, <span class="pl-stj">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-s1"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>text/event-stream<span class="pl-pds">"</span></span>)<span class="pl-k">.</span>entrySet(), <span class="pl-c1">true</span>, <span class="pl-c1">false</span>);
-channel<span class="pl-k">.</span>send(<span class="pl-s1"><span class="pl-pds">"</span>retry: 4500<span class="pl-cce">\r\n</span><span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>, <span class="pl-c1">false</span>);
+channel<span class="pl-k">.</span>sendHeader(<span class="pl-c1">200</span>, <span class="pl-smi">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-s"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>text/event-stream<span class="pl-pds">"</span></span>)<span class="pl-k">.</span>entrySet(), <span class="pl-c1">true</span>, <span class="pl-c1">false</span>);
+channel<span class="pl-k">.</span>send(<span class="pl-s"><span class="pl-pds">"</span>retry: 4500<span class="pl-cce">\r\n</span><span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>, <span class="pl-c1">false</span>);
 
 <span class="pl-c">//send the message and do flush </span>
-channel<span class="pl-k">.</span>send(<span class="pl-s1"><span class="pl-pds">"</span>data: Are you ok?<span class="pl-cce">\r\n</span><span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>, <span class="pl-c1">false</span>)
+channel<span class="pl-k">.</span>send(<span class="pl-s"><span class="pl-pds">"</span>data: Are you ok?<span class="pl-cce">\r\n</span><span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>, <span class="pl-c1">false</span>)
 
 <span class="pl-c">//send the last message, identical to channel.send(data true false); channel.close();</span>
-channel<span class="pl-k">.</span>send(<span class="pl-s1"><span class="pl-pds">"</span>data: Bye, bye.<span class="pl-cce">\r\n</span><span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>, <span class="pl-c1">true</span>)</pre></div>
+channel<span class="pl-k">.</span>send(<span class="pl-s"><span class="pl-pds">"</span>data: Bye, bye.<span class="pl-cce">\r\n</span><span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>, <span class="pl-c1">true</span>)</pre></div>
 
 <h3>
 <a id="user-content-listener-about-the-closed-event-of-channel" class="anchor" href="#listener-about-the-closed-event-of-channel" aria-hidden="true"><span class="octicon octicon-link"></span></a>Listener about the Closed Event of Channel</h3>
@@ -200,21 +214,21 @@ channel<span class="pl-k">.</span>send(<span class="pl-s1"><span class="pl-pds">
 <p>For Clojure</p>
 
 <div class="highlight highlight-clojure"><pre>
-(on-close! ch {<span class="pl-c1">:ch</span> ch <span class="pl-c1">:desc</span> <span class="pl-s1"><span class="pl-pds">"</span>this is a event attachement<span class="pl-pds">"</span></span>}
- (fn[att] (info <span class="pl-s1"><span class="pl-pds">"</span>closed channel from request :<span class="pl-pds">"</span></span> (.request (<span class="pl-c1">:ch</span> att)))))</pre></div>
+(<span class="pl-en">on-close!</span> ch {<span class="pl-c1">:ch</span> ch <span class="pl-c1">:desc</span> <span class="pl-s"><span class="pl-pds">"</span>this is a event attachement<span class="pl-pds">"</span></span>}
+ (<span class="pl-en">fn[att]</span> (<span class="pl-en">info</span> <span class="pl-s"><span class="pl-pds">"</span>closed channel from request :<span class="pl-pds">"</span></span> (<span class="pl-en">.request</span> (<span class="pl-c1">:ch</span> att)))))</pre></div>
 
 <p>For Java</p>
 
 <div class="highlight highlight-java"><pre>
-channel<span class="pl-k">.</span>addListener(channel, <span class="pl-k">new</span> <span class="pl-st">ChannelListener&lt;<span class="pl-stj">NginxHttpServerChannel</span>&gt;</span>() {
-                <span class="pl-st">@Override</span>
-                <span class="pl-s">public</span> <span class="pl-st">void</span> <span class="pl-en">onClose</span>(<span class="pl-stj">NginxHttpServerChannel</span> <span class="pl-v">data</span>) {
-                    <span class="pl-stj">Init</span><span class="pl-k">.</span>serverSentEventSubscribers<span class="pl-k">.</span>remove(data);
-                    info(<span class="pl-s1"><span class="pl-pds">"</span>closed <span class="pl-pds">"</span></span> <span class="pl-k">+</span> data<span class="pl-k">.</span>request()<span class="pl-k">.</span>nativeRequest());
+channel<span class="pl-k">.</span>addListener(channel, <span class="pl-k">new</span> <span class="pl-k">ChannelListener&lt;<span class="pl-smi">NginxHttpServerChannel</span>&gt;</span>() {
+                <span class="pl-k">@Override</span>
+                <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onClose</span>(<span class="pl-smi">NginxHttpServerChannel</span> <span class="pl-v">data</span>) {
+                    <span class="pl-smi">Init</span><span class="pl-k">.</span>serverSentEventSubscribers<span class="pl-k">.</span>remove(data);
+                    info(<span class="pl-s"><span class="pl-pds">"</span>closed <span class="pl-pds">"</span></span> <span class="pl-k">+</span> data<span class="pl-k">.</span>request()<span class="pl-k">.</span>nativeRequest());
                 }
 
-                <span class="pl-st">@Override</span>
-                <span class="pl-s">public</span> <span class="pl-st">void</span> <span class="pl-en">onConnect</span>(<span class="pl-st">long</span> <span class="pl-v">status</span>, <span class="pl-stj">NginxHttpServerChannel</span> <span class="pl-v">data</span>) {
+                <span class="pl-k">@Override</span>
+                <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onConnect</span>(<span class="pl-k">long</span> <span class="pl-v">status</span>, <span class="pl-smi">NginxHttpServerChannel</span> <span class="pl-v">data</span>) {
                 }
             });</pre></div>
 
@@ -247,130 +261,130 @@ Although for large-scale application we can use sub/pub service from Redis on ng
 <p>For Clojure</p>
 
 <div class="highlight highlight-clojure"><pre>
-(<span class="pl-k">def</span> <span class="pl-e">sse-subscribers</span> (atom {}))
-(<span class="pl-k">def</span> <span class="pl-e">sse-event-tag</span> (int (+ <span class="pl-c1">0x80</span> <span class="pl-c1">10</span>)))
+(<span class="pl-k">def</span> <span class="pl-e">sse-subscribers</span> (<span class="pl-en">atom</span> {}))
+(<span class="pl-k">def</span> <span class="pl-e">sse-event-tag</span> (<span class="pl-en">int</span> (<span class="pl-en">+</span> <span class="pl-c1">0x80</span> <span class="pl-c1">10</span>)))
 
 (<span class="pl-k">def</span> <span class="pl-e">init-broadcast-event-listener</span>
-  (delay 
-    (on-broadcast-event-decode!
+  (<span class="pl-en">delay</span> 
+    (<span class="pl-en">on-broadcast-event-decode!</span>
       <span class="pl-c">;;tester</span>
-      (<span class="pl-s">fn</span> [{tag <span class="pl-c1">:tag</span>}] 
-        (= tag sse-event-tag))
+      (<span class="pl-k">fn</span> [{tag <span class="pl-c1">:tag</span>}] 
+        (<span class="pl-en">=</span> tag sse-event-tag))
       <span class="pl-c">;;decoder</span>
-      (<span class="pl-s">fn</span> [{<span class="pl-c1">:keys</span> [tag data offset length] <span class="pl-c1">:as</span> e}]
-        (assoc e <span class="pl-c1">:data</span> (String. data offset length <span class="pl-s1"><span class="pl-pds">"</span>utf-8<span class="pl-pds">"</span></span>))))
-    (on-broadcast! 
-      (<span class="pl-s">fn</span> [{<span class="pl-c1">:keys</span> [tag data]}]
-        (log <span class="pl-s1"><span class="pl-pds">"</span>#%s ring_handlers_for_test: onbroadcast {%d %s} %s<span class="pl-pds">"</span></span> process-id tag data @sse-subscribers)
-        (condp = tag
+      (<span class="pl-k">fn</span> [{<span class="pl-c1">:keys</span> [tag data offset length] <span class="pl-c1">:as</span> e}]
+        (<span class="pl-en">assoc</span> e <span class="pl-c1">:data</span> (<span class="pl-en">String.</span> data offset length <span class="pl-s"><span class="pl-pds">"</span>utf-8<span class="pl-pds">"</span></span>))))
+    (<span class="pl-en">on-broadcast!</span> 
+      (<span class="pl-k">fn</span> [{<span class="pl-c1">:keys</span> [tag data]}]
+        (<span class="pl-en">log</span> <span class="pl-s"><span class="pl-pds">"</span>#%s ring_handlers_for_test: onbroadcast {%d %s} %s<span class="pl-pds">"</span></span> process-id tag data @sse-subscribers)
+        (<span class="pl-en">condp</span> = tag
           sse-event-tag 
-            (doseq [ch (keys @sse-subscribers)]
-              (send! ch (str <span class="pl-s1"><span class="pl-pds">"</span>data: <span class="pl-pds">"</span></span> data <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-cce">\r\n\r\n</span><span class="pl-pds">"</span></span>) <span class="pl-c1">true</span> (= <span class="pl-s1"><span class="pl-pds">"</span>finish!<span class="pl-pds">"</span></span> data) ))
+            (<span class="pl-en">doseq</span> [ch (<span class="pl-en">keys</span> @sse-subscribers)]
+              (<span class="pl-en">send!</span> ch (<span class="pl-en">str</span> <span class="pl-s"><span class="pl-pds">"</span>data: <span class="pl-pds">"</span></span> data <span class="pl-s"><span class="pl-pds">"</span><span class="pl-cce">\r\n\r\n</span><span class="pl-pds">"</span></span>) <span class="pl-c1">true</span> (<span class="pl-en">=</span> <span class="pl-s"><span class="pl-pds">"</span>finish!<span class="pl-pds">"</span></span> data) ))
             <span class="pl-c1">nil</span>)))))
 
 
   <span class="pl-c">;;server sent events publisher</span>
   (<span class="pl-k">defn</span> <span class="pl-e">sse-publisher</span> [req]
-         (broadcast! {<span class="pl-c1">:tag</span> sse-event-tag, <span class="pl-c1">:data</span> (<span class="pl-c1">:query-string</span> req)})
-         {<span class="pl-c1">:body</span> <span class="pl-s1"><span class="pl-pds">"</span>OK<span class="pl-pds">"</span></span>})
+         (<span class="pl-en">broadcast!</span> {<span class="pl-c1">:tag</span> sse-event-tag, <span class="pl-c1">:data</span> (<span class="pl-c1">:query-string</span> req)})
+         {<span class="pl-c1">:body</span> <span class="pl-s"><span class="pl-pds">"</span>OK<span class="pl-pds">"</span></span>})
 
   <span class="pl-c">;;server sent events subscriber</span>
   (<span class="pl-k">defn</span> <span class="pl-e">sse-sub</span> [^NginxRequest req]
-         @init-broadcast-event-listener
-         (<span class="pl-s">let</span> [ch (hijack! req <span class="pl-c1">true</span>)]
-           (on-close! ch ch 
-                      (<span class="pl-s">fn</span> [ch] (log <span class="pl-s1"><span class="pl-pds">"</span>channel closed. id=%d<span class="pl-pds">"</span></span> (.nativeRequest req))
-                         (log <span class="pl-s1"><span class="pl-pds">"</span>#%s sse-sub: onclose arg:%s, sse-subscribers=%s<span class="pl-pds">"</span></span> process-id ch (pr-str @sse-subscribers))
-                         (swap! sse-subscribers dissoc ch)))
-           (swap! sse-subscribers assoc ch req)
-           (send-header! ch <span class="pl-c1">200</span> {<span class="pl-s1"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>text/event-stream<span class="pl-pds">"</span></span>} <span class="pl-c1">false</span> <span class="pl-c1">false</span>)
-           (send! ch <span class="pl-s1"><span class="pl-pds">"</span>retry: 4500<span class="pl-cce">\r\n</span><span class="pl-pds">"</span></span> <span class="pl-c1">true</span> <span class="pl-c1">false</span>)))</pre></div>
+         @<span class="pl-e">init-broadcast-event-listener</span>
+         (<span class="pl-k">let</span> [ch (<span class="pl-en">hijack!</span> req <span class="pl-c1">true</span>)]
+           (<span class="pl-en">on-close!</span> ch ch 
+                      (<span class="pl-k">fn</span> [ch] (<span class="pl-en">log</span> <span class="pl-s"><span class="pl-pds">"</span>channel closed. id=%d<span class="pl-pds">"</span></span> (<span class="pl-en">.nativeRequest</span> req))
+                         (<span class="pl-en">log</span> <span class="pl-s"><span class="pl-pds">"</span>#%s sse-sub: onclose arg:%s, sse-subscribers=%s<span class="pl-pds">"</span></span> process-id ch (<span class="pl-en">pr-str</span> @sse-subscribers))
+                         (<span class="pl-en">swap!</span> sse-subscribers dissoc ch)))
+           (<span class="pl-en">swap!</span> sse-subscribers assoc ch req)
+           (<span class="pl-en">send-header!</span> ch <span class="pl-c1">200</span> {<span class="pl-s"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>text/event-stream<span class="pl-pds">"</span></span>} <span class="pl-c1">false</span> <span class="pl-c1">false</span>)
+           (<span class="pl-en">send!</span> ch <span class="pl-s"><span class="pl-pds">"</span>retry: 4500<span class="pl-cce">\r\n</span><span class="pl-pds">"</span></span> <span class="pl-c1">true</span> <span class="pl-c1">false</span>)))</pre></div>
 
 <p>For Java</p>
 
 <div class="highlight highlight-java"><pre>
-    <span class="pl-s">public</span> <span class="pl-s">static</span> <span class="pl-s">class</span> <span class="pl-en">Init</span> <span class="pl-s">implements</span> <span class="pl-e">NginxJavaRingHandler</span>, <span class="pl-e">Listener</span> {
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">Init</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span>, <span class="pl-e">Listener</span> {
 
-        <span class="pl-s">public</span> <span class="pl-s">static</span> <span class="pl-s">final</span> <span class="pl-st">int</span> <span class="pl-c1">SEVER_SENT_EVENTS</span> <span class="pl-k">=</span> <span class="pl-c1">POST_EVENT_TYPE_COMPLEX_EVENT_IDX_START</span> <span class="pl-k">+</span> <span class="pl-c1">1</span>;
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">int</span> <span class="pl-c1">SEVER_SENT_EVENTS</span> <span class="pl-k">=</span> <span class="pl-c1">POST_EVENT_TYPE_COMPLEX_EVENT_IDX_START</span> <span class="pl-k">+</span> <span class="pl-c1">1</span>;
 
-        <span class="pl-s">public</span> <span class="pl-s">static</span> <span class="pl-st">Set&lt;<span class="pl-stj">NginxHttpServerChannel</span>&gt;</span> serverSentEventSubscribers;
+        <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">Set&lt;<span class="pl-smi">NginxHttpServerChannel</span>&gt;</span> serverSentEventSubscribers;
 
-        <span class="pl-s">public</span> <span class="pl-en">Init</span>() {
+        <span class="pl-k">public</span> <span class="pl-en">Init</span>() {
         }
 
-        <span class="pl-s">public</span> <span class="pl-st">void</span> <span class="pl-en">doInit</span>() {
-            serverSentEventSubscribers <span class="pl-k">=</span> <span class="pl-stj">Collections</span><span class="pl-k">.</span>newSetFromMap(<span class="pl-k">new</span> <span class="pl-st">ConcurrentHashMap&lt;<span class="pl-stj">NginxHttpServerChannel</span>, <span class="pl-stj">Boolean</span>&gt;</span>());
-            <span class="pl-stj">NginxClojureRT</span><span class="pl-k">.</span>getAppEventListenerManager()<span class="pl-k">.</span>addListener(<span class="pl-v">this</span>);
+        <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">doInit</span>() {
+            serverSentEventSubscribers <span class="pl-k">=</span> <span class="pl-smi">Collections</span><span class="pl-k">.</span>newSetFromMap(<span class="pl-k">new</span> <span class="pl-k">ConcurrentHashMap&lt;<span class="pl-smi">NginxHttpServerChannel</span>, <span class="pl-smi">Boolean</span>&gt;</span>());
+            <span class="pl-smi">NginxClojureRT</span><span class="pl-k">.</span>getAppEventListenerManager()<span class="pl-k">.</span>addListener(<span class="pl-v">this</span>);
         }
 
-        <span class="pl-st">@Override</span>
-        <span class="pl-s">public</span> <span class="pl-st">void</span> <span class="pl-en">onEvent</span>(<span class="pl-stj">PostedEvent</span> <span class="pl-v">event</span>) {
+        <span class="pl-k">@Override</span>
+        <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onEvent</span>(<span class="pl-smi">PostedEvent</span> <span class="pl-v">event</span>) {
             <span class="pl-k">if</span> (event<span class="pl-k">.</span>tag <span class="pl-k">!=</span> <span class="pl-c1">LONGPOLL_EVENT</span> <span class="pl-k">&amp;&amp;</span> event<span class="pl-k">.</span>tag <span class="pl-k">!=</span> <span class="pl-c1">SEVER_SENT_EVENTS</span>) {
                 <span class="pl-k">return</span>;
             }
-            <span class="pl-stj">String</span> message <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-stj">String</span>((<span class="pl-st">byte</span>[])event<span class="pl-k">.</span>data, event<span class="pl-k">.</span>offset, event<span class="pl-k">.</span>length, <span class="pl-c1">DEFAULT_ENCODING</span>);
+            <span class="pl-smi">String</span> message <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">String</span>((<span class="pl-k">byte</span>[])event<span class="pl-k">.</span>data, event<span class="pl-k">.</span>offset, event<span class="pl-k">.</span>length, <span class="pl-c1">DEFAULT_ENCODING</span>);
       <span class="pl-k">if</span> (event<span class="pl-k">.</span>tag <span class="pl-k">==</span> <span class="pl-c1">SEVER_SENT_EVENTS</span>) {
-                <span class="pl-k">for</span> (<span class="pl-stj">NginxHttpServerChannel</span> channel <span class="pl-k">:</span> serverSentEventSubscribers) {
-                    <span class="pl-k">if</span> (<span class="pl-s1"><span class="pl-pds">"</span>shutdown!<span class="pl-pds">"</span></span><span class="pl-k">.</span>equals(message)) {
-                        channel<span class="pl-k">.</span>send(<span class="pl-s1"><span class="pl-pds">"</span>data: <span class="pl-pds">"</span></span><span class="pl-k">+</span>message<span class="pl-k">+</span><span class="pl-s1"><span class="pl-pds">"</span><span class="pl-cce">\r\n\r\n</span><span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>, <span class="pl-c1">true</span>);
-                    }<span class="pl-k">else</span> <span class="pl-k">if</span> (<span class="pl-s1"><span class="pl-pds">"</span>shutdownQuite!<span class="pl-pds">"</span></span><span class="pl-k">.</span>equals(message)) {
+                <span class="pl-k">for</span> (<span class="pl-smi">NginxHttpServerChannel</span> channel <span class="pl-k">:</span> serverSentEventSubscribers) {
+                    <span class="pl-k">if</span> (<span class="pl-s"><span class="pl-pds">"</span>shutdown!<span class="pl-pds">"</span></span><span class="pl-k">.</span>equals(message)) {
+                        channel<span class="pl-k">.</span>send(<span class="pl-s"><span class="pl-pds">"</span>data: <span class="pl-pds">"</span></span><span class="pl-k">+</span>message<span class="pl-k">+</span><span class="pl-s"><span class="pl-pds">"</span><span class="pl-cce">\r\n\r\n</span><span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>, <span class="pl-c1">true</span>);
+                    }<span class="pl-k">else</span> <span class="pl-k">if</span> (<span class="pl-s"><span class="pl-pds">"</span>shutdownQuite!<span class="pl-pds">"</span></span><span class="pl-k">.</span>equals(message)) {
                         channel<span class="pl-k">.</span>close();
                     }<span class="pl-k">else</span> {
-                        channel<span class="pl-k">.</span>send(<span class="pl-s1"><span class="pl-pds">"</span>data: <span class="pl-pds">"</span></span><span class="pl-k">+</span>message<span class="pl-k">+</span><span class="pl-s1"><span class="pl-pds">"</span><span class="pl-cce">\r\n\r\n</span><span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>, <span class="pl-c1">false</span>);
+                        channel<span class="pl-k">.</span>send(<span class="pl-s"><span class="pl-pds">"</span>data: <span class="pl-pds">"</span></span><span class="pl-k">+</span>message<span class="pl-k">+</span><span class="pl-s"><span class="pl-pds">"</span><span class="pl-cce">\r\n\r\n</span><span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>, <span class="pl-c1">false</span>);
                     }
                 }
             }
 
         }
     }
-    <span class="pl-s">public</span> <span class="pl-s">static</span> <span class="pl-s">class</span> <span class="pl-en">SSESub</span> <span class="pl-s">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">SSESub</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
 
-        <span class="pl-s">public</span> <span class="pl-st">void</span> <span class="pl-en">SSESub</span>() {
-                <span class="pl-k">new</span> <span class="pl-stj">Init</span>()<span class="pl-k">.</span>doInit();
+        <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">SSESub</span>() {
+                <span class="pl-k">new</span> <span class="pl-smi">Init</span>()<span class="pl-k">.</span>doInit();
         }
 
-        <span class="pl-st">@Override</span>
-        <span class="pl-s">public</span> <span class="pl-st">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-st">Map&lt;<span class="pl-stj">String</span>, <span class="pl-stj">Object</span>&gt;</span> <span class="pl-v">request</span>) {
-            <span class="pl-stj">NginxJavaRequest</span> r <span class="pl-k">=</span> (<span class="pl-stj">NginxJavaRequest</span>) request;
-            <span class="pl-stj">NginxHandler</span> handler <span class="pl-k">=</span> r<span class="pl-k">.</span>handler();
-            <span class="pl-stj">NginxHttpServerChannel</span> channel <span class="pl-k">=</span> handler<span class="pl-k">.</span>hijack(r, <span class="pl-c1">true</span>);
-            channel<span class="pl-k">.</span>addListener(channel, <span class="pl-k">new</span> <span class="pl-st">ChannelListener&lt;<span class="pl-stj">NginxHttpServerChannel</span>&gt;</span>() {
-                <span class="pl-st">@Override</span>
-                <span class="pl-s">public</span> <span class="pl-st">void</span> <span class="pl-en">onClose</span>(<span class="pl-stj">NginxHttpServerChannel</span> <span class="pl-v">data</span>) {
-                    <span class="pl-stj">Init</span><span class="pl-k">.</span>serverSentEventSubscribers<span class="pl-k">.</span>remove(data);
-                    <span class="pl-stj">NginxClojureRT</span><span class="pl-k">.</span>getLog()<span class="pl-k">.</span>info(<span class="pl-s1"><span class="pl-pds">"</span>closing....<span class="pl-pds">"</span></span> <span class="pl-k">+</span> data<span class="pl-k">.</span>request()<span class="pl-k">.</span>nativeRequest());
+        <span class="pl-k">@Override</span>
+        <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>) {
+            <span class="pl-smi">NginxJavaRequest</span> r <span class="pl-k">=</span> (<span class="pl-smi">NginxJavaRequest</span>) request;
+            <span class="pl-smi">NginxHandler</span> handler <span class="pl-k">=</span> r<span class="pl-k">.</span>handler();
+            <span class="pl-smi">NginxHttpServerChannel</span> channel <span class="pl-k">=</span> handler<span class="pl-k">.</span>hijack(r, <span class="pl-c1">true</span>);
+            channel<span class="pl-k">.</span>addListener(channel, <span class="pl-k">new</span> <span class="pl-k">ChannelListener&lt;<span class="pl-smi">NginxHttpServerChannel</span>&gt;</span>() {
+                <span class="pl-k">@Override</span>
+                <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onClose</span>(<span class="pl-smi">NginxHttpServerChannel</span> <span class="pl-v">data</span>) {
+                    <span class="pl-smi">Init</span><span class="pl-k">.</span>serverSentEventSubscribers<span class="pl-k">.</span>remove(data);
+                    <span class="pl-smi">NginxClojureRT</span><span class="pl-k">.</span>getLog()<span class="pl-k">.</span>info(<span class="pl-s"><span class="pl-pds">"</span>closing....<span class="pl-pds">"</span></span> <span class="pl-k">+</span> data<span class="pl-k">.</span>request()<span class="pl-k">.</span>nativeRequest());
                 }
 
-                <span class="pl-st">@Override</span>
-                <span class="pl-s">public</span> <span class="pl-st">void</span> <span class="pl-en">onConnect</span>(<span class="pl-st">long</span> <span class="pl-v">status</span>, <span class="pl-stj">NginxHttpServerChannel</span> <span class="pl-v">data</span>) {
+                <span class="pl-k">@Override</span>
+                <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onConnect</span>(<span class="pl-k">long</span> <span class="pl-v">status</span>, <span class="pl-smi">NginxHttpServerChannel</span> <span class="pl-v">data</span>) {
                 }
             });
-            <span class="pl-stj">Init</span><span class="pl-k">.</span>serverSentEventSubscribers<span class="pl-k">.</span>add(channel);
-            channel<span class="pl-k">.</span>sendHeader(<span class="pl-c1">200</span>, <span class="pl-stj">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-s1"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>text/event-stream<span class="pl-pds">"</span></span>)<span class="pl-k">.</span>entrySet(), <span class="pl-c1">true</span>, <span class="pl-c1">false</span>);
-            channel<span class="pl-k">.</span>send(<span class="pl-s1"><span class="pl-pds">"</span>retry: 4500<span class="pl-cce">\r\n</span><span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>, <span class="pl-c1">false</span>);
+            <span class="pl-smi">Init</span><span class="pl-k">.</span>serverSentEventSubscribers<span class="pl-k">.</span>add(channel);
+            channel<span class="pl-k">.</span>sendHeader(<span class="pl-c1">200</span>, <span class="pl-smi">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-s"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>text/event-stream<span class="pl-pds">"</span></span>)<span class="pl-k">.</span>entrySet(), <span class="pl-c1">true</span>, <span class="pl-c1">false</span>);
+            channel<span class="pl-k">.</span>send(<span class="pl-s"><span class="pl-pds">"</span>retry: 4500<span class="pl-cce">\r\n</span><span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>, <span class="pl-c1">false</span>);
             <span class="pl-k">return</span> <span class="pl-c1">null</span>;
         }
     }
 
-    <span class="pl-s">public</span> <span class="pl-s">static</span> <span class="pl-s">class</span> <span class="pl-en">SSEPub</span> <span class="pl-s">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">SSEPub</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
 
-        <span class="pl-st">@Override</span>
-        <span class="pl-s">public</span> <span class="pl-st">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-st">Map&lt;<span class="pl-stj">String</span>, <span class="pl-stj">Object</span>&gt;</span> <span class="pl-v">request</span>) {
+        <span class="pl-k">@Override</span>
+        <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>) {
             <span class="pl-c">/*</span>
 <span class="pl-c">             * Or use NginxClojureRT.broadcastEvent(Init.SEVER_SENT_EVENTS, request.get(QUERY_STRING).toString());</span>
 <span class="pl-c">             */</span>
-            <span class="pl-stj">PostedEvent</span> event <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-stj">PostedEvent</span>(<span class="pl-stj">Init</span><span class="pl-c1"><span class="pl-k">.</span>SEVER_SENT_EVENTS</span>, request<span class="pl-k">.</span>get(<span class="pl-c1">QUERY_STRING</span>)<span class="pl-k">.</span>toString());
-            <span class="pl-stj">NginxClojureRT</span><span class="pl-k">.</span>getAppEventListenerManager()<span class="pl-k">.</span>broadcast(event);
-            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-stj">Object</span>[] { <span class="pl-c1">NGX_HTTP_OK</span>, <span class="pl-c1">null</span>, <span class="pl-s1"><span class="pl-pds">"</span>OK<span class="pl-pds">"</span></span> };
+            <span class="pl-smi">PostedEvent</span> event <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">PostedEvent</span>(<span class="pl-smi">Init</span><span class="pl-c1"><span class="pl-k">.</span>SEVER_SENT_EVENTS</span>, request<span class="pl-k">.</span>get(<span class="pl-c1">QUERY_STRING</span>)<span class="pl-k">.</span>toString());
+            <span class="pl-smi">NginxClojureRT</span><span class="pl-k">.</span>getAppEventListenerManager()<span class="pl-k">.</span>broadcast(event);
+            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] { <span class="pl-c1">NGX_HTTP_OK</span>, <span class="pl-c1">null</span>, <span class="pl-s"><span class="pl-pds">"</span>OK<span class="pl-pds">"</span></span> };
         }
 
     }
 </pre></div>
 
 <h2>
-<a id="user-content-36-asynchronous-channel" class="anchor" href="#36-asynchronous-channel" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.6 Asynchronous Channel</h2>
+<a id="user-content-36-asynchronous-client-channel" class="anchor" href="#36-asynchronous-client-channel" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.6 Asynchronous Client Channel</h2>
 
-<p>Asynchronous Channel is wrapper of Asynchronous Socket for more easier usage. 
+<p>Asynchronous Client Channel is wrapper of Asynchronous Client Socket for more easier usage. 
 So far Asynchronous Channel <em>cann't</em> work with thread pool mode. The Asynchronous Channel 
 API is a little like Java 7 NIO.2 Asynchronous Channel and more details can be found from issue #37 and it comments
 <a href="https://github.com/nginx-clojure/nginx-clojure/issues/37">Asynchronous Channel API</a>.</p>
@@ -397,13 +411,13 @@ API is a little like Java 7 NIO.2 Asynchronous Channel and more details can be f
 <p>in nginx.conf</p>
 
 <div class="highlight highlight-nginx"><pre>
- jvm_options <span class="pl-s1">"-DMYPID=#{pno}"</span>;</pre></div>
+ <span class="pl-k">jvm_options</span> <span class="pl-s">"-DMYPID=#{pno}"</span>;</pre></div>
 
 <p>in logback.xml</p>
 
 <div class="highlight highlight-xml"><pre>
- &lt;<span class="pl-ent">appender</span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>FILE<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s1"><span class="pl-pds">"</span>ch.qos.logback.core.rolling.RollingFileAppender<span class="pl-pds">"</span></span>&gt;
-    &lt;<span class="pl-ent">rollingPolicy</span> <span class="pl-e">class</span>=<span class="pl-s1"><span class="pl-pds">"</span>ch.qos.logback.core.rolling.TimeBasedRollingPolicy<span class="pl-pds">"</span></span>&gt;
+ &lt;<span class="pl-ent">appender</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>FILE<span class="pl-pds">"</span></span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>ch.qos.logback.core.rolling.RollingFileAppender<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">rollingPolicy</span> <span class="pl-e">class</span>=<span class="pl-s"><span class="pl-pds">"</span>ch.qos.logback.core.rolling.TimeBasedRollingPolicy<span class="pl-pds">"</span></span>&gt;
       <span class="pl-c">&lt;!-- daily rollover --&gt;</span>
       &lt;<span class="pl-ent">fileNamePattern</span>&gt;logs/myapp.%d{yyyy-MM-dd}-${MYPID}.log&lt;/<span class="pl-ent">fileNamePattern</span>&gt;
       <span class="pl-c">&lt;!-- keep 30 days' worth of history --&gt;</span>
@@ -416,3 +430,254 @@ API is a little like Java 7 NIO.2 Asynchronous Channel and more details can be f
   &lt;/<span class="pl-ent">appender</span>&gt;</pre></div>
 
 <p>Then we 'll get log files whose name just like myapp.2014-09-12-1.log,  myapp.2014-09-12-2.log.</p>
+
+<h2>
+<a id="user-content-38--sever-side-websocket" class="anchor" href="#38--sever-side-websocket" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.8  Sever Side WebSocket</h2>
+
+<p>Sever Side WebSocket, like long polling/Server Sent Events, also use hijack API to get a NginxHttpServerChannel to send / receive messages.</p>
+
+<p>Here we give a echo service example.</p>
+
+<p>In nginx.conf</p>
+
+<div class="highlight highlight-nginx"><pre><span class="pl-k">location</span> <span class="pl-en">/my-ws </span>{
+        <span class="pl-k">auto_upgrade_ws</span> on;
+        <span class="pl-k">content_handler_type</span> java; <span class="pl-c">###or clojure,groovy</span>
+        <span class="pl-k">content_handler_name</span> <span class="pl-s">'nginx.clojure.java.WSEcho'</span>; <span class="pl-c">###or ring handler for clojure</span>
+        .....
+}</pre></div>
+
+<p>For clojure</p>
+
+<div class="highlight highlight-clojure"><pre>(<span class="pl-k">defn</span> <span class="pl-e">echo</span> [^NginxRequest req]
+         (<span class="pl-en">-&gt;</span> req
+             (<span class="pl-en">hijack!</span> <span class="pl-c1">true</span>)
+             (<span class="pl-en">add-listener!</span> { <span class="pl-c1">:on-open</span> (<span class="pl-k">fn</span> [ch] (<span class="pl-en">log</span> <span class="pl-s"><span class="pl-pds">"</span>uri:%s, on-open!<span class="pl-pds">"</span></span> (<span class="pl-c1">:uri</span> req)))
+                              <span class="pl-c1">:on-message</span> (<span class="pl-k">fn</span> [ch msg rem?] (<span class="pl-en">send!</span> ch msg (<span class="pl-en">not</span> rem?) <span class="pl-c1">false</span>))
+                              <span class="pl-c1">:on-close</span> (<span class="pl-k">fn</span> [ch reason] (<span class="pl-en">log</span> <span class="pl-s"><span class="pl-pds">"</span>uri:%s, on-close:%s<span class="pl-pds">"</span></span> (<span class="pl-c1">:uri</span> req) reason))
+                              <span class="pl-c1">:on-error</span> (<span class="pl-k">fn</span> [ch error] (<span class="pl-en">log</span> <span class="pl-s"><span class="pl-pds">"</span>uri:%s, on-error:%s<span class="pl-pds">"</span></span> (<span class="pl-c1">:uri</span> req)  error))
+                             })))</pre></div>
+
+<p>For java </p>
+
+<div class="highlight highlight-java"><pre><span class="pl-k">package</span> <span class="pl-smi">nginx.clojure.java</span>;
+
+<span class="pl-k">import</span> <span class="pl-smi">java.io.IOException</span>;
+<span class="pl-k">import</span> <span class="pl-smi">java.nio.ByteBuffer</span>;
+<span class="pl-k">import</span> <span class="pl-smi">java.util.Map</span>;
+
+<span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.MessageAdapter</span>;
+<span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.NginxClojureRT</span>;
+<span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.NginxHttpServerChannel</span>;
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">WSEcho</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
+
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>) {
+        <span class="pl-smi">NginxJavaRequest</span> r <span class="pl-k">=</span> (<span class="pl-smi">NginxJavaRequest</span>)request;
+        <span class="pl-smi">NginxHttpServerChannel</span> sc <span class="pl-k">=</span> r<span class="pl-k">.</span>handler()<span class="pl-k">.</span>hijack(r, <span class="pl-c1">true</span>);
+        sc<span class="pl-k">.</span>addListener(sc, <span class="pl-k">new</span> <span class="pl-k">MessageAdapter&lt;<span class="pl-smi">NginxHttpServerChannel</span>&gt;</span>() {
+            <span class="pl-k">int</span> total <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+            <span class="pl-k">@Override</span>
+            <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onOpen</span>(<span class="pl-smi">NginxHttpServerChannel</span> <span class="pl-v">data</span>) {
+                <span class="pl-smi">NginxClojureRT</span><span class="pl-k">.</span>log<span class="pl-k">.</span>debug(<span class="pl-s"><span class="pl-pds">"</span>WSEcho onOpen!<span class="pl-pds">"</span></span>);
+            }
+
+            <span class="pl-k">@Override</span>
+            <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onTextMessage</span>(<span class="pl-smi">NginxHttpServerChannel</span> <span class="pl-v">sc</span>, <span class="pl-smi">String</span> <span class="pl-v">message</span>, <span class="pl-k">boolean</span> <span class="pl-v">remaining</span>) <span class="pl-k">throws</span> <span class="pl-smi">IOException</span> {
+                <span class="pl-k">if</span> (<span class="pl-smi">NginxClojureRT</span><span class="pl-k">.</span>log<span class="pl-k">.</span>isDebugEnabled()) {
+                    <span class="pl-smi">NginxClojureRT</span><span class="pl-k">.</span>log<span class="pl-k">.</span>debug(<span class="pl-s"><span class="pl-pds">"</span>WSEcho onTextMessage: msg=%s, rem=%s<span class="pl-pds">"</span></span>, message, remaining);
+                }
+                total <span class="pl-k">+=</span> message<span class="pl-k">.</span>length();
+                sc<span class="pl-k">.</span>send(message, <span class="pl-k">!</span>remaining, <span class="pl-c1">false</span>);
+            }
+
+            <span class="pl-k">@Override</span>
+            <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onBinaryMessage</span>(<span class="pl-smi">NginxHttpServerChannel</span> <span class="pl-v">sc</span>, <span class="pl-smi">ByteBuffer</span> <span class="pl-v">message</span>, <span class="pl-k">boolean</span> <span class="pl-v">remining</span>) <span class="pl-k">throws</span> <span class="pl-smi">IOException</span> {
+                <span class="pl-k">if</span> (<span class="pl-smi">NginxClojureRT</span><span class="pl-k">.</span>log<span class="pl-k">.</span>isDebugEnabled()) {
+                    <span class="pl-smi">NginxClojureRT</span><span class="pl-k">.</span>log<span class="pl-k">.</span>debug(<span class="pl-s"><span class="pl-pds">"</span>WSEcho onBinaryMessage: msg=%s, rem=%s, total=%d<span class="pl-pds">"</span></span>, message, remining, total);
+                }
+                total <span class="pl-k">+=</span> message<span class="pl-k">.</span>remaining();
+                sc<span class="pl-k">.</span>send(message, <span class="pl-k">!</span>remining, <span class="pl-c1">false</span>);
+            }
+
+            <span class="pl-k">@Override</span>
+            <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onClose</span>(<span class="pl-smi">NginxHttpServerChannel</span> <span class="pl-v">req</span>, <span class="pl-k">long</span> <span class="pl-v">status</span>, <span class="pl-smi">String</span> <span class="pl-v">reason</span>) {
+                <span class="pl-k">if</span> (<span class="pl-smi">NginxClojureRT</span><span class="pl-k">.</span>log<span class="pl-k">.</span>isDebugEnabled()) {
+                  <span class="pl-smi">NginxClojureRT</span><span class="pl-k">.</span>log<span class="pl-k">.</span>info(<span class="pl-s"><span class="pl-pds">"</span>WSEcho onClose2: total=%d, status=%d, reason=%s<span class="pl-pds">"</span></span>, total, status, reason);
+                }
+            }
+
+            <span class="pl-k">@Override</span>
+            <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onError</span>(<span class="pl-smi">NginxHttpServerChannel</span> <span class="pl-v">data</span>, <span class="pl-k">long</span> <span class="pl-v">status</span>) {
+                <span class="pl-k">if</span> (<span class="pl-smi">NginxClojureRT</span><span class="pl-k">.</span>log<span class="pl-k">.</span>isDebugEnabled()) {
+                      <span class="pl-smi">NginxClojureRT</span><span class="pl-k">.</span>log<span class="pl-k">.</span>info(<span class="pl-s"><span class="pl-pds">"</span>WSEcho onError: total=%d, status=%d<span class="pl-pds">"</span></span>, total, status);
+                    }
+            }
+
+        });
+        <span class="pl-k">return</span> <span class="pl-c1">null</span>;
+    }
+
+}
+</pre></div>
+
+<h2>
+<a id="user-content-39--java-standard-restful-web-services-with-jersey" class="anchor" href="#39--java-standard-restful-web-services-with-jersey" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.9  Java standard RESTful web services with Jersey</h2>
+
+<p>in nginx.conf</p>
+
+<div class="highlight highlight-nginx"><pre>      <span class="pl-k">location</span> <span class="pl-en">/jersey </span>{
+          <span class="pl-k">content_handler_name</span> <span class="pl-s">'nginx.clojure.bridge.NginxBridgeHandler'</span>;
+          <span class="pl-k">content_handler_property</span> system.m2rep <span class="pl-s">'/home/who/.m2/repository'</span>;
+
+          <span class="pl-c">##we can put jars into some dir then all of their path will be appended into the classpath</span>
+          <span class="pl-c">#content_handler_property bridge.lib.dirs 'my-jersey-libs-dir:myother-dir';</span>
+
+          <span class="pl-c">##we can also put jars or classes directory one by one here.</span>
+          <span class="pl-c">##the path of nginx-jersey-x.x.x.jar must be included in the below classpath or one of above #{bridge.lib.dirs}</span>
+          content_handler_property bridge.lib.cp 'my-nginx-jersey-jar-path:/home/who/git/jersey/examples/json-jackson/target/classes:#{m2rep}/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:#{m2rep}/org/glassfish/jersey/core/jersey-common/2.17/jersey-common-2.17.jar:#{m2rep}/org/glassfish/jersey/media/jersey-media-json-jackson/2.17/jersey-media-json-jackson-2.17.jar:#{m2rep}/org/glassfish/jersey/core/jersey-server/2.17/jersey-server-2.17.jar:#{m2rep}/org/glassfish/jersey/ext/jersey-entity-filtering/2.17/jersey-entity-filtering-2.17.jar:#{m2rep}/org/glassfish/hk2/external/javax.inject/2.4.0-b10/javax.inject-2.4.0-b10.jar:#{m2rep}/clojure-complete/clojure-complete/0.2.3/clojure-complete-0.2.3.jar:#{m2rep}/junit/junit/4.11/junit-4.11.jar:#{m2rep}/org/glassfish/hk2/hk2-locator/2.4.0-b10/hk2-locator-2.4.0-b10.jar:#{m2rep}/javax/ws/rs/javax.ws.rs-api/2.0.1/javax.ws.rs-api-2.0.1.jar:#{m2rep}/javax/annotation/javax.annotation-api/1.2/javax.annotation-api-1.2.jar:#{m2rep}/org/glassfish/hk2/hk2-api/2.4.0-b10/hk2-api-2.4.0-b10.jar:#{m2rep}/org/glassfish/jersey/core/jersey-client/2.17/jersey-client-2.17.jar:#{m2rep}/com/fasterxml/jackson/jaxrs/jackson-jaxrs-base/2.3.2/jackson-jaxrs-base-2.3.2.jar:#{m2rep}/com/fasterxml/jackson/module/jackson-module-jaxb-annotations/2.3.2/jackson-module-jaxb-annotations-2.3.2.jar:#{m2rep}/com/fasterxml/jackson/jaxrs/jackson-jaxrs-json-provider/2.3.2/jackson-jaxrs-json-provider-2.3.2.jar:#{m2rep}/org/glassfish/hk2/osgi-resource-locator/1.0.1/osgi-resource-locator-1.0.1.jar:#{m2rep}/com/fasterxml/jackson/core/jackson-databind/2.3.2/jackson-databind-2.3.2.jar:#{m2rep}/org/glassfish/jersey/bundles/repackaged/jersey-guava/2.17/jersey-guava-2.17.jar:#{m2rep}/org/glassfish/hk2/hk2-utils/2.4.0-b10/hk2-utils-2.4.0-b10.jar:#{m2rep}/org/glassfish/jersey/media/jersey-media-jaxb/2.17/jersey-media-jaxb-2.17.jar:#{m2rep}/org/clojure/tools.nrepl/0.2.6/tools.nrepl-0.2.6.jar:#{m2rep}/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final.jar:#{m2rep}/com/fasterxml/jackson/core/jackson-annotations/2.3.2/jackson-annotations-2.3.2.jar:#{m2rep}/com/fasterxml/jackson/core/jackson-core/2.3.2/jackson-core-2.3.2.jar:#{m2rep}/org/javassist/javassist/3.18.1-GA/javassist-3.18.1-GA.jar:#{m2rep}/org/glassfish/hk2/external/aopalliance-repackaged/2.4.0-b10/aopalliance-repackaged-2.4.0-b10.jar';
+          <span class="pl-k">content_handler_property</span> bridge.imp <span class="pl-s">'nginx.clojure.jersey.NginxJerseyContainer'</span>;
+
+          <span class="pl-c">##aplication path usually it is the same with nginx location </span>
+          <span class="pl-k">content_handler_property</span> jersey.app.path <span class="pl-s">'/jersey'</span>;
+
+          <span class="pl-c">##application resources which can be either of JAX-RS resources, providers</span>
+          <span class="pl-k">content_handler_property</span> jersey.app.resources <span class="pl-s">'</span>
+<span class="pl-s">                org.glassfish.jersey.examples.jackson.EmptyArrayResource,</span>
+<span class="pl-s">                org.glassfish.jersey.examples.jackson.NonJaxbBeanResource,</span>
+<span class="pl-s">                org.glassfish.jersey.examples.jackson.CombinedAnnotationResource,</span>
+<span class="pl-s">                org.glassfish.jersey.examples.jackson.MyObjectMapperProvider,</span>
+<span class="pl-s">                org.glassfish.jersey.examples.jackson.ExceptionMappingTestResource,</span>
+<span class="pl-s">                org.glassfish.jersey.jackson.JacksonFeature</span>
+<span class="pl-s">          '</span>;
+          <span class="pl-k">gzip</span><span class="pl-c1"> on</span>;
+          <span class="pl-k">gzip_types</span> application/javascript application/xml text/plain text/css <span class="pl-s">'text/html;charset=UTF-8'</span>; 
+      }</pre></div>
+
+<p>All sources about this example can be found from jersey github repository 's example <a href="https://github.com/jersey/jersey/tree/2.17/examples/json-jackson/src/main/java/org/glassfish/jersey/examples/jackson">json-jackson</a>.</p>
+
+<p>then we test the JAX-RS services by curl</p>
+
+<div class="highlight highlight-shell"><pre>$ curl  -v http://localhost:8080/jersey/emptyArrayResource
+<span class="pl-k">&gt;</span> GET /jersey/emptyArrayResource HTTP/1.1
+<span class="pl-k">&gt;</span> User-Agent: curl/7.35.0
+<span class="pl-k">&gt;</span> Host: localhost:8080
+<span class="pl-k">&gt;</span> Accept: <span class="pl-k">*</span>/<span class="pl-k">*</span>
+<span class="pl-k">&gt;</span> 
+<span class="pl-k">&lt;</span> HTTP/1.1 200 OK
+<span class="pl-k">&lt;</span> Date: Sat, 23 May 2015 17:47:14 GMT
+<span class="pl-k">&lt;</span> Content-Type: application/json
+<span class="pl-k">&lt;</span> Transfer-Encoding: chunked
+<span class="pl-k">&lt;</span> Connection: keep-alive
+<span class="pl-k">*</span> Server nginx-clojure is not blacklisted
+<span class="pl-k">&lt;</span> Server: nginx-clojure
+<span class="pl-k">&lt;</span> 
+{
+  <span class="pl-s"><span class="pl-pds">"</span>emtpyArray<span class="pl-pds">"</span></span> <span class="pl-c1">:</span> [ ]
+}</pre></div>
+
+<div class="highlight highlight-shell"><pre>$ curl -v http://localhost:8080/jersey/nonJaxbResource
+<span class="pl-k">&gt;</span> GET /jersey/nonJaxbResource HTTP/1.1
+<span class="pl-k">&gt;</span> User-Agent: curl/7.35.0
+<span class="pl-k">&gt;</span> Host: localhost:8080
+<span class="pl-k">&gt;</span> Accept: <span class="pl-k">*</span>/<span class="pl-k">*</span>
+<span class="pl-k">&gt;</span> 
+<span class="pl-k">&lt;</span> HTTP/1.1 200 OK
+<span class="pl-k">&lt;</span> Date: Sat, 23 May 2015 17:46:17 GMT
+<span class="pl-k">&lt;</span> Content-Type: application/javascript
+<span class="pl-k">&lt;</span> Transfer-Encoding: chunked
+<span class="pl-k">&lt;</span> Connection: keep-alive
+<span class="pl-k">*</span> Server nginx-clojure is not blacklisted
+<span class="pl-k">&lt;</span> Server: nginx-clojure
+<span class="pl-k">&lt;</span> 
+callback({
+  <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span> <span class="pl-c1">:</span> <span class="pl-s"><span class="pl-pds">"</span>non-JAXB-bean<span class="pl-pds">"</span></span>,
+  <span class="pl-s"><span class="pl-pds">"</span>description<span class="pl-pds">"</span></span> <span class="pl-c1">:</span> <span class="pl-s"><span class="pl-pds">"</span>I am not a JAXB bean, just an unannotated POJO<span class="pl-pds">"</span></span>,
+  <span class="pl-s"><span class="pl-pds">"</span>array<span class="pl-pds">"</span></span> <span class="pl-c1">:</span> [ 1, 1, 2, 3, 5, 8, 13, 21 ]
+<span class="pl-k">*</span> Connection <span class="pl-c">#0 to host localhost left intact</span>
+})</pre></div>
+
+<h2>
+<a id="user-content-310-embeding-tomcat" class="anchor" href="#310-embeding-tomcat" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.10 Embeding Tomcat</h2>
+
+<p>in nginx.conf</p>
+
+<div class="highlight highlight-nginx"><pre>      <span class="pl-k">location</span> <span class="pl-en">/ </span>{
+
+          <span class="pl-k">content_handler_name</span> <span class="pl-s">'nginx.clojure.bridge.NginxBridgeHandler'</span>;
+
+          <span class="pl-c">##Tomcat 8 installation path</span>
+          <span class="pl-k">content_handler_property</span> system.catalina.home <span class="pl-s">'/home/who/share/apps/apache-tomcat-8.0.20'</span>;
+          <span class="pl-k">content_handler_property</span> system.catalina.base <span class="pl-s">'#{catalina.home}'</span>;
+
+          <span class="pl-c">##uncomment this to disable websocket perframe-compression</span>
+          <span class="pl-c">#content_handler_property system.org.apache.tomcat.websocket.DISABLE_BUILTIN_EXTENSIONS true;</span>
+
+          <span class="pl-c">##log manger</span>
+          <span class="pl-k">content_handler_property</span> system.java.util.logging.manager <span class="pl-s">'org.apache.juli.ClassLoaderLogManager'</span>;
+
+          <span class="pl-c">## all jars or direct child directories will be appended into the classpath of this bridge handler's class-loader</span>
+          <span class="pl-k">content_handler_property</span> bridge.lib.dirs <span class="pl-s">'#{catalina.home}/lib:#{catalina.home}/bin'</span>;
+
+          <span class="pl-c">##set nginx tomcat8 bridge implementation jar and other jars can also be appended here</span>
+          <span class="pl-k">content_handler_property</span> bridge.lib.cp <span class="pl-s">'my-jar-path/nginx-tomcat8-x.x.x.jar'</span>;
+
+          <span class="pl-c">##The implementation class of nginx-clojure bridge handler for Tomcat 8</span>
+          <span class="pl-k">content_handler_property</span> bridge.imp <span class="pl-s">'nginx.clojure.tomcat8.NginxTomcatBridge'</span>;
+
+          <span class="pl-c">##ignore nginx filter, default is false</span>
+          <span class="pl-c">#content_handler_property ignoreNginxFilter false;</span>
+
+          <span class="pl-c">##when dispatch is false tomcat servlet will be executed in main thread.By default dispatch is false</span>
+          <span class="pl-c">##when use websocket with tomcat it must be set true otherwise maybe deadlock will happen.</span>
+          <span class="pl-c">#content_handler_property dispatch false;</span>
+
+          <span class="pl-k">gzip</span><span class="pl-c1"> on</span>;
+          <span class="pl-k">gzip_types</span> text/plain text/css <span class="pl-s">'text/html;charset=ISO-8859-1'</span> <span class="pl-s">'text/html;charset=UTF-8'</span>; 
+
+          <span class="pl-c">##if for small message, e.g. small json/websocket message write_page_size can set to be a small value</span>
+          <span class="pl-c">#write_page_size 2k;</span>
+      }</pre></div>
+
+<h3>
+<a id="user-content-for-performance" class="anchor" href="#for-performance" aria-hidden="true"><span class="octicon octicon-link"></span></a>For performance</h3>
+
+<h4>
+<a id="user-content-disable-tomcat-access-log" class="anchor" href="#disable-tomcat-access-log" aria-hidden="true"><span class="octicon octicon-link"></span></a>Disable Tomcat Access Log</h4>
+
+<p>When we need access log , use Nginx access log instead of Tomcat access log.</p>
+
+<p>In server.xml comment AccessLogValve configuration to disable Tomcat access log.</p>
+
+<div class="highlight highlight-xml"><pre><span class="pl-c">&lt;!--</span>
+<span class="pl-c">        &lt;Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"</span>
+<span class="pl-c">               prefix="localhost_access_log" suffix=".txt"</span>
+<span class="pl-c">               pattern="%h %l %u %t &amp;quot;%r&amp;quot; %s %b" /&gt;</span>
+<span class="pl-c">--&gt;</span></pre></div>
+
+<h4>
+<a id="user-content-disable-logging-to-console" class="anchor" href="#disable-logging-to-console" aria-hidden="true"><span class="octicon octicon-link"></span></a>Disable logging to console</h4>
+
+<p>Because Tomcat console log is duplicate with other log such as catalina log, manager log ,etc, so it can be disabled.
+In conf/logging.properties remove all <code>java.util.logging.ConsoleHandler</code></p>
+
+<div class="highlight highlight-shell"><pre>handlers = 1catalina.org.apache.juli.AsyncFileHandler, 2localhost.org.apache.juli.AsyncFileHandler, 3manager.org.apache.juli.AsyncFileHandler, 4host-manager.org.apache.juli.AsyncFileHandler
+
+.handlers = 1catalina.org.apache.juli.AsyncFileHandler</pre></div>
+
+<h4>
+<a id="user-content-dont-enable-tomcat-compression" class="anchor" href="#dont-enable-tomcat-compression" aria-hidden="true"><span class="octicon octicon-link"></span></a>Don't Enable Tomcat Compression</h4>
+
+<p>By default compression is off , do not turn it on.</p>
+
+<div class="highlight highlight-xml"><pre>&lt;<span class="pl-ent">Connector</span> <span class="pl-e">port</span>=<span class="pl-s"><span class="pl-pds">"</span>8080<span class="pl-pds">"</span></span> <span class="pl-e">protocol</span>=<span class="pl-s"><span class="pl-pds">"</span>HTTP/1.1<span class="pl-pds">"</span></span> <span class="pl-e">compression</span>=<span class="pl-s"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span></pre></div>
+
+<p>If we need compression use nginx gzip filter instead. e.g. In nginx.conf</p>
+
+<div class="highlight highlight-nginx"><pre><span class="pl-k">location</span> <span class="pl-en">/examples </span>{
+    <span class="pl-k">gzip</span><span class="pl-c1"> on</span>;
+    <span class="pl-k">gzip_types</span> text/plain text/css <span class="pl-s">'text/html;charset=ISO-8859-1'</span> <span class="pl-s">'text/html;charset=UTF-8'</span>; 
+}</pre></div>
+
+<p><code>gzip</code> can also appear at http, server blocks. More details can be found <a href="http://nginx.org/en/docs/http/ngx_http_gzip_module.html">HERE</a></p>

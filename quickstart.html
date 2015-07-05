@@ -58,19 +58,34 @@
           <a href="index.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-home"></span> Home</a>
           <a href="quickstart.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-flash"></span> Quick Start</a>
           <a href="downloads.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-download-alt"></span> Downloads</a>
-          <a href="configuration.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-cog"></span> Configuration</a>
-          <button type="button" class="btn btn-sample btn-lg dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Documents <span class="caret"></span></button>
-					<ul class="dropdown-menu dropdown-menu-right" role="menu"
-						style="right: 0; left: auto;">
+          <div class="btn-group">
+          <button type="button" class="btn btn-sample btn-lg dropdown-toggle" data-toggle="dropdown" id="docDropDownBtn"><span class="glyphicon glyphicon-cog"></span> Configuration <span class="caret"></span></button>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="configuration.html#21-jvm-path--class-path--other-jvm-options"><span class="glyphicon glyphicon-cog"></span> JVM Path,Class Path & Other JVM Options</a></li>
+						<li><a href="configuration.html#22-initialization-handler-for-nginx-worker"><span class="glyphicon glyphicon-cog"></span> Initialization Handler for nginx worker</a></li>
+						<li><a href="configuration.html#23-content-ring-handler-for-location"><span class="glyphicon glyphicon-cog"></span> Content Ring Handler for Location</a></li>
+						<li><a href="configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations"><span class="glyphicon glyphicon-cog"></span> Coroutine/Asynchronous Client Channel/Thread Pool </a></li>
+						<li><a href="configuration.html#25-nginx-rewrite-handler"><span class="glyphicon glyphicon-cog"></span> Nginx Rewrite Handler</a></li>
+						<li><a href="configuration.html#26-nginx-access-handler"><span class="glyphicon glyphicon-cog"></span> Nginx Access Handler</a></li>
+						<li><a href="configuration.html#27-niginx-header-filter"><span class="glyphicon glyphicon-cog"></span> Niginx Header Filter</a></li>
+					</ul>
+					</div>
+					<div class="btn-group">
+          <button type="button" class="btn btn-sample btn-lg dropdown-toggle" data-toggle="dropdown" id="docDropDownBtn"><span class="glyphicon glyphicon-book"></span> Documents <span class="caret"></span></button>
+					<ul class="dropdown-menu" role="menu">
 <!-- 						<li><a href="quickstart.html"><span class="glyphicon glyphicon-flash"></span> Quick Start</a></li> -->
 						<li><a href="installation.html"><span class="glyphicon glyphicon-hdd"></span> Installation</a></li>
 						<li><a href="configuration.html"><span class="glyphicon glyphicon-cog"></span> Configuration</a></li>
-						<li><a href="more.html#34-long-polling--server-sent-events-sse"><span class="glyphicon glyphicon-envelope"></span> Long Polling & Server Sent Events</a></li>
+						<li><a href="more.html#34-server-channel-for-long-polling--server-sent-events-sse"><span class="glyphicon glyphicon-envelope"></span>Server Channel for Long Polling & Server Sent Events</a></li>
 						<li><a href="more.html#35-subpub--broadcast-event"><span class="glyphicon glyphicon-signal"></span> Sub/Pub services with Broadcast Events</a></li>
-						<li><a href="more.html#36-asynchronous-channel"><span class="glyphicon glyphicon-road"></span> Asynchronous Channel</a></li>
+						<li><a href="more.html#36-asynchronous-client-channel"><span class="glyphicon glyphicon-road"></span> Asynchronous Client Channel</a></li>
+						<li><a href="more.html#37--about-logging"><span class="glyphicon glyphicon-th-list"></span> About Logging</a></li>
+						<li><a href="more.html#38--sever-side-websocket"><span class="glyphicon glyphicon-th-list"></span> Sever Side WebSocket</a></li>
+						<li><a href="more.html#39--java-standard-restful-web-services-with-jersey"><span class="glyphicon glyphicon-th-list"></span> Java standard RESTful web services with Jersey</a></li>
+						<li><a href="more.html#310-embeding-tomcat"><span class="glyphicon glyphicon-th-list"></span> Embeding Tomcat</a></li>
 						<li><a href="more.html"><span class="glyphicon glyphicon-th-list"></span> More about Nginx-Clojure</a></li>
 					</ul>
-
+					</div>
 			<a href="userfullLinks.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-share-alt"></span> Useful Links</a>
           </div>  
     </nav>
@@ -104,13 +119,19 @@
 <p>Setting JVM path and class path within <code>http {</code> block in  nginx.conf</p>
 
 <div class="highlight highlight-nginx"><pre><span class="pl-c">### jvm dynamic library path</span>
-jvm_path <span class="pl-s1">'/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so'</span>;
+<span class="pl-k">jvm_path</span> <span class="pl-s">'/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so'</span>;
 
 <span class="pl-c">### my app jars e.g. clojure-1.5.1.jar , groovy-2.3.4.jar ,etc.</span>
-jvm_var my_other_jars <span class="pl-s1">'my_jar_dir/clojure-1.5.1.jar'</span>;
+<span class="pl-k">jvm_var</span> my_other_jars <span class="pl-s">'my_jar_dir/clojure-1.5.1.jar'</span>;
 
 <span class="pl-c">### my app classpath, windows user should use ';' as the separator</span>
-jvm_options <span class="pl-s1">"-Djava.class.path=jars/nginx-clojure-0.2.5.jar:#{my_other_jars}"</span>;</pre></div>
+<span class="pl-k">jvm_options</span> <span class="pl-s">"-Djava.class.path=jars/nginx-clojure-0.2.5.jar:#{my_other_jars}"</span>;
+
+<span class="pl-c">###or we can put jars in some directories, e.g. jars-dir1, jars-dir2</span>
+<span class="pl-c">###so that all jars or direct sub directories from these directories will be appended to the jvm classpath</span>
+<span class="pl-c">##Note: if you use build-in extensions (e.g. SUN JCE) from jdk please append these dirs, e.g. the value of </span>
+<span class="pl-c">##            System.getProperty("java.ext.dirs")</span>
+<span class="pl-k">jvm_options</span> <span class="pl-s">"-Djava.ext.dirs=jars-dir1:jars-dir2"</span> </pre></div>
 </li>
 <li>
 <p>Setting inline Http Service Handler</p>
@@ -118,34 +139,34 @@ jvm_options <span class="pl-s1">"-Djava.class.path=jars/nginx-clojure-0.2.5.jar:
 <p>For Clojure:</p>
 
 <div class="highlight highlight-nginx"><pre>
-   <span class="pl-st">location</span> <span class="pl-en">/clojure </span>{
-      content_handler_type <span class="pl-s1">'clojure'</span>;
-      content_handler_code <span class="pl-s1">' </span>
-<span class="pl-s1">                    (fn[req]</span>
-<span class="pl-s1">                      {</span>
-<span class="pl-s1">                        :status 200,</span>
-<span class="pl-s1">                        :headers {"content-type" "text/plain"},</span>
-<span class="pl-s1">                        :body  "Hello Clojure &amp; Nginx!"</span>
-<span class="pl-s1">                        })</span>
-<span class="pl-s1">      '</span>;
+   <span class="pl-k">location</span> <span class="pl-en">/clojure </span>{
+      <span class="pl-k">content_handler_type</span> <span class="pl-s">'clojure'</span>;
+      <span class="pl-k">content_handler_code</span> <span class="pl-s">' </span>
+<span class="pl-s">                    (fn[req]</span>
+<span class="pl-s">                      {</span>
+<span class="pl-s">                        :status 200,</span>
+<span class="pl-s">                        :headers {"content-type" "text/plain"},</span>
+<span class="pl-s">                        :body  "Hello Clojure &amp; Nginx!"</span>
+<span class="pl-s">                        })</span>
+<span class="pl-s">      '</span>;
    }</pre></div>
 
 <p>For Groovy:</p>
 
 <div class="highlight highlight-nginx"><pre>
-   <span class="pl-st">location</span> <span class="pl-en">/groovy </span>{
-      content_handler_type <span class="pl-s1">'groovy'</span>;
-      content_handler_code <span class="pl-s1">' </span>
-<span class="pl-s1">           import nginx.clojure.java.NginxJavaRingHandler;</span>
-<span class="pl-s1">           import java.util.Map;</span>
-<span class="pl-s1">           public class HelloGroovy implements NginxJavaRingHandler {</span>
-<span class="pl-s1">              public Object[] invoke(Map&lt;String, Object&gt; request){</span>
-<span class="pl-s1">                 return [200, //http status 200</span>
-<span class="pl-s1">                         ["Content-Type":"text/html"], //headers map</span>
-<span class="pl-s1">                         "Hello, Groovy &amp; Nginx!"]; //response body can be string, File or Array/Collection of them</span>
-<span class="pl-s1">              }</span>
-<span class="pl-s1">           }</span>
-<span class="pl-s1">      '</span>;
+   <span class="pl-k">location</span> <span class="pl-en">/groovy </span>{
+      <span class="pl-k">content_handler_type</span> <span class="pl-s">'groovy'</span>;
+      <span class="pl-k">content_handler_code</span> <span class="pl-s">' </span>
+<span class="pl-s">           import nginx.clojure.java.NginxJavaRingHandler;</span>
+<span class="pl-s">           import java.util.Map;</span>
+<span class="pl-s">           public class HelloGroovy implements NginxJavaRingHandler {</span>
+<span class="pl-s">              public Object[] invoke(Map&lt;String, Object&gt; request){</span>
+<span class="pl-s">                 return [200, //http status 200</span>
+<span class="pl-s">                         ["Content-Type":"text/html"], //headers map</span>
+<span class="pl-s">                         "Hello, Groovy &amp; Nginx!"]; //response body can be string, File or Array/Collection of them</span>
+<span class="pl-s">              }</span>
+<span class="pl-s">           }</span>
+<span class="pl-s">      '</span>;
    }</pre></div>
 </li>
 </ol>
@@ -153,16 +174,16 @@ jvm_options <span class="pl-s1">"-Djava.class.path=jars/nginx-clojure-0.2.5.jar:
 <p>For Java:</p>
 
 <div class="highlight highlight-nginx"><pre>
-       <span class="pl-st">location</span> <span class="pl-en">/groovy </span>{
-          content_handler_type <span class="pl-s1">'java'</span>;
-          content_handler_name <span class="pl-s1">'mytest.HelloService'</span>;
+       <span class="pl-k">location</span> <span class="pl-en">/groovy </span>{
+          <span class="pl-k">content_handler_type</span> <span class="pl-s">'java'</span>;
+          <span class="pl-k">content_handler_name</span> <span class="pl-s">'mytest.HelloService'</span>;
        }
 
 </pre></div>
 
 <p>Make sure that the class of the below source is in the classpath.</p>
 
-<div class="highlight highlight-java"><pre><span class="pl-k">package</span> <span class="pl-smp">mytest</span>;
+<div class="highlight highlight-java"><pre><span class="pl-k">package</span> <span class="pl-smi">mytest</span>;
 
 <span class="pl-k">import</span> <span class="pl-smi">java.util.Map</span>;
 
@@ -170,14 +191,14 @@ jvm_options <span class="pl-s1">"-Djava.class.path=jars/nginx-clojure-0.2.5.jar:
 <span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.java.NginxJavaRingHandler</span>;
 <span class="pl-k">import static</span> <span class="pl-smi">nginx.clojure.MiniConstants.*</span>;
 
-<span class="pl-s">public</span>  <span class="pl-s">class</span> <span class="pl-en">HelloService</span> <span class="pl-s">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
+<span class="pl-k">public</span>  <span class="pl-k">class</span> <span class="pl-en">HelloService</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
 
-    <span class="pl-st">@Override</span>
-    <span class="pl-s">public</span> <span class="pl-st">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-st">Map&lt;<span class="pl-stj">String</span>, <span class="pl-stj">Object</span>&gt;</span> <span class="pl-v">request</span>) {
-        <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-stj">Object</span>[] { 
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>) {
+        <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] { 
                 <span class="pl-c1">NGX_HTTP_OK</span>, <span class="pl-c">//http status 200</span>
-                <span class="pl-stj">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-c1">CONTENT_TYPE</span>, <span class="pl-s1"><span class="pl-pds">"</span>text/plain<span class="pl-pds">"</span></span>), <span class="pl-c">//headers map</span>
-                <span class="pl-s1"><span class="pl-pds">"</span>Hello, Java &amp; Nginx!<span class="pl-pds">"</span></span>  <span class="pl-c">//response body can be string, File or Array/Collection of string or File</span>
+                <span class="pl-smi">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-c1">CONTENT_TYPE</span>, <span class="pl-s"><span class="pl-pds">"</span>text/plain<span class="pl-pds">"</span></span>), <span class="pl-c">//headers map</span>
+                <span class="pl-s"><span class="pl-pds">"</span>Hello, Java &amp; Nginx!<span class="pl-pds">"</span></span>  <span class="pl-c">//response body can be string, File or Array/Collection of string or File</span>
                 };
     }
 }</pre></div>
@@ -193,19 +214,19 @@ For more advanced configurations such as external Http Service Handler,  enable 
 <a id="user-content-start-up" class="anchor" href="#start-up" aria-hidden="true"><span class="octicon octicon-link"></span></a>Start up</h2>
 
 <div class="highlight highlight-nginx"><pre>
-$ cd nginx-clojure-0.3.0/nginx-1.6.2
-$ ./nginx</pre></div>
+$ <span class="pl-k">cd</span> nginx-clojure-0.3.0/nginx-1.6.2
+$ ./<span class="pl-k">nginx</span></pre></div>
 
 <p>If everything is ok, we can access our first http service by this url</p>
 
 <div class="highlight highlight-nginx"><pre><span class="pl-c">### For Clojure</span>
-http://localhost:8080/clojure
+http://localhost:8080/<span class="pl-k">clojure</span>
 
-### For Groovy
-http://localhost:8080/groovy
+<span class="pl-c">### For Groovy</span>
+http://localhost:8080/<span class="pl-k">groovy</span>
 
-### For Java
-http://localhost:8080/java</pre></div>
+<span class="pl-c">### For Java</span>
+http://localhost:8080/<span class="pl-k">java</span></pre></div>
 
 <p>We can check the logs/error.log to see error information.</p>
 
@@ -214,12 +235,12 @@ http://localhost:8080/java</pre></div>
 
 <p>If we change some settings  we can reload the settings without stoping our services.</p>
 
-<div class="highlight highlight-nginx"><pre>$ ./nginx -s reload</pre></div>
+<div class="highlight highlight-nginx"><pre>$ ./<span class="pl-k">nginx</span> -s reload</pre></div>
 
 <h2>
 <a id="user-content-stop" class="anchor" href="#stop" aria-hidden="true"><span class="octicon octicon-link"></span></a>Stop</h2>
 
-<div class="highlight highlight-nginx"><pre>$ ./nginx -s stop</pre></div>
+<div class="highlight highlight-nginx"><pre>$ ./<span class="pl-k">nginx</span> -s stop</pre></div>
 
         </section>
     </div>
@@ -236,7 +257,7 @@ http://localhost:8080/java</pre></div>
   
 	<script type="text/javascript">
 	  $("a[href^='http']").attr("target","_blank");
-	  setTimeout("fixNavbarIssue();", 1000);
+	  setTimeout("fixNavbarIssue();", 100);
 		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl."
 				: "http://www.");
 		document

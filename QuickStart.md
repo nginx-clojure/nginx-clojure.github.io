@@ -23,6 +23,12 @@ Configuration
 		
 	### my app classpath, windows user should use ';' as the separator
 	jvm_options "-Djava.class.path=jars/nginx-clojure-0.2.5.jar:#{my_other_jars}";
+	
+  ###or we can put jars in some directories, e.g. jars-dir1, jars-dir2
+  ###so that all jars or direct sub directories from these directories will be appended to the jvm classpath
+  ##Note: if you use build-in extensions (e.g. SUN JCE) from jdk please append these dirs, e.g. the value of 
+  ##            System.getProperty("java.ext.dirs")
+  jvm_options "-Djava.ext.dirs=jars-dir1:jars-dir2"	
 	```
 1. Setting inline Http Service Handler
 

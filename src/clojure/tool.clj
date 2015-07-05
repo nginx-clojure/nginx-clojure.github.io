@@ -52,13 +52,17 @@
 (defn need-re-gen [md]
   (let [mdf (clojure.java.io/file md)
         mhf (clojure.java.io/file (str md ".html"))
-        tf (clojure.java.io/file "content-template.html")]
+        tf (clojure.java.io/file "content-template.html")
+        ff (clojure.java.io/file "footer.html")
+        hf (clojure.java.io/file "header.html")]
     (or (< (.lastModified mhf) (.lastModified mdf))
+        (< (.lastModified mhf) (.lastModified ff))
+        (< (.lastModified mhf) (.lastModified hf))
         (< (.lastModified mhf) (.lastModified tf) ))))
 
 (defn gen-all-updated-html []
   (let [all-contents (load-all-content)
-        updated-md-htmls (render-all-updated)]
+        updated-md-htmls (doall (render-all-updated))]
     (doseq [md (keys md-file-map) 
             :when (need-re-gen md)]
       (println "gen " (md-file-map md))

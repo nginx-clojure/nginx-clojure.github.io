@@ -58,19 +58,34 @@
           <a href="index.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-home"></span> Home</a>
           <a href="quickstart.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-flash"></span> Quick Start</a>
           <a href="downloads.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-download-alt"></span> Downloads</a>
-          <a href="configuration.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-cog"></span> Configuration</a>
-          <button type="button" class="btn btn-sample btn-lg dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-book"></span> Documents <span class="caret"></span></button>
-					<ul class="dropdown-menu dropdown-menu-right" role="menu"
-						style="right: 0; left: auto;">
+          <div class="btn-group">
+          <button type="button" class="btn btn-sample btn-lg dropdown-toggle" data-toggle="dropdown" id="docDropDownBtn"><span class="glyphicon glyphicon-cog"></span> Configuration <span class="caret"></span></button>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="configuration.html#21-jvm-path--class-path--other-jvm-options"><span class="glyphicon glyphicon-cog"></span> JVM Path,Class Path & Other JVM Options</a></li>
+						<li><a href="configuration.html#22-initialization-handler-for-nginx-worker"><span class="glyphicon glyphicon-cog"></span> Initialization Handler for nginx worker</a></li>
+						<li><a href="configuration.html#23-content-ring-handler-for-location"><span class="glyphicon glyphicon-cog"></span> Content Ring Handler for Location</a></li>
+						<li><a href="configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations"><span class="glyphicon glyphicon-cog"></span> Coroutine/Asynchronous Client Channel/Thread Pool </a></li>
+						<li><a href="configuration.html#25-nginx-rewrite-handler"><span class="glyphicon glyphicon-cog"></span> Nginx Rewrite Handler</a></li>
+						<li><a href="configuration.html#26-nginx-access-handler"><span class="glyphicon glyphicon-cog"></span> Nginx Access Handler</a></li>
+						<li><a href="configuration.html#27-niginx-header-filter"><span class="glyphicon glyphicon-cog"></span> Niginx Header Filter</a></li>
+					</ul>
+					</div>
+					<div class="btn-group">
+          <button type="button" class="btn btn-sample btn-lg dropdown-toggle" data-toggle="dropdown" id="docDropDownBtn"><span class="glyphicon glyphicon-book"></span> Documents <span class="caret"></span></button>
+					<ul class="dropdown-menu" role="menu">
 <!-- 						<li><a href="quickstart.html"><span class="glyphicon glyphicon-flash"></span> Quick Start</a></li> -->
 						<li><a href="installation.html"><span class="glyphicon glyphicon-hdd"></span> Installation</a></li>
 						<li><a href="configuration.html"><span class="glyphicon glyphicon-cog"></span> Configuration</a></li>
-						<li><a href="more.html#34-long-polling--server-sent-events-sse"><span class="glyphicon glyphicon-envelope"></span> Long Polling & Server Sent Events</a></li>
+						<li><a href="more.html#34-server-channel-for-long-polling--server-sent-events-sse"><span class="glyphicon glyphicon-envelope"></span>Server Channel for Long Polling & Server Sent Events</a></li>
 						<li><a href="more.html#35-subpub--broadcast-event"><span class="glyphicon glyphicon-signal"></span> Sub/Pub services with Broadcast Events</a></li>
-						<li><a href="more.html#36-asynchronous-channel"><span class="glyphicon glyphicon-road"></span> Asynchronous Channel</a></li>
+						<li><a href="more.html#36-asynchronous-client-channel"><span class="glyphicon glyphicon-road"></span> Asynchronous Client Channel</a></li>
+						<li><a href="more.html#37--about-logging"><span class="glyphicon glyphicon-th-list"></span> About Logging</a></li>
+						<li><a href="more.html#38--sever-side-websocket"><span class="glyphicon glyphicon-th-list"></span> Sever Side WebSocket</a></li>
+						<li><a href="more.html#39--java-standard-restful-web-services-with-jersey"><span class="glyphicon glyphicon-th-list"></span> Java standard RESTful web services with Jersey</a></li>
+						<li><a href="more.html#310-embeding-tomcat"><span class="glyphicon glyphicon-th-list"></span> Embeding Tomcat</a></li>
 						<li><a href="more.html"><span class="glyphicon glyphicon-th-list"></span> More about Nginx-Clojure</a></li>
 					</ul>
-
+					</div>
 			<a href="userfullLinks.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-share-alt"></span> Useful Links</a>
           </div>  
     </nav>
@@ -85,6 +100,26 @@
 <ol>
 <li><a href="http://sourceforge.net/projects/nginx-clojure/files/">Binaries of Releases</a></li>
 <li><a href="https://github.com/nginx-clojure/nginx-clojure/releases">Sources of Releases</a></li>
+</ol>
+
+<h2>
+<a id="user-content-040-2015-07-06" class="anchor" href="#040-2015-07-06" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.4.0 (2015-07-06)</h2>
+
+<ol>
+<li>New Feature: Service Side Websocket (issue #73)</li>
+<li>New Feature: A build-in Jersey container to support java standard RESTful web services (JAX-RS 2.0) (issue #74)</li>
+<li>New Feature: Tomcat 8 embedding support (so servlet 3.1/jsp/sendfile/JSR-356 websocket work within nginx!) (issue #67)</li>
+<li>New Feature: Coroutined Based Client Socket Supports to Bind to Specified IP Address (issue #69)</li>
+<li>New Feature: Handler's Property Configuration (issue #66)</li>
+<li>Enhancement: NginxHttpServerChannel can work with Rewrite Handler or Access Handler (issue #79)</li>
+<li>Enhancement: Configurable Write Buffer Size for SSE or Websocket (issue #76)</li>
+<li>Bug Fix: When we do not configure jvm_path proxy_pass will not work (issue #72)</li>
+<li>Bug Fix: nginx worker restart when get the value of header X-Forwarded-For (issue #70)</li>
+<li>Bug Fix: proxy_cache_path causes crash (issue #64)</li>
+<li>Bug Fix: send_timeout does not take effect with NginxHttpServerChannel (issue #78)</li>
+<li>Bug Fix: Waving tool generates wrong wave information of fuzzing classes (issue #80)</li>
+<li>Documents : Release History link in README (issue #68)</li>
+<li>Binaries Distribution: built with The latest stable Nginx v1.8.0 which released at 2015-04-21.</li>
 </ol>
 
 <h2>
@@ -125,7 +160,7 @@
 <li>Fix Bug: rewrite handler does not handle write event correctly with thread pool mode or coroutine mode (issue #43)</li>
 <li>Documents : Correct some inaccuracies and add section about logging in Chapter <a href="http://nginx-clojure.github.io/more.html#user-content-37--about-logging">More about Nginx-Clojure</a>
 </li>
-<li>Binaries: built with The lastest stable Nginx v1.6.2 which released at 2014-09-16.</li>
+<li>Binaries: built with The latest stable Nginx v1.6.2 which released at 2014-09-16.</li>
 </ol>
 
 <h2>
@@ -237,7 +272,7 @@ Make Clojure/Java/Groovy handler configurations have the same form. e.g. The old
   
 	<script type="text/javascript">
 	  $("a[href^='http']").attr("target","_blank");
-	  setTimeout("fixNavbarIssue();", 1000);
+	  setTimeout("fixNavbarIssue();", 100);
 		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl."
 				: "http://www.");
 		document

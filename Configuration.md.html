@@ -8,28 +8,32 @@
 
 <div class="highlight highlight-nginx"><pre>
     <span class="pl-c">###define jvm path</span>
-    ###for win32,  jvm_path maybe is <span class="pl-s1">"C:/Program Files/Java/jdk1.7.0_25/jre/bin/server/jvm.dll"</span>;
+    <span class="pl-c">###for win32,  jvm_path maybe is "C:/Program Files/Java/jdk1.7.0_25/jre/bin/server/jvm.dll";</span>
     <span class="pl-c">###for macosx, jvm_path maybe is "/Library/Java/JavaVirtualMachines/1.6.0_65-b14-462.jdk/Contents/Libraries/libserver.dylib";</span>
     <span class="pl-c">###for ubuntu, jvm_path maybe is "/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so";</span>
     <span class="pl-c">###for centos, jvm_path maybe is "/usr/java/jdk1.6.0_45/jre/lib/amd64/server/libjvm.so";</span>
     <span class="pl-c">###for centos 32bit, jvm_path maybe is "/usr/java/jdk1.7.0_51/jre/lib/i386/server/libjvm.so";</span>
 
-    jvm_path <span class="pl-s1">"/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so"</span>;
+    <span class="pl-k">jvm_path</span> <span class="pl-s">"/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so"</span>;
 
     <span class="pl-c">###jvm_options can be repeated once per option.</span>
 
     <span class="pl-c">###define class paths</span>
-    ###for clojure, you should append clojure core jar
-    ###for groovy, you should append groovy runtime jar
-    jvm_options <span class="pl-s1">"-Djava.class.path=#{my_jar_root}/nginx-clojure-0.2.7.jar"</span>;
+    <span class="pl-c">###for clojure, you should append clojure core jar</span>
+    <span class="pl-c">###for groovy, you should append groovy runtime jar</span>
+    <span class="pl-k">jvm_options</span> <span class="pl-s">"-Djava.class.path=#{my_jar_root}/nginx-clojure-0.2.7.jar"</span>;
+
+    <span class="pl-c">###or we can put jars in some directories, e.g. jars-dir1, jars-dir2</span>
+    <span class="pl-c">###so that all jars/sub directories from these directories will be appended the jvm classpath</span>
+    <span class="pl-k">jvm_options</span> <span class="pl-s">"-Djava.ext.dirs=jars-dir1:jars-dir2"</span>
 
     <span class="pl-c">###uncomment next two line to define jvm heap memory</span>
-    #jvm_options <span class="pl-s1">"-Xms1024m"</span>;
+    <span class="pl-c">#jvm_options "-Xms1024m";</span>
     <span class="pl-c">#jvm_options "-Xmx1024m";</span>
 
     <span class="pl-c">###for enable java remote debug uncomment next two lines</span>
-    ###the remote<span class="pl-c1"> debug</span> port will <span class="pl-s1">be</span> <span class="pl-s1">8401</span> <span class="pl-sr">~</span> 840X .
-    #jvm_options <span class="pl-s1">"-Xdebug"</span>;
+    <span class="pl-c">###the remote debug port will be 8401 ~ 840X .</span>
+    <span class="pl-c">#jvm_options "-Xdebug";</span>
     <span class="pl-c">#jvm_options "-Xrunjdwp:server=y,transport=dt_socket,address=840#{pno},suspend=n";</span></pre></div>
 
 <h3>
@@ -39,17 +43,17 @@
 
 <div class="highlight highlight-nginx"><pre>
     <span class="pl-c">###define nginx_clojure_jar</span>
-    jvm_var nginx_clojure_jar <span class="pl-s1">'/home/who/git/nginx-clojure/target/nginx-clojure-0.2.5.jar'</span>;
+    <span class="pl-k">jvm_var</span> nginx_clojure_jar <span class="pl-s">'/home/who/git/nginx-clojure/target/nginx-clojure-0.2.5.jar'</span>;
     <span class="pl-c">###reference variable nginx_clojure_jar, starts with #{ different from nginx variable</span>
-    jvm_options <span class="pl-s1">"-javaagent:#{nginx_clojure_jar}=mb"</span>;
-    jvm_options <span class="pl-s1">"-Xbootclasspath/a:#{nginx_clojure_jar}:jars/clojure-1.5.1.jar"</span>; 
+    <span class="pl-k">jvm_options</span> <span class="pl-s">"-javaagent:#{nginx_clojure_jar}=mb"</span>;
+    <span class="pl-k">jvm_options</span> <span class="pl-s">"-Xbootclasspath/a:#{nginx_clojure_jar}:jars/clojure-1.5.1.jar"</span>; 
 
     <span class="pl-c">###define jvm var `ncdev , `mrr, `ncjar, `ncdev is reused in `ncdev</span>
-    jvm_var ncdev <span class="pl-s1">'/home/who/git/nginx-clojure'</span>;
-    jvm_var mrr <span class="pl-s1">'/home/who/.m2/repository'</span>;
-    jvm_var ncjar <span class="pl-s1">'#{ncdev}/target/nginx-clojure-0.2.5.jar'</span>;
+    <span class="pl-k">jvm_var</span> ncdev <span class="pl-s">'/home/who/git/nginx-clojure'</span>;
+    <span class="pl-k">jvm_var</span> mrr <span class="pl-s">'/home/who/.m2/repository'</span>;
+    <span class="pl-k">jvm_var</span> ncjar <span class="pl-s">'#{ncdev}/target/nginx-clojure-0.2.5.jar'</span>;
 
-    jvm_options <span class="pl-s1">"-Djava.class.path=#{ncjar}:#{mrr}/clj-http/clj-http/0.7.8/clj-http-0.7.8.jar"</span>;</pre></div>
+    <span class="pl-k">jvm_options</span> <span class="pl-s">"-Djava.class.path=#{ncjar}:#{mrr}/clj-http/clj-http/0.7.8/clj-http-0.7.8.jar"</span>;</pre></div>
 
 <h3>
 <a id="user-content-specify-debug-ports-for-jvms" class="anchor" href="#specify-debug-ports-for-jvms" aria-hidden="true"><span class="octicon octicon-link"></span></a>Specify Debug Ports for JVMs</h3>
@@ -58,20 +62,20 @@
 If the <code>worker_processes</code> &gt; 1, the below code will cause error for multiple JVMs try listen on the same debug port <code>2400</code>.</p>
 
 <div class="highlight highlight-nginx"><pre>
-    jvm_options <span class="pl-s1">"-Xdebug"</span>;
-    jvm_options <span class="pl-s1">"-Xrunjdwp:server=y,transport=dt_socket,address=2400,suspend=n"</span>;</pre></div>
+    <span class="pl-k">jvm_options</span> <span class="pl-s">"-Xdebug"</span>;
+    <span class="pl-k">jvm_options</span> <span class="pl-s">"-Xrunjdwp:server=y,transport=dt_socket,address=2400,suspend=n"</span>;</pre></div>
 
 <p>Since v0.2.5 we can use a built-in jvm_var <code>pno</code> to make all JVMs have different debug ports,  <code>pno</code> is a dynamic variable and will be increased 
 on creating every JVM.
 e.g. When <code>worker_processes</code> is 8, the debug ports will range from port <code>2401</code> to <code>2408</code></p>
 
 <div class="highlight highlight-nginx"><pre>
-<span class="pl-k">worker_processes</span>  <span class="pl-s1">8</span>;
+<span class="pl-k">worker_processes</span>  <span class="pl-s">8</span>;
 
-<span class="pl-st">http</span> {
+<span class="pl-k">http</span> {
 ...
-    jvm_options <span class="pl-s1">"-Xdebug"</span>;
-    jvm_options <span class="pl-s1">"-Xrunjdwp:server=y,transport=dt_socket,address=240#{pno},suspend=n"</span>;
+    <span class="pl-k">jvm_options</span> <span class="pl-s">"-Xdebug"</span>;
+    <span class="pl-k">jvm_options</span> <span class="pl-s">"-Xrunjdwp:server=y,transport=dt_socket,address=240#{pno},suspend=n"</span>;
 }</pre></div>
 
 <h3>
@@ -101,33 +105,33 @@ even external service(e.g. redis, database) to  coordinate the state.</li>
 
 <p>For Clojure</p>
 
-<div class="highlight highlight-nginx"><pre><span class="pl-st">http</span> {
+<div class="highlight highlight-nginx"><pre><span class="pl-k">http</span> {
 ......
-    jvm_handler_type <span class="pl-s1">'clojure'</span>; 
+    <span class="pl-k">jvm_handler_type</span> <span class="pl-s">'clojure'</span>; 
     <span class="pl-c"># or for external handler  we can use jvm_init_handler_name my.test/InitHandler;</span>
     <span class="pl-c"># below is a clojure example for incline clojure  handler</span>
-    jvm_init_handler_code <span class="pl-s1">'</span>
-<span class="pl-s1">          (fn[ctx]</span>
-<span class="pl-s1">            (.println System/err "init2 on http clojure context")</span>
-<span class="pl-s1">            {:status 200}</span>
-<span class="pl-s1">            )</span>
-<span class="pl-s1">    '</span>; 
+    <span class="pl-k">jvm_init_handler_code</span> <span class="pl-s">'</span>
+<span class="pl-s">          (fn[ctx]</span>
+<span class="pl-s">            (.println System/err "init2 on http clojure context")</span>
+<span class="pl-s">            {:status 200}</span>
+<span class="pl-s">            )</span>
+<span class="pl-s">    '</span>; 
 ....
 }</pre></div>
 
 <p>For Java/groovy</p>
 
-<div class="highlight highlight-nginx"><pre><span class="pl-st">http</span> {
+<div class="highlight highlight-nginx"><pre><span class="pl-k">http</span> {
 ......
-    jvm_handler_type <span class="pl-s1">'java'</span>; <span class="pl-c"># or handler_type 'groovy'</span>
-    jvm_init_handler_name <span class="pl-s1">'my.test/InitHandler'</span>; 
+    <span class="pl-k">jvm_handler_type</span> <span class="pl-s">'java'</span>; <span class="pl-c"># or handler_type 'groovy'</span>
+    <span class="pl-k">jvm_init_handler_name</span> <span class="pl-s">'my.test/InitHandler'</span>; 
 ....
 }</pre></div>
 
-<div class="highlight highlight-java"><pre>    <span class="pl-s">public</span> <span class="pl-s">static</span> <span class="pl-s">class</span> <span class="pl-en">JVMInitHandler</span> <span class="pl-s">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
-        <span class="pl-st">@Override</span>
-        <span class="pl-s">public</span> <span class="pl-st">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-st">Map&lt;<span class="pl-stj">String</span>, <span class="pl-stj">Object</span>&gt;</span> <span class="pl-v">ctx</span>) {
-            <span class="pl-stj">NginxClojureRT</span><span class="pl-k">.</span>log<span class="pl-k">.</span>info(<span class="pl-s1"><span class="pl-pds">"</span>JVMInitHandler invoked!<span class="pl-pds">"</span></span>);
+<div class="highlight highlight-java"><pre>    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">JVMInitHandler</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
+        <span class="pl-k">@Override</span>
+        <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">ctx</span>) {
+            <span class="pl-smi">NginxClojureRT</span><span class="pl-k">.</span>log<span class="pl-k">.</span>info(<span class="pl-s"><span class="pl-pds">"</span>JVMInitHandler invoked!<span class="pl-pds">"</span></span>);
             <span class="pl-k">return</span> <span class="pl-c1">null</span>; <span class="pl-c">// or return new Object[] {500, null, null}; for  an error</span>
         }
     }</pre></div>
@@ -148,15 +152,15 @@ use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.
 
 <p>For clojure</p>
 
-<div class="highlight highlight-nginx"><pre>        handler_code <span class="pl-s1">'</span>
-<span class="pl-s1">        (do</span>
-<span class="pl-s1">            (use <span class="pl-cce">\'</span>nginx.clojure.core)</span>
-<span class="pl-s1">            (without-coroutine</span>
-<span class="pl-s1">              (fn[ctx]</span>
-<span class="pl-s1">                ....</span>
-<span class="pl-s1">                )</span>
-<span class="pl-s1">            ))</span>
-<span class="pl-s1">        '</span>;</pre></div>
+<div class="highlight highlight-nginx"><pre>        <span class="pl-k">handler_code</span> <span class="pl-s">'</span>
+<span class="pl-s">        (do</span>
+<span class="pl-s">            (use <span class="pl-cce">\'</span>nginx.clojure.core)</span>
+<span class="pl-s">            (without-coroutine</span>
+<span class="pl-s">              (fn[ctx]</span>
+<span class="pl-s">                ....</span>
+<span class="pl-s">                )</span>
+<span class="pl-s">            ))</span>
+<span class="pl-s">        '</span>;</pre></div>
 
 <h2>
 <a id="user-content-23-content-ring-handler-for-location" class="anchor" href="#23-content-ring-handler-for-location" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.3 Content Ring Handler for Location</h2>
@@ -167,6 +171,8 @@ use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.
 <li>Directive <code>content_handler_type</code> is used to setting a type of handler.</li>
 <li>Directive <code>content_handler_code</code> is used to setting an inline Ring handler.</li>
 <li>Directive <code>content_handler_name</code> is used to setting an external Ring handler which is in a certain jar file included by your classpath.</li>
+<li>Directive <code>content_handler_property</code> is used to declare one or many properties for content handler which implements interface <code>nginx.clojure.Configurable</code>
+</li>
 </ul>
 
 <h3>
@@ -174,35 +180,35 @@ use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.
 
 <p>For Clojure : </p>
 
-<div class="highlight highlight-nginx"><pre>       <span class="pl-st">location</span> <span class="pl-en">/clojure </span>{
-          handler_type <span class="pl-s1">'clojure'</span>;
-          handler_code <span class="pl-s1">' </span>
-<span class="pl-s1">                        (fn[req]</span>
-<span class="pl-s1">                          {</span>
-<span class="pl-s1">                            :status 200,</span>
-<span class="pl-s1">                            :headers {"content-type" "text/plain"},</span>
-<span class="pl-s1">                            :body  "Hello Clojure &amp; Nginx!" ;response body can be string, File or Array/Collection/Seq of them</span>
-<span class="pl-s1">                            })</span>
-<span class="pl-s1">          '</span>;
+<div class="highlight highlight-nginx"><pre>       <span class="pl-k">location</span> <span class="pl-en">/clojure </span>{
+          <span class="pl-k">handler_type</span> <span class="pl-s">'clojure'</span>;
+          <span class="pl-k">handler_code</span> <span class="pl-s">' </span>
+<span class="pl-s">                        (fn[req]</span>
+<span class="pl-s">                          {</span>
+<span class="pl-s">                            :status 200,</span>
+<span class="pl-s">                            :headers {"content-type" "text/plain"},</span>
+<span class="pl-s">                            :body  "Hello Clojure &amp; Nginx!" ;response body can be string, File or Array/Collection/Seq of them</span>
+<span class="pl-s">                            })</span>
+<span class="pl-s">          '</span>;
        }</pre></div>
 
 <p>Now you can start nginx and access http://localhost:8080/clojure, if some error happens please check error.log file. </p>
 
 <p>For Groovy :</p>
 
-<div class="highlight highlight-nginx"><pre>       <span class="pl-st">location</span> <span class="pl-en">/groovy </span>{
-          content_handler_type <span class="pl-s1">'groovy'</span>;
-          content_handler_code <span class="pl-s1">' </span>
-<span class="pl-s1">               import nginx.clojure.java.NginxJavaRingHandler;</span>
-<span class="pl-s1">               import java.util.Map;</span>
-<span class="pl-s1">               public class HelloGroovy implements NginxJavaRingHandler {</span>
-<span class="pl-s1">                  public Object[] invoke(Map&lt;String, Object&gt; request){</span>
-<span class="pl-s1">                     return [200, //http status 200</span>
-<span class="pl-s1">                             ["Content-Type":"text/html"], //headers map</span>
-<span class="pl-s1">                             "Hello, Groovy &amp; Nginx!"]; //response body can be string, File or Array/Collection of them</span>
-<span class="pl-s1">                  }</span>
-<span class="pl-s1">               }</span>
-<span class="pl-s1">          '</span>;
+<div class="highlight highlight-nginx"><pre>       <span class="pl-k">location</span> <span class="pl-en">/groovy </span>{
+          <span class="pl-k">content_handler_type</span> <span class="pl-s">'groovy'</span>;
+          <span class="pl-k">content_handler_code</span> <span class="pl-s">' </span>
+<span class="pl-s">               import nginx.clojure.java.NginxJavaRingHandler;</span>
+<span class="pl-s">               import java.util.Map;</span>
+<span class="pl-s">               public class HelloGroovy implements NginxJavaRingHandler {</span>
+<span class="pl-s">                  public Object[] invoke(Map&lt;String, Object&gt; request){</span>
+<span class="pl-s">                     return [200, //http status 200</span>
+<span class="pl-s">                             ["Content-Type":"text/html"], //headers map</span>
+<span class="pl-s">                             "Hello, Groovy &amp; Nginx!"]; //response body can be string, File or Array/Collection of them</span>
+<span class="pl-s">                  }</span>
+<span class="pl-s">               }</span>
+<span class="pl-s">          '</span>;
        }</pre></div>
 
 <p>Now you can start nginx and access http://localhost:8080/groovy, if some error happens please check error.log file. </p>
@@ -218,57 +224,57 @@ It is also OK if you do not compile the Clojure/Groovy to java class file and ju
 <div class="highlight highlight-clojure"><pre>(<span class="pl-k">ns</span> <span class="pl-e">my.hello</span>)
 (<span class="pl-k">defn</span> <span class="pl-e">hello-world</span> [request]
   {<span class="pl-c1">:status</span> <span class="pl-c1">200</span>
-   <span class="pl-c1">:headers</span> {<span class="pl-s1"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>text/plain<span class="pl-pds">"</span></span>}
+   <span class="pl-c1">:headers</span> {<span class="pl-s"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>text/plain<span class="pl-pds">"</span></span>}
    <span class="pl-c">;response body can be string, File or Array/Collection/Seq of them</span>
-   <span class="pl-c1">:body</span> <span class="pl-s1"><span class="pl-pds">"</span>Hello World<span class="pl-pds">"</span></span>})
+   <span class="pl-c1">:body</span> <span class="pl-s"><span class="pl-pds">"</span>Hello World<span class="pl-pds">"</span></span>})
 </pre></div>
 
 <p>Then we can reference it in nginx.conf</p>
 
-<div class="highlight highlight-nginx"><pre>       <span class="pl-st">location</span> <span class="pl-en">/myClojure </span>{
-         content_ handler_type <span class="pl-s1">'clojure'</span>;
-          content_handler_name <span class="pl-s1">'my.hello/hello-world'</span>;
+<div class="highlight highlight-nginx"><pre>       <span class="pl-k">location</span> <span class="pl-en">/myClojure </span>{
+         <span class="pl-k">content_</span> handler_type <span class="pl-s">'clojure'</span>;
+          <span class="pl-k">content_handler_name</span> <span class="pl-s">'my.hello/hello-world'</span>;
        }</pre></div>
 
 <p>For more details and more useful examples for <a href="https://github.com/weavejester/compojure">Compojure</a> which is a small routing library for Ring that allows web applications to be composed of small, independent parts. Please refer to <a href="https://github.com/weavejester/compojure">https://github.com/weavejester/compojure</a></p>
 
 <p>For Java</p>
 
-<div class="highlight highlight-java"><pre><span class="pl-k">package</span> <span class="pl-smp">mytest</span>;
+<div class="highlight highlight-java"><pre><span class="pl-k">package</span> <span class="pl-smi">mytest</span>;
 <span class="pl-k">import static</span> <span class="pl-smi">nginx.clojure.MiniConstants.*</span>;
 
 <span class="pl-k">import</span> <span class="pl-smi">java.util.HashMap</span>;
 <span class="pl-k">import</span> <span class="pl-smi">java.util.Map</span>;
-<span class="pl-s">public</span>  <span class="pl-s">class</span> <span class="pl-en">Hello</span> <span class="pl-s">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
+<span class="pl-k">public</span>  <span class="pl-k">class</span> <span class="pl-en">Hello</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
 
-        <span class="pl-st">@Override</span>
-        <span class="pl-s">public</span> <span class="pl-st">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-st">Map&lt;<span class="pl-stj">String</span>, <span class="pl-stj">Object</span>&gt;</span> <span class="pl-v">request</span>) {
-            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-stj">Object</span>[] { 
+        <span class="pl-k">@Override</span>
+        <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>) {
+            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] { 
                     <span class="pl-c1">NGX_HTTP_OK</span>, <span class="pl-c">//http status 200</span>
-                    <span class="pl-stj">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-c1">CONTENT_TYPE</span>, <span class="pl-s1"><span class="pl-pds">"</span>text/plain<span class="pl-pds">"</span></span>), <span class="pl-c">//headers map</span>
-                    <span class="pl-s1"><span class="pl-pds">"</span>Hello, Java &amp; Nginx!<span class="pl-pds">"</span></span>  <span class="pl-c">//response body can be string, File or Array/Collection of them</span>
+                    <span class="pl-smi">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-c1">CONTENT_TYPE</span>, <span class="pl-s"><span class="pl-pds">"</span>text/plain<span class="pl-pds">"</span></span>), <span class="pl-c">//headers map</span>
+                    <span class="pl-s"><span class="pl-pds">"</span>Hello, Java &amp; Nginx!<span class="pl-pds">"</span></span>  <span class="pl-c">//response body can be string, File or Array/Collection of them</span>
                     };
         }
     }</pre></div>
 
 <p>In nginx.conf</p>
 
-<div class="highlight highlight-nginx"><pre>       <span class="pl-st">location</span> <span class="pl-en">/myJava </span>{
-          content_handler_type <span class="pl-s1">'java'</span>;
-          content_handler_name <span class="pl-s1">'mytest.Hello'</span>;
+<div class="highlight highlight-nginx"><pre>       <span class="pl-k">location</span> <span class="pl-en">/myJava </span>{
+          <span class="pl-k">content_handler_type</span> <span class="pl-s">'java'</span>;
+          <span class="pl-k">content_handler_name</span> <span class="pl-s">'mytest.Hello'</span>;
        }</pre></div>
 
 <p>For Groovy</p>
 
-<div class="highlight highlight-groovy"><pre>   <span class="pl-k">package</span> <span class="pl-smp">mytest</span>;
+<div class="highlight highlight-groovy"><pre>   <span class="pl-k">package</span> <span class="pl-smi">mytest</span>;
    <span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.java.NginxJavaRingHandler</span>;
    <span class="pl-k">import</span> <span class="pl-smi">java.util.Map</span>;
-   <span class="pl-s">public</span> <span class="pl-s">class</span> <span class="pl-en">HelloGroovy</span> <span class="pl-s">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
-      <span class="pl-s">public</span> <span class="pl-st">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-st">Map&lt;<span class="pl-st">String</span>, <span class="pl-st">Object</span>&gt;</span> <span class="pl-v">request</span>){
+   <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">HelloGroovy</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
+      <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-k">String</span>, <span class="pl-k">Object</span>&gt;</span> <span class="pl-v">request</span>){
          <span class="pl-k">return</span> 
          [<span class="pl-c1">200</span>,  <span class="pl-c">//http status 200</span>
-          [<span class="pl-s1"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>:<span class="pl-s1"><span class="pl-pds">"</span>text/html<span class="pl-pds">"</span></span>],<span class="pl-c">//headers map</span>
-          <span class="pl-s1"><span class="pl-pds">"</span>Hello, Groovy &amp; Nginx!<span class="pl-pds">"</span></span> <span class="pl-c">//response body can be string, File or Array/Collection of them</span>
+          [<span class="pl-s"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>:<span class="pl-s"><span class="pl-pds">"</span>text/html<span class="pl-pds">"</span></span>],<span class="pl-c">//headers map</span>
+          <span class="pl-s"><span class="pl-pds">"</span>Hello, Groovy &amp; Nginx!<span class="pl-pds">"</span></span> <span class="pl-c">//response body can be string, File or Array/Collection of them</span>
           ]; 
       }
    }</pre></div>
@@ -296,7 +302,7 @@ three choice :</p>
 <img class="emoji" title=":worried:" alt=":worried:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f61f.png" height="20" width="20" align="absmiddle">You must do some steps to get the right class waving configuration file and set it in the nginx conf file.</li>
 </ul>
 </li>
-<li>Asynchronous Socket/Channel
+<li>Asynchronous Client Socket/Channel
 
 <ul>
 <li>
@@ -324,7 +330,7 @@ thread in java is costlier than coroutine, facing large amount of connections th
 </ol>
 
 <h3>
-<a id="user-content-241-enable-coroutine-based-socket" class="anchor" href="#241-enable-coroutine-based-socket" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.4.1 Enable Coroutine based Socket</h3>
+<a id="user-content-241-enable-coroutine-based-client-socket" class="anchor" href="#241-enable-coroutine-based-client-socket" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.4.1 Enable Coroutine based Client Socket</h3>
 
 <h4>
 <a id="user-content-1-get-a-user-defined-class-waving-configuration-file-for-your-web-app" class="anchor" href="#1-get-a-user-defined-class-waving-configuration-file-for-your-web-app" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Get a User Defined Class Waving Configuration File for Your Web App</h4>
@@ -333,17 +339,17 @@ thread in java is costlier than coroutine, facing large amount of connections th
 <li>
 <p>Turn on Run Tool Mode</p>
 
-<div class="highlight highlight-nginx"><pre><span class="pl-st">http</span> {
+<div class="highlight highlight-nginx"><pre><span class="pl-k">http</span> {
 ...
 
 <span class="pl-c">#To make sure generated Class Waving Configuration File won't be mixed by many workers. </span>
-<span class="pl-k">worker_processes</span>  <span class="pl-s1">1</span>;
+<span class="pl-k">worker_processes</span>  <span class="pl-s">1</span>;
 
 <span class="pl-c">#turn on run tool mode, t means Tool</span>
-jvm_options <span class="pl-s1">"-javaagent:jars/nginx-clojure-0.2.7.jar=tmb"</span>;
+<span class="pl-k">jvm_options</span> <span class="pl-s">"-javaagent:jars/nginx-clojure-0.2.7.jar=tmb"</span>;
 
 <span class="pl-c">#for clojure, you should append clojure core jar, e.g -Djava.class.path=jars/nginx-clojure-0.2.7.jar:mypath-xxx/clojure-1.5.1.jar,please  replace ':' with ';' on windows</span>
-jvm_options <span class="pl-s1">"-Xbootclasspath/a:jars/nginx-clojure-0.2.7.jar"</span>;
+<span class="pl-k">jvm_options</span> <span class="pl-s">"-Xbootclasspath/a:jars/nginx-clojure-0.2.7.jar"</span>;
 ...
   }</pre></div>
 </li>
@@ -351,15 +357,15 @@ jvm_options <span class="pl-s1">"-Xbootclasspath/a:jars/nginx-clojure-0.2.7.jar"
 <p>Setting Output Path of Waving Configuration File</p>
 
 <div class="highlight highlight-nginx"><pre><span class="pl-c">#Optional The default value is $nginx-workdir/nginx.clojure.wave.CfgToolOutFile</span>
-#Setting Output Path of Waving Configuration File, 
-jvm_options <span class="pl-s1">"-Dnginx.clojure.wave.CfgToolOutFile=/tmp/my-wave-cfg.txt"</span>;</pre></div>
+<span class="pl-c">#Setting Output Path of Waving Configuration File, </span>
+<span class="pl-k">jvm_options</span> <span class="pl-s">"-Dnginx.clojure.wave.CfgToolOutFile=/tmp/my-wave-cfg.txt"</span>;</pre></div>
 </li>
 <li>
 <p>Setting Dump Configuration Service</p>
 
-<div class="highlight highlight-nginx"><pre>  <span class="pl-st">location</span> <span class="pl-en">/dump </span>{
-     content_handler_type <span class="pl-s1">'java'</span>;
-     content_handler_name <span class="pl-s1">'nginx.clojure.java.WaveConfigurationDumpHandler'</span>;       
+<div class="highlight highlight-nginx"><pre>  <span class="pl-k">location</span> <span class="pl-en">/dump </span>{
+     <span class="pl-k">content_handler_type</span> <span class="pl-s">'java'</span>;
+     <span class="pl-k">content_handler_name</span> <span class="pl-s">'nginx.clojure.java.WaveConfigurationDumpHandler'</span>;       
   }</pre></div>
 </li>
 <li>Start Nginx which Compiled with Nginx Clojure Module</li>
@@ -369,7 +375,7 @@ jvm_options <span class="pl-s1">"-Dnginx.clojure.wave.CfgToolOutFile=/tmp/my-wav
 
 <div class="highlight highlight-bash"><pre>/<span class="pl-k">*</span>use curl or just put the Dump Service url to browser and click GO<span class="pl-k">!</span>
  <span class="pl-k">*</span>Dump Service will generate Waving Configuration File to the path defined by 
- <span class="pl-k">*</span>java system property <span class="pl-s1"><span class="pl-pds">`</span>nginx.clojure.wave.CfgToolOutFile<span class="pl-pds">`</span></span>
+ <span class="pl-k">*</span>java system property <span class="pl-s"><span class="pl-pds">`</span>nginx.clojure.wave.CfgToolOutFile<span class="pl-pds">`</span></span>
  <span class="pl-k">*</span>/
 curl -v http://localhost:8080/dump</pre></div>
 
@@ -384,27 +390,27 @@ curl -v http://localhost:8080/dump</pre></div>
 <li>
 <p>Turn on Coroutine Support</p>
 
-<div class="highlight highlight-nginx"><pre><span class="pl-st">http</span> {
+<div class="highlight highlight-nginx"><pre><span class="pl-k">http</span> {
 ...
 <span class="pl-c">#make sure it is reset to a normal number after  above step, e.g. 8 worker processes.</span>
-<span class="pl-k">worker_processes</span>  <span class="pl-s1">8</span>;
+<span class="pl-k">worker_processes</span>  <span class="pl-s">8</span>;
 
 <span class="pl-c">#turn on coroutine mode</span>
-jvm_options <span class="pl-s1">"-javaagent:jars/nginx-clojure-0.2.7.jar=mb"</span>;
+<span class="pl-k">jvm_options</span> <span class="pl-s">"-javaagent:jars/nginx-clojure-0.2.7.jar=mb"</span>;
 
 <span class="pl-c">#append nginx-clojure &amp;  clojure runtime jars to jvm bootclasspath      </span>
 <span class="pl-c">#for win32, class path seperator is ";", e.g "-Xbootclasspath/a:jars/nginx-clojure-0.2.7.jar;jars/clojure-1.5.1.jar"</span>
-jvm_options <span class="pl-s1">"-Xbootclasspath/a:jars/nginx-clojure-0.2.7.jar:jars/clojure-1.5.1.jar"</span>;
+<span class="pl-k">jvm_options</span> <span class="pl-s">"-Xbootclasspath/a:jars/nginx-clojure-0.2.7.jar:jars/clojure-1.5.1.jar"</span>;
 
 <span class="pl-c">#coroutine-udfs is a directory to put your User Defined Class Waving Configuration File</span>
-#for win32, class path seperator is <span class="pl-s1">";"</span>, e.g <span class="pl-s1">"-Djava.class.path=coroutine-udfs;YOUR_CLASSPATH_HERE"</span>
-#Note: DON NOT put nginx-clojure &amp;  clojure runtime jars here, because they have been appened to the jvm bootclasspath
-jvm_options <span class="pl-s1">"-Djava.class.path=coroutine-udfs:YOUR_CLASSPATH_HERE"</span>;
+<span class="pl-c">#for win32, class path seperator is ";", e.g "-Djava.class.path=coroutine-udfs;YOUR_CLASSPATH_HERE"</span>
+<span class="pl-c">#Note: DON NOT put nginx-clojure &amp;  clojure runtime jars here, because they have been appened to the jvm bootclasspath</span>
+<span class="pl-k">jvm_options</span> <span class="pl-s">"-Djava.class.path=coroutine-udfs:YOUR_CLASSPATH_HERE"</span>;
 
 
 <span class="pl-c">#copy the waving configuration file generated from previous step to you any classpath dir e.g. coroutine-udfs</span>
-#setting user defined class waving configuration files which are in the above boot classpath, the seperator is <span class="pl-s1">","</span> 
-jvm_options <span class="pl-s1">"-Dnginx.clojure.wave.udfs=my-wave-cfg.txt"</span>;
+<span class="pl-c">#setting user defined class waving configuration files which are in the above boot classpath, the seperator is "," </span>
+<span class="pl-k">jvm_options</span> <span class="pl-s">"-Dnginx.clojure.wave.udfs=my-wave-cfg.txt"</span>;
 ...
 }</pre></div>
 </li>
@@ -420,7 +426,7 @@ jvm_options <span class="pl-s1">"-Dnginx.clojure.wave.udfs=my-wave-cfg.txt"</spa
 </ul>
 
 <h3>
-<a id="user-content-242-use-asynchronous-socketchannel" class="anchor" href="#242-use-asynchronous-socketchannel" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.4.2 Use Asynchronous Socket/Channel</h3>
+<a id="user-content-242-use-asynchronous-client-socketchannel" class="anchor" href="#242-use-asynchronous-client-socketchannel" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.4.2 Use Asynchronous Client Socket/Channel</h3>
 
 <p>Asynchronous Socket/Channel Can be used with default mode or coroutined enabled mode without any additional settings. It just a set of API.
 It uses event driven pattern and works with a java callback handler or clojure function for callback. Asynchronous Channel is wrapper of Asynchronous Socket
@@ -436,9 +442,9 @@ all threads are exhuasted. When facing large amount of connections this choice i
 
 <div class="highlight highlight-nginx"><pre>
 <span class="pl-c">#turn off coroutine mode,  n means do nothing. You can also comment this line to turn off coroutine mode </span>
-jvm_options <span class="pl-s1">"-javaagent:jars/nginx-clojure-0.2.7.jar=nmb"</span>;
+<span class="pl-k">jvm_options</span> <span class="pl-s">"-javaagent:jars/nginx-clojure-0.2.7.jar=nmb"</span>;
 
-jvm_workers <span class="pl-s1">40</span>;</pre></div>
+<span class="pl-k">jvm_workers</span> 40;</pre></div>
 
 <p>Now Nginx-Clojure will create a thread pool with fixed 40 threads  per JVM instance/Nginx worker to handle requests. If you get more memory, you can set
 a bigger number.</p>
@@ -458,27 +464,27 @@ content ring handler.</p>
 <p>Here's a simple clojure example for Nginx rewrite handler :</p>
 
 <div class="highlight highlight-nginx"><pre>
-       set <span class="pl-vo">$myvar</span> <span class="pl-s1">""</span>;
+       <span class="pl-k">set</span> <span class="pl-smi">$myvar</span> <span class="pl-s">""</span>;
 
-       <span class="pl-st">location</span> <span class="pl-en">/rewritesimple </span>{
-         rewrite_ handler_type <span class="pl-s1">'clojure'</span>;
-          rewrite_handler_code <span class="pl-s1">'</span>
-<span class="pl-s1">           (do (use <span class="pl-cce">\'</span>[nginx.clojure.core]) </span>
-<span class="pl-s1">                        (fn[req]</span>
-<span class="pl-s1">                          (set-ngx-var! req "myvar" "Hello")</span>
-<span class="pl-s1">                          phase-done))</span>
-<span class="pl-s1">          '</span>;
-          handler_code <span class="pl-s1">'</span>
-<span class="pl-s1">           (do (use <span class="pl-cce">\'</span>[nginx.clojure.core]) </span>
-<span class="pl-s1">                        (fn[req]</span>
-<span class="pl-s1">                          (set-ngx-var! req "myvar" </span>
-<span class="pl-s1">                                     (str (get-ngx-var req "myvar") "," "Xfeep!"))</span>
-<span class="pl-s1">                          {</span>
-<span class="pl-s1">                            :status 200,</span>
-<span class="pl-s1">                            :headers {"content-type" "text/plain"},</span>
-<span class="pl-s1">                            :body  (get-ngx-var req "myvar") </span>
-<span class="pl-s1">                            }))</span>
-<span class="pl-s1">          '</span>;
+       <span class="pl-k">location</span> <span class="pl-en">/rewritesimple </span>{
+         <span class="pl-k">rewrite_</span> handler_type <span class="pl-s">'clojure'</span>;
+          <span class="pl-k">rewrite_handler_code</span> <span class="pl-s">'</span>
+<span class="pl-s">           (do (use <span class="pl-cce">\'</span>[nginx.clojure.core]) </span>
+<span class="pl-s">                        (fn[req]</span>
+<span class="pl-s">                          (set-ngx-var! req "myvar" "Hello")</span>
+<span class="pl-s">                          phase-done))</span>
+<span class="pl-s">          '</span>;
+          <span class="pl-k">handler_code</span> <span class="pl-s">'</span>
+<span class="pl-s">           (do (use <span class="pl-cce">\'</span>[nginx.clojure.core]) </span>
+<span class="pl-s">                        (fn[req]</span>
+<span class="pl-s">                          (set-ngx-var! req "myvar" </span>
+<span class="pl-s">                                     (str (get-ngx-var req "myvar") "," "Xfeep!"))</span>
+<span class="pl-s">                          {</span>
+<span class="pl-s">                            :status 200,</span>
+<span class="pl-s">                            :headers {"content-type" "text/plain"},</span>
+<span class="pl-s">                            :body  (get-ngx-var req "myvar") </span>
+<span class="pl-s">                            }))</span>
+<span class="pl-s">          '</span>;
        }    
 </pre></div>
 
@@ -488,19 +494,19 @@ content ring handler.</p>
 <p>We can also  use this feature to complete a simple dynamic balancer , e.g.</p>
 
 <div class="highlight highlight-nginx"><pre>
-       set <span class="pl-vo">$myhost</span> <span class="pl-s1">""</span>;
+       <span class="pl-k">set</span> <span class="pl-smi">$myhost</span> <span class="pl-s">""</span>;
 
-       <span class="pl-st">location</span> <span class="pl-en">/myproxy </span>{
-          rewrite_handler_type <span class="pl-s1">'clojure'</span>;
-          rewrite_handler_code <span class="pl-s1">'</span>
-<span class="pl-s1">           (do (use <span class="pl-cce">\'</span>[nginx.clojure.core]) </span>
-<span class="pl-s1">                        (fn[req]</span>
-<span class="pl-s1">                          ;compute myhost (upstream name or real host name) based req &amp; remote service, e.g.</span>
-<span class="pl-s1">                          (let [myhost (compute-myhost req)])</span>
-<span class="pl-s1">                          (set-ngx-var! req "myhost" myhost)</span>
-<span class="pl-s1">                          phase-done))</span>
-<span class="pl-s1">          '</span>;
-          proxy_pass <span class="pl-vo">$myhost</span>
+       <span class="pl-k">location</span> <span class="pl-en">/myproxy </span>{
+          <span class="pl-k">rewrite_handler_type</span> <span class="pl-s">'clojure'</span>;
+          <span class="pl-k">rewrite_handler_code</span> <span class="pl-s">'</span>
+<span class="pl-s">           (do (use <span class="pl-cce">\'</span>[nginx.clojure.core]) </span>
+<span class="pl-s">                        (fn[req]</span>
+<span class="pl-s">                          ;compute myhost (upstream name or real host name) based req &amp; remote service, e.g.</span>
+<span class="pl-s">                          (let [myhost (compute-myhost req)])</span>
+<span class="pl-s">                          (set-ngx-var! req "myhost" myhost)</span>
+<span class="pl-s">                          phase-done))</span>
+<span class="pl-s">          '</span>;
+          <span class="pl-k">proxy_pass</span> <span class="pl-smi">$myhost</span>
        }    
 </pre></div>
 
@@ -511,32 +517,32 @@ content ring handler.</p>
 </blockquote>
 
 <div class="highlight highlight-nginx"><pre>
-       <span class="pl-st">location</span> <span class="pl-en">/myproxy </span>{
+       <span class="pl-k">location</span> <span class="pl-en">/myproxy </span>{
           <span class="pl-c">##WRONG!!! Because execution of directive `set` maybe is after the execution of Nginx-Clojure rewrite handler</span>
-          set <span class="pl-vo">$myhost</span> <span class="pl-s1">""</span>;
-          rewrite_handler_type <span class="pl-s1">'clojure'</span>;
-          rewrite_handler_code <span class="pl-s1">' ....</span>
-<span class="pl-s1">          '</span>;
-          proxy_pass <span class="pl-vo">$myhost</span>
+          <span class="pl-k">set</span> <span class="pl-smi">$myhost</span> <span class="pl-s">""</span>;
+          <span class="pl-k">rewrite_handler_type</span> <span class="pl-s">'clojure'</span>;
+          <span class="pl-k">rewrite_handler_code</span> <span class="pl-s">' ....</span>
+<span class="pl-s">          '</span>;
+          <span class="pl-k">proxy_pass</span> <span class="pl-smi">$myhost</span>
        }    
 </pre></div>
 
 <p>The equivalent java code is here</p>
 
 <div class="highlight highlight-java"><pre>
-<span class="pl-k">package</span> <span class="pl-smp">my.test</span>;
+<span class="pl-k">package</span> <span class="pl-smi">my.test</span>;
 
 <span class="pl-k">import static</span> <span class="pl-smi">nginx.clojure.java.Constants.*</span>;
 
-    <span class="pl-s">public</span> <span class="pl-s">static</span> <span class="pl-s">class</span> <span class="pl-en">MyRewriteProxyPassHandler</span> <span class="pl-s">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
-        <span class="pl-st">@Override</span>
-        <span class="pl-s">public</span> <span class="pl-st">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-st">Map&lt;<span class="pl-stj">String</span>, <span class="pl-stj">Object</span>&gt;</span> <span class="pl-v">req</span>) {
-            <span class="pl-stj">String</span> myhost <span class="pl-k">=</span> computeMyHost(req);
-            <span class="pl-stj">NginxClojureRT</span><span class="pl-k">.</span>setNGXVariable(((<span class="pl-stj">NginxJavaRequest</span>)req)<span class="pl-k">.</span>nativeRequest(), <span class="pl-s1"><span class="pl-pds">"</span>myhost<span class="pl-pds">"</span></span>, myhost);
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">MyRewriteProxyPassHandler</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
+        <span class="pl-k">@Override</span>
+        <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">req</span>) {
+            <span class="pl-smi">String</span> myhost <span class="pl-k">=</span> computeMyHost(req);
+            <span class="pl-smi">NginxClojureRT</span><span class="pl-k">.</span>setNGXVariable(((<span class="pl-smi">NginxJavaRequest</span>)req)<span class="pl-k">.</span>nativeRequest(), <span class="pl-s"><span class="pl-pds">"</span>myhost<span class="pl-pds">"</span></span>, myhost);
             <span class="pl-k">return</span> <span class="pl-c1">PHASE_DONE</span>;
         }
 
-        <span class="pl-s">private</span> <span class="pl-stj">String</span> <span class="pl-en">computeMyHost</span>(<span class="pl-st">Map&lt;<span class="pl-stj">String</span>, <span class="pl-stj">Object</span>&gt;</span> <span class="pl-v">req</span>) {
+        <span class="pl-k">private</span> <span class="pl-smi">String</span> <span class="pl-en">computeMyHost</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">req</span>) {
             <span class="pl-c">//compute a upstream name or host name;</span>
         }
     }
@@ -545,12 +551,12 @@ content ring handler.</p>
 <p>Then we set the java rewrtite handler in nginx.conf</p>
 
 <div class="highlight highlight-nginx"><pre>
-       set <span class="pl-vo">$myhost</span> <span class="pl-s1">""</span>;
+       <span class="pl-k">set</span> <span class="pl-smi">$myhost</span> <span class="pl-s">""</span>;
 
-       <span class="pl-st">location</span> <span class="pl-en">/myproxy </span>{
-          rewrite_handler_type <span class="pl-s1">'java'</span>;
-          rewrite_handler_name <span class="pl-s1">'my.test.MyRewriteProxyPassHandler'</span>;
-          proxy_pass <span class="pl-vo">$myhost</span>
+       <span class="pl-k">location</span> <span class="pl-en">/myproxy </span>{
+          <span class="pl-k">rewrite_handler_type</span> <span class="pl-s">'java'</span>;
+          <span class="pl-k">rewrite_handler_name</span> <span class="pl-s">'my.test.MyRewriteProxyPassHandler'</span>;
+          <span class="pl-k">proxy_pass</span> <span class="pl-smi">$myhost</span>
        }    
 </pre></div>
 
@@ -559,19 +565,19 @@ content ring handler.</p>
 
 <p>For clojure</p>
 
-<div class="highlight highlight-nginx"><pre> handler_type <span class="pl-s1">'clojure'</span>;
- rewrite_handler_code <span class="pl-s1">'</span>
-<span class="pl-s1">     (do (use <span class="pl-cce">\'</span>[nginx.clojure.core]) </span>
-<span class="pl-s1">           (import <span class="pl-cce">\'</span>[com\.test AuthenticationHandler]) </span>
-<span class="pl-s1">                (fn[req]</span>
-<span class="pl-s1">                          (if ((AuthenticationHandler.)  req)</span>
-<span class="pl-s1">                             ;AuthenticationHandler returns true so we go to proxy_pass</span>
-<span class="pl-s1">                             phase-done </span>
-<span class="pl-s1">                             ;else return 403</span>
-<span class="pl-s1">                             {:status 403}</span>
-<span class="pl-s1">                             )))</span>
-<span class="pl-s1">          '</span>;
-proxy_pass http://localhost:8084;</pre></div>
+<div class="highlight highlight-nginx"><pre> <span class="pl-k">handler_type</span> <span class="pl-s">'clojure'</span>;
+ <span class="pl-k">rewrite_handler_code</span> <span class="pl-s">'</span>
+<span class="pl-s">     (do (use <span class="pl-cce">\'</span>[nginx.clojure.core]) </span>
+<span class="pl-s">           (import <span class="pl-cce">\'</span>[com\.test AuthenticationHandler]) </span>
+<span class="pl-s">                (fn[req]</span>
+<span class="pl-s">                          (if ((AuthenticationHandler.)  req)</span>
+<span class="pl-s">                             ;AuthenticationHandler returns true so we go to proxy_pass</span>
+<span class="pl-s">                             phase-done </span>
+<span class="pl-s">                             ;else return 403</span>
+<span class="pl-s">                             {:status 403}</span>
+<span class="pl-s">                             )))</span>
+<span class="pl-s">          '</span>;
+<span class="pl-k">proxy_pass</span> http://localhost:8084;</pre></div>
 
 <p>For Java</p>
 
@@ -579,26 +585,26 @@ proxy_pass http://localhost:8084;</pre></div>
 <li>
 <p>nginx.conf</p>
 
-<div class="highlight highlight-nginx"><pre>    rewrite_handler_type <span class="pl-s1">'java'</span>;
-    rewrite_handler_name <span class="pl-s1">'com.test.MyHandler'</span>;
-    proxy_pass http://localhost:8084;</pre></div>
+<div class="highlight highlight-nginx"><pre>    <span class="pl-k">rewrite_handler_type</span> <span class="pl-s">'java'</span>;
+    <span class="pl-k">rewrite_handler_name</span> <span class="pl-s">'com.test.MyHandler'</span>;
+    <span class="pl-k">proxy_pass</span> http://localhost:8084;</pre></div>
 </li>
 <li>
 <p>MyHandler.java</p>
 
-<div class="highlight highlight-java"><pre><span class="pl-k">package</span> <span class="pl-smp">com.test</span>;
+<div class="highlight highlight-java"><pre><span class="pl-k">package</span> <span class="pl-smi">com.test</span>;
 <span class="pl-k">import static</span> <span class="pl-smi">nginx.clojure.java.Constants.*</span>;
-<span class="pl-s">public</span> <span class="pl-s">class</span> <span class="pl-en">MyHandler</span> <span class="pl-s">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">MyHandler</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
 
-    <span class="pl-s">public</span> <span class="pl-st">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-st">Map&lt;<span class="pl-stj">String</span>,<span class="pl-stj">Object</span>&gt;</span> <span class="pl-v">req</span>) {
+    <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>,<span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">req</span>) {
 
        <span class="pl-c">/*do some computing here*/</span>
 
         <span class="pl-k">if</span> (goto<span class="pl-k">-</span>proxy<span class="pl-k">-</span>pass) {
                <span class="pl-k">return</span>  <span class="pl-c1">PHASE_DONE</span>;
         }<span class="pl-k">else</span> {  <span class="pl-c">//return 403</span>
-              <span class="pl-k">return</span> <span class="pl-st">Object</span>[] resps <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-stj">Object</span>[] {
-                              <span class="pl-stj">Constants</span><span class="pl-c1"><span class="pl-k">.</span>STATUS</span>, <span class="pl-c1">403</span>, 
+              <span class="pl-k">return</span> <span class="pl-k">Object</span>[] resps <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] {
+                              <span class="pl-smi">Constants</span><span class="pl-c1"><span class="pl-k">.</span>STATUS</span>, <span class="pl-c1">403</span>, 
                              <span class="pl-c">//add some headers -- optional for no-20X response</span>
                              <span class="pl-c">//Constants.HEADERS, nginx.clojure.java.ArrayMap.create(new Object[]{CONTENT_TYPE,"text/plain"}),</span>
                              <span class="pl-c">//body text -- optional for no-20X response</span>
@@ -617,13 +623,13 @@ proxy_pass http://localhost:8084;</pre></div>
 We also added an example(for unit testing) about this, in nginx.conf</p>
 
 <div class="highlight highlight-nginx"><pre>
-      set <span class="pl-vo">$myup</span> <span class="pl-s1">""</span>;
+      <span class="pl-k">set</span> <span class="pl-smi">$myup</span> <span class="pl-s">""</span>;
 
-       <span class="pl-st">location</span> <span class="pl-en">/javarewritebybodyproxy </span>{
-          always_read_body<span class="pl-c1"> on</span>;
-          rewrite_handler_type <span class="pl-s1">'java'</span>;
-          rewrite_handler_name <span class="pl-s1">'nginx.clojure.java.RewriteHandlerTestSet4NginxJavaRingHandler<span class="pl-vo">$SimpleRewriteByBodyHandler</span>'</span>;
-          proxy_pass http://<span class="pl-vo">$myup</span>;
+       <span class="pl-k">location</span> <span class="pl-en">/javarewritebybodyproxy </span>{
+          <span class="pl-k">always_read_body</span> on;
+          <span class="pl-k">rewrite_handler_type</span> <span class="pl-s">'java'</span>;
+          <span class="pl-k">rewrite_handler_name</span> <span class="pl-s">'nginx.clojure.java.RewriteHandlerTestSet4NginxJavaRingHandler<span class="pl-smi">$SimpleRewriteByBodyHandler</span>'</span>;
+          <span class="pl-k">proxy_pass</span> http://<span class="pl-smi">$myup</span>;
        }</pre></div>
 
 <p>The example java rewrite handler code can be found from <a href="https://github.com/nginx-clojure/nginx-clojure/blob/master/test/java/nginx/clojure/java/RewriteHandlerTestSet4NginxJavaRingHandler.java#L35">https://github.com/nginx-clojure/nginx-clojure/blob/master/test/java/nginx/clojure/java/RewriteHandlerTestSet4NginxJavaRingHandler.java#L35</a>     </p>
@@ -638,9 +644,9 @@ directly typically with some error information , e.g. <code>401 Unauthorized</co
 e.g.</p>
 
 <div class="highlight highlight-nginx"><pre>
-          <span class="pl-st">location</span> <span class="pl-en">/basicAuth </span>{
-               access_handler_type <span class="pl-s1">'java'</span>;
-                 access_handler_name <span class="pl-s1">'my.BasicAuthHandler'</span>;
+          <span class="pl-k">location</span> <span class="pl-en">/basicAuth </span>{
+               <span class="pl-k">access_handler_type</span> <span class="pl-s">'java'</span>;
+                 <span class="pl-k">access_handler_name</span> <span class="pl-s">'my.BasicAuthHandler'</span>;
                  ....
               }</pre></div>
 
@@ -648,23 +654,23 @@ e.g.</p>
     <span class="pl-c">/**</span>
 <span class="pl-c">     * This is an  example of HTTP basic Authentication.</span>
 <span class="pl-c">     * It will require visitor to input a user name (xfeep) and password (hello!) </span>
-<span class="pl-c">     * otherwise it will return 401 Unauthorized or BAD USER <span class="pl-ii">&amp;</span> PASSWORD </span>
+<span class="pl-c">     * otherwise it will return 401 Unauthorized or BAD USER &amp; PASSWORD </span>
 <span class="pl-c">     */</span>
-    <span class="pl-s">public</span>  <span class="pl-s">class</span> <span class="pl-en">BasicAuthHandler</span> <span class="pl-s">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
+    <span class="pl-k">public</span>  <span class="pl-k">class</span> <span class="pl-en">BasicAuthHandler</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
 
-        <span class="pl-st">@Override</span>
-        <span class="pl-s">public</span> <span class="pl-st">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-st">Map&lt;<span class="pl-stj">String</span>, <span class="pl-stj">Object</span>&gt;</span> <span class="pl-v">request</span>) {
-            <span class="pl-stj">String</span> auth <span class="pl-k">=</span> (<span class="pl-stj">String</span>) ((<span class="pl-stj">Map</span>)request<span class="pl-k">.</span>get(<span class="pl-c1">HEADERS</span>))<span class="pl-k">.</span>get(<span class="pl-s1"><span class="pl-pds">"</span>authorization<span class="pl-pds">"</span></span>);
+        <span class="pl-k">@Override</span>
+        <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>) {
+            <span class="pl-smi">String</span> auth <span class="pl-k">=</span> (<span class="pl-smi">String</span>) ((<span class="pl-smi">Map</span>)request<span class="pl-k">.</span>get(<span class="pl-c1">HEADERS</span>))<span class="pl-k">.</span>get(<span class="pl-s"><span class="pl-pds">"</span>authorization<span class="pl-pds">"</span></span>);
             <span class="pl-k">if</span> (auth <span class="pl-k">==</span> <span class="pl-c1">null</span>) {
-                <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-stj">Object</span>[] { <span class="pl-c1">401</span>, <span class="pl-stj">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-s1"><span class="pl-pds">"</span>www-authenticate<span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>Basic realm=<span class="pl-cce">\"</span>Secure Area<span class="pl-cce">\"</span><span class="pl-pds">"</span></span>),
-                        <span class="pl-s1"><span class="pl-pds">"</span>&lt;HTML&gt;&lt;BODY&gt;&lt;H1&gt;401 Unauthorized.&lt;/H1&gt;&lt;/BODY&gt;&lt;/HTML&gt;<span class="pl-pds">"</span></span> };
+                <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] { <span class="pl-c1">401</span>, <span class="pl-smi">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-s"><span class="pl-pds">"</span>www-authenticate<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Basic realm=<span class="pl-cce">\"</span>Secure Area<span class="pl-cce">\"</span><span class="pl-pds">"</span></span>),
+                        <span class="pl-s"><span class="pl-pds">"</span>&lt;HTML&gt;&lt;BODY&gt;&lt;H1&gt;401 Unauthorized.&lt;/H1&gt;&lt;/BODY&gt;&lt;/HTML&gt;<span class="pl-pds">"</span></span> };
             }
-            <span class="pl-st">String</span>[] up <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-stj">String</span>(<span class="pl-stj">DatatypeConverter</span><span class="pl-k">.</span>parseBase64Binary(auth<span class="pl-k">.</span>substring(<span class="pl-s1"><span class="pl-pds">"</span>Basic <span class="pl-pds">"</span></span><span class="pl-k">.</span>length())), <span class="pl-c1">DEFAULT_ENCODING</span>)<span class="pl-k">.</span>split(<span class="pl-s1"><span class="pl-pds">"</span>:<span class="pl-pds">"</span></span>);
-            <span class="pl-k">if</span> (up[<span class="pl-c1">0</span>]<span class="pl-k">.</span>equals(<span class="pl-s1"><span class="pl-pds">"</span>xfeep<span class="pl-pds">"</span></span>) <span class="pl-k">&amp;&amp;</span> up[<span class="pl-c1">1</span>]<span class="pl-k">.</span>equals(<span class="pl-s1"><span class="pl-pds">"</span>hello!<span class="pl-pds">"</span></span>)) {
+            <span class="pl-k">String</span>[] up <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">String</span>(<span class="pl-smi">DatatypeConverter</span><span class="pl-k">.</span>parseBase64Binary(auth<span class="pl-k">.</span>substring(<span class="pl-s"><span class="pl-pds">"</span>Basic <span class="pl-pds">"</span></span><span class="pl-k">.</span>length())), <span class="pl-c1">DEFAULT_ENCODING</span>)<span class="pl-k">.</span>split(<span class="pl-s"><span class="pl-pds">"</span>:<span class="pl-pds">"</span></span>);
+            <span class="pl-k">if</span> (up[<span class="pl-c1">0</span>]<span class="pl-k">.</span>equals(<span class="pl-s"><span class="pl-pds">"</span>xfeep<span class="pl-pds">"</span></span>) <span class="pl-k">&amp;&amp;</span> up[<span class="pl-c1">1</span>]<span class="pl-k">.</span>equals(<span class="pl-s"><span class="pl-pds">"</span>hello!<span class="pl-pds">"</span></span>)) {
                 <span class="pl-k">return</span> <span class="pl-c1">PHASE_DONE</span>;
             }
-            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-stj">Object</span>[] { <span class="pl-c1">401</span>, <span class="pl-stj">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-s1"><span class="pl-pds">"</span>www-authenticate<span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>Basic realm=<span class="pl-cce">\"</span>Secure Area<span class="pl-cce">\"</span><span class="pl-pds">"</span></span>),
-            <span class="pl-s1"><span class="pl-pds">"</span>&lt;HTML&gt;&lt;BODY&gt;&lt;H1&gt;401 Unauthorized BAD USER &amp; PASSWORD.&lt;/H1&gt;&lt;/BODY&gt;&lt;/HTML&gt;<span class="pl-pds">"</span></span> };
+            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] { <span class="pl-c1">401</span>, <span class="pl-smi">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-s"><span class="pl-pds">"</span>www-authenticate<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Basic realm=<span class="pl-cce">\"</span>Secure Area<span class="pl-cce">\"</span><span class="pl-pds">"</span></span>),
+            <span class="pl-s"><span class="pl-pds">"</span>&lt;HTML&gt;&lt;BODY&gt;&lt;H1&gt;401 Unauthorized BAD USER &amp; PASSWORD.&lt;/H1&gt;&lt;/BODY&gt;&lt;/HTML&gt;<span class="pl-pds">"</span></span> };
         } 
     }</pre></div>
 
@@ -686,33 +692,33 @@ e.g.</p>
 
 <p>For Java/Groovy</p>
 
-<div class="highlight highlight-nginx"><pre>      <span class="pl-st">location</span> <span class="pl-en">/javafilter </span>{
-              header_filter_type <span class="pl-s1">'java'</span>;
-              header_filter_name <span class="pl-s1">'my.AddMoreHeaders'</span>;
+<div class="highlight highlight-nginx"><pre>      <span class="pl-k">location</span> <span class="pl-en">/javafilter </span>{
+              <span class="pl-k">header_filter_type</span> <span class="pl-s">'java'</span>;
+              <span class="pl-k">header_filter_name</span> <span class="pl-s">'my.AddMoreHeaders'</span>;
                ..................
               }</pre></div>
 
-<div class="highlight highlight-java"><pre><span class="pl-k">package</span> <span class="pl-smp">my</span>;
+<div class="highlight highlight-java"><pre><span class="pl-k">package</span> <span class="pl-smi">my</span>;
 
 <span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.java.NginxJavaRingHandler</span>;
 <span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.java.Constants</span>;
 
-    <span class="pl-s">public</span>  <span class="pl-s">class</span> <span class="pl-en">RemoveAndAddMoreHeaders</span> <span class="pl-s">implements</span> <span class="pl-e">NginxJavaHeaderFilter</span> {
-        <span class="pl-st">@Override</span>
-        <span class="pl-s">public</span> <span class="pl-st">Object</span>[] <span class="pl-en">doFilter</span>(<span class="pl-st">int</span> <span class="pl-v">status</span>, <span class="pl-st">Map&lt;<span class="pl-stj">String</span>, <span class="pl-stj">Object</span>&gt;</span> <span class="pl-v">request</span>, <span class="pl-st">Map&lt;<span class="pl-stj">String</span>, <span class="pl-stj">Object</span>&gt;</span> <span class="pl-v">responseHeaders</span>) {
-            responseHeaders<span class="pl-k">.</span>remove(<span class="pl-s1"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>);
-            responseHeaders<span class="pl-k">.</span>put(<span class="pl-s1"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>text/html<span class="pl-pds">"</span></span>);
-            responseHeaders<span class="pl-k">.</span>put(<span class="pl-s1"><span class="pl-pds">"</span>Xfeep-Header<span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>Hello2!<span class="pl-pds">"</span></span>);
-            responseHeaders<span class="pl-k">.</span>put(<span class="pl-s1"><span class="pl-pds">"</span>Server<span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>My-Test-Server<span class="pl-pds">"</span></span>);
-            <span class="pl-k">return</span> <span class="pl-stj">Constants</span><span class="pl-c1"><span class="pl-k">.</span>PHASE_DONE</span>;
+    <span class="pl-k">public</span>  <span class="pl-k">class</span> <span class="pl-en">RemoveAndAddMoreHeaders</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaHeaderFilter</span> {
+        <span class="pl-k">@Override</span>
+        <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">doFilter</span>(<span class="pl-k">int</span> <span class="pl-v">status</span>, <span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>, <span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">responseHeaders</span>) {
+            responseHeaders<span class="pl-k">.</span>remove(<span class="pl-s"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>);
+            responseHeaders<span class="pl-k">.</span>put(<span class="pl-s"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>text/html<span class="pl-pds">"</span></span>);
+            responseHeaders<span class="pl-k">.</span>put(<span class="pl-s"><span class="pl-pds">"</span>Xfeep-Header<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Hello2!<span class="pl-pds">"</span></span>);
+            responseHeaders<span class="pl-k">.</span>put(<span class="pl-s"><span class="pl-pds">"</span>Server<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>My-Test-Server<span class="pl-pds">"</span></span>);
+            <span class="pl-k">return</span> <span class="pl-smi">Constants</span><span class="pl-c1"><span class="pl-k">.</span>PHASE_DONE</span>;
         }
     }</pre></div>
 
 <p>For Clojure</p>
 
-<div class="highlight highlight-nginx"><pre>      <span class="pl-st">location</span> <span class="pl-en">/javafilter </span>{
-              header_filter_type <span class="pl-s1">'clojure'</span>;
-              header_filter_name <span class="pl-s1">'my/remove-and-add-more-headers'</span>;
+<div class="highlight highlight-nginx"><pre>      <span class="pl-k">location</span> <span class="pl-en">/javafilter </span>{
+              <span class="pl-k">header_filter_type</span> <span class="pl-s">'clojure'</span>;
+              <span class="pl-k">header_filter_name</span> <span class="pl-s">'my/remove-and-add-more-headers'</span>;
                ..................
               }</pre></div>
 
@@ -722,8 +728,8 @@ e.g.</p>
 
 (<span class="pl-k">defn</span> <span class="pl-e">remove-and-add-more-headers</span> 
 [status request response-headers]
-  (dissoc!  response-headers <span class="pl-s1"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>) 
-  (assoc!  response-headers <span class="pl-s1"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>  <span class="pl-s1"><span class="pl-pds">"</span>text/html<span class="pl-pds">"</span></span>)
-  (assoc!  response-headers <span class="pl-s1"><span class="pl-pds">"</span>Xfeep-Header<span class="pl-pds">"</span></span>  <span class="pl-s1"><span class="pl-pds">"</span>Hello2!<span class="pl-pds">"</span></span>)
-  (assoc!  response-headers <span class="pl-s1"><span class="pl-pds">"</span>Server<span class="pl-pds">"</span></span> <span class="pl-s1"><span class="pl-pds">"</span>My-Test-Server<span class="pl-pds">"</span></span>) 
+  (<span class="pl-en">dissoc!</span>  response-headers <span class="pl-s"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>) 
+  (<span class="pl-en">assoc!</span>  response-headers <span class="pl-s"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>  <span class="pl-s"><span class="pl-pds">"</span>text/html<span class="pl-pds">"</span></span>)
+  (<span class="pl-en">assoc!</span>  response-headers <span class="pl-s"><span class="pl-pds">"</span>Xfeep-Header<span class="pl-pds">"</span></span>  <span class="pl-s"><span class="pl-pds">"</span>Hello2!<span class="pl-pds">"</span></span>)
+  (<span class="pl-en">assoc!</span>  response-headers <span class="pl-s"><span class="pl-pds">"</span>Server<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>My-Test-Server<span class="pl-pds">"</span></span>) 
   phase-done)</pre></div>

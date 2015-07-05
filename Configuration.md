@@ -24,6 +24,10 @@ Setting JVM path and class path within `http {` block in  nginx.conf
     ###for groovy, you should append groovy runtime jar
     jvm_options "-Djava.class.path=#{my_jar_root}/nginx-clojure-0.2.7.jar";
     
+    ###or we can put jars in some directories, e.g. jars-dir1, jars-dir2
+    ###so that all jars/sub directories from these directories will be appended the jvm classpath
+    jvm_options "-Djava.ext.dirs=jars-dir1:jars-dir2"
+    
     ###uncomment next two line to define jvm heap memory
     #jvm_options "-Xms1024m";
     #jvm_options "-Xmx1024m";
@@ -173,7 +177,7 @@ Within `location` block,
 * Directive `content_handler_type` is used to setting a type of handler.
 * Directive `content_handler_code` is used to setting an inline Ring handler.
 * Directive `content_handler_name` is used to setting an external Ring handler which is in a certain jar file included by your classpath.
-
+* Directive `content_handler_property` is used to declare one or many properties for content handler which implements interface `nginx.clojure.Configurable`
 
 ###2.3.1 Inline Ring Handler
 
@@ -303,7 +307,7 @@ three choice :
 	* :smiley:It's non-blocking, cheap, fast and let one java main thread be able to handle thousands of connections.
 	* :smiley:Your old code **_need not be changed_** and those plain and old java socket based code such as Apache Http Client, MySQL mysql jdbc drivers etc. will be on the fly with epoll/kqueue on Linux/BSD!
 	* :worried:You must do some steps to get the right class waving configuration file and set it in the nginx conf file.
-1. Asynchronous Socket/Channel
+1. Asynchronous Client Socket/Channel
 	* :smiley:It's the fastest among those three choice and you can controll it finely.
 	* :smiley:It can work with default mode or Coroutine based Socket enabled mode but can't work with Thread Pool mode.
 	* :worried:Your old code **_must be changed_** to use the event driven pattern.
@@ -314,7 +318,7 @@ three choice :
 	* :worried:Becase the max number of threads is always  more smaller than the total number of socket connections supported by Operation Systems and
 thread in java is costlier than coroutine, facing large amount of connections this choice isn't as good as Coroutine based choice.
 
-### 2.4.1 Enable Coroutine based Socket
+### 2.4.1 Enable Coroutine based Client Socket
 
 #### 1. Get a User Defined Class Waving Configuration File for Your Web App
 
@@ -402,7 +406,7 @@ thread in java is costlier than coroutine, facing large amount of connections th
 	
 	Nginx won't blocked until nginx connections exhuasted or jvm OutOfMemory!
 
-### 2.4.2 Use Asynchronous Socket/Channel
+### 2.4.2 Use Asynchronous Client Socket/Channel
 
 Asynchronous Socket/Channel Can be used with default mode or coroutined enabled mode without any additional settings. It just a set of API.
 It uses event driven pattern and works with a java callback handler or clojure function for callback. Asynchronous Channel is wrapper of Asynchronous Socket

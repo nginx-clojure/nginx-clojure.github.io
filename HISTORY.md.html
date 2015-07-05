@@ -7,6 +7,26 @@
 </ol>
 
 <h2>
+<a id="user-content-040-2015-07-06" class="anchor" href="#040-2015-07-06" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.4.0 (2015-07-06)</h2>
+
+<ol>
+<li>New Feature: Service Side Websocket (issue #73)</li>
+<li>New Feature: A build-in Jersey container to support java standard RESTful web services (JAX-RS 2.0) (issue #74)</li>
+<li>New Feature: Tomcat 8 embedding support (so servlet 3.1/jsp/sendfile/JSR-356 websocket work within nginx!) (issue #67)</li>
+<li>New Feature: Coroutined Based Client Socket Supports to Bind to Specified IP Address (issue #69)</li>
+<li>New Feature: Handler's Property Configuration (issue #66)</li>
+<li>Enhancement: NginxHttpServerChannel can work with Rewrite Handler or Access Handler (issue #79)</li>
+<li>Enhancement: Configurable Write Buffer Size for SSE or Websocket (issue #76)</li>
+<li>Bug Fix: When we do not configure jvm_path proxy_pass will not work (issue #72)</li>
+<li>Bug Fix: nginx worker restart when get the value of header X-Forwarded-For (issue #70)</li>
+<li>Bug Fix: proxy_cache_path causes crash (issue #64)</li>
+<li>Bug Fix: send_timeout does not take effect with NginxHttpServerChannel (issue #78)</li>
+<li>Bug Fix: Waving tool generates wrong wave information of fuzzing classes (issue #80)</li>
+<li>Documents : Release History link in README (issue #68)</li>
+<li>Binaries Distribution: built with The latest stable Nginx v1.8.0 which released at 2015-04-21.</li>
+</ol>
+
+<h2>
 <a id="user-content-030-2014-12-11" class="anchor" href="#030-2014-12-11" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.3.0 (2014-12-11)</h2>
 
 <ol>
@@ -44,7 +64,7 @@
 <li>Fix Bug: rewrite handler does not handle write event correctly with thread pool mode or coroutine mode (issue #43)</li>
 <li>Documents : Correct some inaccuracies and add section about logging in Chapter <a href="http://nginx-clojure.github.io/more.html#user-content-37--about-logging">More about Nginx-Clojure</a>
 </li>
-<li>Binaries: built with The lastest stable Nginx v1.6.2 which released at 2014-09-16.</li>
+<li>Binaries: built with The latest stable Nginx v1.6.2 which released at 2014-09-16.</li>
 </ol>
 
 <h2>
