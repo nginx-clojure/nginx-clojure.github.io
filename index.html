@@ -102,10 +102,14 @@
 <ol>
 <li>Compatible with <a href="https://github.com/ring-clojure/ring/blob/master/SPEC">Ring</a> and obviously supports those Ring based frameworks, such as Compojure etc.</li>
 <li>Http Services by  using Clojure / Java / Groovy to write simple handlers for http services.</li>
+<li>Nginx Access Handler by Clojure / Java / Groovy</li>
+<li>Nginx  Header Filter by Clojure / Java / Groovy</li>
 <li>
-<strong><em>NEW</em></strong>: Nginx Access Handler by Clojure / Java / Groovy</li>
+<strong><em>NEW</em></strong>: Service Side Websocket</li>
 <li>
-<strong><em>NEW</em></strong>: Nginx  Header Filter by Clojure / Java / Groovy</li>
+<strong><em>NEW</em></strong>: A build-in Jersey container to support java standard RESTful web services (JAX-RS 2.0)</li>
+<li>
+<strong><em>NEW</em></strong>: Tomcat 8 embedding support (so servlet 3.1/jsp/sendfile/JSR-356 websocket work within nginx!)</li>
 <li>Dynamic proxying by using Clojure / Java / Groovy to write a simple nginx rewrite handler to set var or return errors before proxy pass or content ring handler</li>
 <li>Non-blocking coroutine based socket which is Compatible with Java Socket API and works well with largely existing java library such as apache http client, mysql jdbc drivers. 
 With this feature  one java main thread can handle thousands of connections.</li>
@@ -115,14 +119,14 @@ With this feature  one java main thread can handle thousands of connections.</li
 <li>More easier to archive  Sub/Pub services with broadcast events API</li>
 <li>Run initialization clojure code when nginx worker starting</li>
 <li>Support user defined http request method</li>
-<li>Compatible with the Nginx lastest stable version 1.6.x. (Nginx 1.4.x is also ok, older version is not tested and maybe works.)</li>
+<li>Compatible with the Nginx lastest stable version 1.6.0. (Nginx 1.4.x is also ok, older version is not tested and maybe works.)</li>
 <li>One of  benifits of <a href="http://nginx.org/">Nginx</a> is worker processes are automatically restarted by a master process if they crash</li>
 <li>Utilizes lazy headers and direct memory operation between <a href="http://nginx.org/">Nginx</a> and JVM to fast handle dynamic contents from Clojure or Java code.</li>
 <li>Utilizes <a href="http://nginx.org/">Nginx</a> zero copy file sending mechanism to fast handle static contents controlled by Clojure or Java code.</li>
 <li>Supports Linux x64, Linux x86 32bit, Win32, Win64  and Mac OS X. </li>
 </ol>
 
-<p>By the way it is very fast, the benchmarks can be found <a href="https://github.com/ptaoussanis/clojure-web-server-benchmarks/">HERE(Small number of connections)</a> and <a href="https://github.com/ptaoussanis/clojure-web-server-benchmarks/issues/21">HERE (Large number of connections) </a> .</p>
+<p>By the way it is very fast, the benchmarks can be found <a href="https://github.com/ptaoussanis/clojure-web-server-benchmarks/">HERE(with wrk2)</a>.</p>
 
 <h1>
 <a id="user-content-jar-repository" class="anchor" href="#jar-repository" aria-hidden="true"><span class="octicon octicon-link"></span></a>Jar Repository</h1>
@@ -134,17 +138,17 @@ With this feature  one java main thread can handle thousands of connections.</li
   &lt;<span class="pl-ent">url</span>&gt;http://clojars.org/repo&lt;/<span class="pl-ent">url</span>&gt;
 &lt;/<span class="pl-ent">repository</span>&gt;</pre></div>
 
-<p>After adding clojars repository, you can reference nginx-clojure 0.3.0 , e.g.</p>
+<p>After adding clojars repository, you can reference nginx-clojure 0.4.0 , e.g.</p>
 
 <h2>
 <a id="user-content--leiningen-clojure-no-need-to-add-clojars-repository-which-is-a-default-repository-for-leiningen-" class="anchor" href="#-leiningen-clojure-no-need-to-add-clojars-repository-which-is-a-default-repository-for-leiningen-" aria-hidden="true"><span class="octicon octicon-link"></span></a> Leiningen (clojure, no need to add clojars repository which is a default repository for Leiningen) </h2>
 
-<div class="highlight highlight-clojure"><pre>[nginx-clojure <span class="pl-s"><span class="pl-pds">"</span>0.3.0<span class="pl-pds">"</span></span>]</pre></div>
+<div class="highlight highlight-clojure"><pre>[nginx-clojure <span class="pl-s"><span class="pl-pds">"</span>0.4.0<span class="pl-pds">"</span></span>]</pre></div>
 
 <h2>
 <a id="user-content-gradle-groovyjava" class="anchor" href="#gradle-groovyjava" aria-hidden="true"><span class="octicon octicon-link"></span></a>Gradle (groovy/java)</h2>
 
-<pre><code>compile "nginx-clojure:nginx-clojure:0.3.0"
+<pre><code>compile "nginx-clojure:nginx-clojure:0.4.0"
 </code></pre>
 
 <h2>
