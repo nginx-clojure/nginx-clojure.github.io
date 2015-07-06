@@ -433,9 +433,11 @@ API is a little like Java 7 NIO.2 Asynchronous Channel and more details can be f
 <h2>
 <a id="user-content-38--sever-side-websocket" class="anchor" href="#38--sever-side-websocket" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.8  Sever Side WebSocket</h2>
 
-<p>Sever Side WebSocket, like long polling/Server Sent Events, also use hijack API to get a NginxHttpServerChannel to send / receive messages.</p>
+<h3>
+<a id="user-content-381-echo-service-example" class="anchor" href="#381-echo-service-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.8.1 Echo Service Example</h3>
 
-<p>Here we give a echo service example.</p>
+<p>Sever Side WebSocket, like long polling/Server Sent Events, also use hijack API to get a NginxHttpServerChannel to send / receive messages. 
+Here we give a echo service example.</p>
 
 <p>In nginx.conf</p>
 
@@ -519,6 +521,8 @@ API is a little like Java 7 NIO.2 Asynchronous Channel and more details can be f
     }
 
 }
+
+###<span class="pl-c1">3.8</span><span class="pl-k">.</span><span class="pl-c1">1</span> <span class="pl-smi">Use</span> <span class="pl-smi">Access</span> <span class="pl-smi">Handler</span> <span class="pl-smi">For</span> <span class="pl-smi">WebSocket</span> <span class="pl-smi">Security</span>
 </pre></div>
 
 <h2>
@@ -527,6 +531,8 @@ API is a little like Java 7 NIO.2 Asynchronous Channel and more details can be f
 <p>in nginx.conf</p>
 
 <div class="highlight highlight-nginx"><pre>      <span class="pl-k">location</span> <span class="pl-en">/jersey </span>{
+
+          <span class="pl-k">content_handler_type</span> java;
           <span class="pl-k">content_handler_name</span> <span class="pl-s">'nginx.clojure.bridge.NginxBridgeHandler'</span>;
           <span class="pl-k">content_handler_property</span> system.m2rep <span class="pl-s">'/home/who/.m2/repository'</span>;
 
@@ -604,6 +610,7 @@ callback({
 
 <div class="highlight highlight-nginx"><pre>      <span class="pl-k">location</span> <span class="pl-en">/ </span>{
 
+          <span class="pl-k">content_handler_type</span> java;
           <span class="pl-k">content_handler_name</span> <span class="pl-s">'nginx.clojure.bridge.NginxBridgeHandler'</span>;
 
           <span class="pl-c">##Tomcat 8 installation path</span>

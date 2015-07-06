@@ -451,8 +451,9 @@ Then we 'll get log files whose name just like myapp.2014-09-12-1.log,  myapp.20
 
 3.8  Sever Side WebSocket
 -----------------
-Sever Side WebSocket, like long polling/Server Sent Events, also use hijack API to get a NginxHttpServerChannel to send / receive messages.
- 
+
+###3.8.1 Echo Service Example
+Sever Side WebSocket, like long polling/Server Sent Events, also use hijack API to get a NginxHttpServerChannel to send / receive messages. 
 Here we give a echo service example.
 
 In nginx.conf
@@ -543,6 +544,8 @@ public class WSEcho implements NginxJavaRingHandler {
 
 }
 
+###3.8.1 Use Access Handler For WebSocket Security
+
 ```
 
 3.9  Java standard RESTful web services with Jersey
@@ -552,6 +555,8 @@ in nginx.conf
 
 ```nginx
       location /jersey {
+          
+          content_handler_type java;
           content_handler_name 'nginx.clojure.bridge.NginxBridgeHandler';
           content_handler_property system.m2rep '/home/who/.m2/repository';
           
@@ -636,6 +641,7 @@ in nginx.conf
 ```nginx
       location / {
       
+          content_handler_type java;
           content_handler_name 'nginx.clojure.bridge.NginxBridgeHandler';
           
           ##Tomcat 8 installation path
