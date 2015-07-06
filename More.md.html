@@ -346,8 +346,7 @@ Although for large-scale application we can use sub/pub service from Redis on ng
         <span class="pl-k">@Override</span>
         <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>) {
             <span class="pl-smi">NginxJavaRequest</span> r <span class="pl-k">=</span> (<span class="pl-smi">NginxJavaRequest</span>) request;
-            <span class="pl-smi">NginxHandler</span> handler <span class="pl-k">=</span> r<span class="pl-k">.</span>handler();
-            <span class="pl-smi">NginxHttpServerChannel</span> channel <span class="pl-k">=</span> handler<span class="pl-k">.</span>hijack(r, <span class="pl-c1">true</span>);
+            <span class="pl-smi">NginxHttpServerChannel</span> channel <span class="pl-k">=</span> r<span class="pl-k">.</span>hijack(<span class="pl-c1">true</span>);
             channel<span class="pl-k">.</span>addListener(channel, <span class="pl-k">new</span> <span class="pl-k">ChannelListener&lt;<span class="pl-smi">NginxHttpServerChannel</span>&gt;</span>() {
                 <span class="pl-k">@Override</span>
                 <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onClose</span>(<span class="pl-smi">NginxHttpServerChannel</span> <span class="pl-v">data</span>) {
@@ -475,7 +474,7 @@ API is a little like Java 7 NIO.2 Asynchronous Channel and more details can be f
     <span class="pl-k">@Override</span>
     <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>) {
         <span class="pl-smi">NginxJavaRequest</span> r <span class="pl-k">=</span> (<span class="pl-smi">NginxJavaRequest</span>)request;
-        <span class="pl-smi">NginxHttpServerChannel</span> sc <span class="pl-k">=</span> r<span class="pl-k">.</span>handler()<span class="pl-k">.</span>hijack(r, <span class="pl-c1">true</span>);
+        <span class="pl-smi">NginxHttpServerChannel</span> sc <span class="pl-k">=</span> r<span class="pl-k">.</span>hijack(<span class="pl-c1">true</span>);
         sc<span class="pl-k">.</span>addListener(sc, <span class="pl-k">new</span> <span class="pl-k">MessageAdapter&lt;<span class="pl-smi">NginxHttpServerChannel</span>&gt;</span>() {
             <span class="pl-k">int</span> total <span class="pl-k">=</span> <span class="pl-c1">0</span>;
             <span class="pl-k">@Override</span>

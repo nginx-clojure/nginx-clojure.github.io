@@ -361,8 +361,7 @@ For Java
 		@Override
 		public Object[] invoke(Map<String, Object> request) {
 			NginxJavaRequest r = (NginxJavaRequest) request;
-			NginxHandler handler = r.handler();
-			NginxHttpServerChannel channel = handler.hijack(r, true);
+			NginxHttpServerChannel channel = r.hijack(true);
 			channel.addListener(channel, new ChannelListener<NginxHttpServerChannel>() {
 				@Override
 				public void onClose(NginxHttpServerChannel data) {
@@ -498,7 +497,7 @@ public class WSEcho implements NginxJavaRingHandler {
 	@Override
 	public Object[] invoke(Map<String, Object> request) {
 		NginxJavaRequest r = (NginxJavaRequest)request;
-		NginxHttpServerChannel sc = r.handler().hijack(r, true);
+		NginxHttpServerChannel sc = r.hijack(true);
 		sc.addListener(sc, new MessageAdapter<NginxHttpServerChannel>() {
 			int total = 0;
 			@Override

@@ -522,7 +522,7 @@ import static nginx.clojure.java.Constants.*;
 		@Override
 		public Object[] invoke(Map<String, Object> req) {
 			String myhost = computeMyHost(req);
-			NginxClojureRT.setNGXVariable(((NginxJavaRequest)req).nativeRequest(), "myhost", myhost);
+			((NginxJavaRequest)req).setNGXVariable("myhost", myhost);
 			return PHASE_DONE;
 		}
 		
