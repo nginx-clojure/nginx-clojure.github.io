@@ -76,7 +76,7 @@
 <!-- 						<li><a href="quickstart.html"><span class="glyphicon glyphicon-flash"></span> Quick Start</a></li> -->
 						<li><a href="installation.html"><span class="glyphicon glyphicon-hdd"></span> Installation</a></li>
 						<li><a href="configuration.html"><span class="glyphicon glyphicon-cog"></span> Configuration</a></li>
-						<li><a href="more.html#34-server-channel-for-long-polling--server-sent-events-sse"><span class="glyphicon glyphicon-envelope"></span>Server Channel for Long Polling & Server Sent Events</a></li>
+						<li><a href="more.html#34-server-channel-for-long-polling--server-sent-events-sse"><span class="glyphicon glyphicon-envelope"></span> Server Channel for Long Polling & Server Sent Events</a></li>
 						<li><a href="more.html#35-subpub--broadcast-event"><span class="glyphicon glyphicon-signal"></span> Sub/Pub services with Broadcast Events</a></li>
 						<li><a href="more.html#36-asynchronous-client-channel"><span class="glyphicon glyphicon-road"></span> Asynchronous Client Channel</a></li>
 						<li><a href="more.html#37--about-logging"><span class="glyphicon glyphicon-th-list"></span> About Logging</a></li>
@@ -634,7 +634,7 @@ content ring handler.</p>
         <span class="pl-k">@Override</span>
         <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">req</span>) {
             <span class="pl-smi">String</span> myhost <span class="pl-k">=</span> computeMyHost(req);
-            <span class="pl-smi">NginxClojureRT</span><span class="pl-k">.</span>setNGXVariable(((<span class="pl-smi">NginxJavaRequest</span>)req)<span class="pl-k">.</span>nativeRequest(), <span class="pl-s"><span class="pl-pds">"</span>myhost<span class="pl-pds">"</span></span>, myhost);
+            ((<span class="pl-smi">NginxJavaRequest</span>)req)<span class="pl-k">.</span>setNGXVariable(<span class="pl-s"><span class="pl-pds">"</span>myhost<span class="pl-pds">"</span></span>, myhost);
             <span class="pl-k">return</span> <span class="pl-c1">PHASE_DONE</span>;
         }
 

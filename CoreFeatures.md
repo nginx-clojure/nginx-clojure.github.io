@@ -23,7 +23,7 @@ With this feature  one java main thread can handle thousands of connections.
 1. One of  benifits of [Nginx](http://nginx.org/) is worker processes are automatically restarted by a master process if they crash
 1. Utilizes lazy headers and direct memory operation between [Nginx](http://nginx.org/) and JVM to fast handle dynamic contents from Clojure or Java code.
 1. Utilizes [Nginx](http://nginx.org/) zero copy file sending mechanism to fast handle static contents controlled by Clojure or Java code.
-1. Supports Linux x64, Linux x86 32bit, Win32, Win64  and Mac OS X. 
+1. Supports Linux x64, Linux x86 32bit, Win32, Win64  and Mac OS X. Freebsd version can also be got from Freebsd ports.
 
 By the way it is very fast, the benchmarks can be found [HERE(with wrk2)](https://github.com/ptaoussanis/clojure-web-server-benchmarks/).
 

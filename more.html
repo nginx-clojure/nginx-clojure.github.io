@@ -76,7 +76,7 @@
 <!-- 						<li><a href="quickstart.html"><span class="glyphicon glyphicon-flash"></span> Quick Start</a></li> -->
 						<li><a href="installation.html"><span class="glyphicon glyphicon-hdd"></span> Installation</a></li>
 						<li><a href="configuration.html"><span class="glyphicon glyphicon-cog"></span> Configuration</a></li>
-						<li><a href="more.html#34-server-channel-for-long-polling--server-sent-events-sse"><span class="glyphicon glyphicon-envelope"></span>Server Channel for Long Polling & Server Sent Events</a></li>
+						<li><a href="more.html#34-server-channel-for-long-polling--server-sent-events-sse"><span class="glyphicon glyphicon-envelope"></span> Server Channel for Long Polling & Server Sent Events</a></li>
 						<li><a href="more.html#35-subpub--broadcast-event"><span class="glyphicon glyphicon-signal"></span> Sub/Pub services with Broadcast Events</a></li>
 						<li><a href="more.html#36-asynchronous-client-channel"><span class="glyphicon glyphicon-road"></span> Asynchronous Client Channel</a></li>
 						<li><a href="more.html#37--about-logging"><span class="glyphicon glyphicon-th-list"></span> About Logging</a></li>
@@ -702,6 +702,46 @@ callback({
 <h2>
 <a id="user-content-310-embeding-tomcat" class="anchor" href="#310-embeding-tomcat" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.10 Embeding Tomcat</h2>
 
+<h3>
+<a id="user-content-which-version" class="anchor" href="#which-version" aria-hidden="true"><span class="octicon octicon-link"></span></a>Which Version?</h3>
+
+<table>
+<thead>
+<tr>
+<th>Apache Tomcat version</th>
+<th>Nginx-Clojure version</th>
+<th>Nginx-Tomcat8 version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8.0.20</td>
+<td>&gt;=0.4.x</td>
+<td>0.1.x</td>
+</tr>
+<tr>
+<td>8.0.23,8.0.24</td>
+<td>&gt;=0.4.x</td>
+<td>0.2.x</td>
+</tr>
+</tbody>
+</table>
+
+<h3>
+<a id="user-content-get-jar-file" class="anchor" href="#get-jar-file" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get Jar File</h3>
+
+<p>We can get the released version from <a href="https://clojars.org/nginx-clojure/nginx-tomcat8">clojars</a> or 
+the jar in <a href="https://sourceforge.net/projects/nginx-clojure/files/">nginx-clojure binary release</a> </p>
+
+<p>For get the latest version from the github source</p>
+
+<div class="highlight highlight-shell"><pre>git clone https://github.com/nginx-clojure/nginx-clojure
+<span class="pl-c1">cd</span> nginx-tomcat8
+lein jar</pre></div>
+
+<h3>
+<a id="user-content-configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h3>
+
 <p>in nginx.conf</p>
 
 <div class="highlight highlight-nginx"><pre>      <span class="pl-k">location</span> <span class="pl-en">/ </span>{
@@ -743,7 +783,7 @@ callback({
       }</pre></div>
 
 <h3>
-<a id="user-content-for-performance" class="anchor" href="#for-performance" aria-hidden="true"><span class="octicon octicon-link"></span></a>For performance</h3>
+<a id="user-content-for-performance" class="anchor" href="#for-performance" aria-hidden="true"><span class="octicon octicon-link"></span></a>For Performance</h3>
 
 <h4>
 <a id="user-content-disable-tomcat-access-log" class="anchor" href="#disable-tomcat-access-log" aria-hidden="true"><span class="octicon octicon-link"></span></a>Disable Tomcat Access Log</h4>

@@ -5,7 +5,7 @@
 <a id="user-content-installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
 
 <ol>
-<li>Download the latest binaries release v0.3.0 from <a href="https://sourceforge.net/projects/nginx-clojure/files/">here</a>. </li>
+<li>Download the latest binaries release v0.4.0 from <a href="https://sourceforge.net/projects/nginx-clojure/files/">here</a>. </li>
 <li>Unzip the zip file downloaded then rename the file <code>nginx-${os-arc}</code> to <code>nginx</code>, eg. for linux is <code>nginx-linux-x64</code>
 </li>
 </ol>
@@ -29,7 +29,7 @@
 <span class="pl-k">jvm_var</span> my_other_jars <span class="pl-s">'my_jar_dir/clojure-1.5.1.jar'</span>;
 
 <span class="pl-c">### my app classpath, windows user should use ';' as the separator</span>
-<span class="pl-k">jvm_options</span> <span class="pl-s">"-Djava.class.path=jars/nginx-clojure-0.2.5.jar:#{my_other_jars}"</span>;
+<span class="pl-k">jvm_options</span> <span class="pl-s">"-Djava.class.path=jars/nginx-clojure-0.4.0.jar:#{my_other_jars}"</span>;
 
 <span class="pl-c">###or we can put jars in some directories, e.g. jars-dir1, jars-dir2</span>
 <span class="pl-c">###so that all jars or direct sub directories from these directories will be appended to the jvm classpath</span>

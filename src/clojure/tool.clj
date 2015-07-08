@@ -54,15 +54,25 @@
         mhf (clojure.java.io/file (str md ".html"))
         tf (clojure.java.io/file "content-template.html")
         ff (clojure.java.io/file "footer.html")
-        hf (clojure.java.io/file "header.html")]
+        hf (clojure.java.io/file "header.html")
+        rf (clojure.java.io/file (md-file-map md))
+        tmdf (.lastModified mdf)
+        tmhf (.lastModified mhf)
+        tff (.lastModified ff)
+        thf (.lastModified hf)
+        ttf (.lastModified tf)
+        trf (.lastModified rf)
+        ]
+    ;(println md "\n { " mdf tmdf "\n" mhf tmhf "\n" tf tff "\n" ff tff "\n" hf thf "\n" tf ttf "\n" rf trf "}")
     (or (< (.lastModified mhf) (.lastModified mdf))
-        (< (.lastModified mhf) (.lastModified ff))
-        (< (.lastModified mhf) (.lastModified hf))
-        (< (.lastModified mhf) (.lastModified tf) ))))
+        (< (.lastModified rf) (.lastModified ff))
+        (< (.lastModified rf) (.lastModified hf))
+        (< (.lastModified rf) (.lastModified tf) )
+        (< (.lastModified rf) (.lastModified mhf)))))
 
 (defn gen-all-updated-html []
-  (let [all-contents (load-all-content)
-        updated-md-htmls (doall (render-all-updated))]
+  (let [updated-md-htmls (doall (render-all-updated))
+        all-contents (load-all-content)]
     (doseq [md (keys md-file-map) 
             :when (need-re-gen md)]
       (println "gen " (md-file-map md))
