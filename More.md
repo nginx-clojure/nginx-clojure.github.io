@@ -144,6 +144,7 @@ For Java
 			return null;
 		}
 	}
+```
 	
 The complete java doc about hijack is below
 
@@ -159,7 +160,6 @@ The complete java doc about hijack is below
 	public NginxHttpServerChannel hijack(NginxRequest req, boolean ignoreFilter);
 ```
 
-```
 
 ### Send a Complete Response for Long Polling
 
@@ -238,15 +238,11 @@ For Java
 
 ```java
 
-channel.addListener(channel, new ChannelListener<NginxHttpServerChannel>() {
+channel.addListener(channel, new ChannelCloseAdapter<NginxHttpServerChannel>() {
 				@Override
 				public void onClose(NginxHttpServerChannel data) {
 					Init.serverSentEventSubscribers.remove(data);
 					info("closed " + data.request().nativeRequest());
-				}
-
-				@Override
-				public void onConnect(long status, NginxHttpServerChannel data) {
 				}
 			});
 ```
@@ -543,10 +539,40 @@ public class WSEcho implements NginxJavaRingHandler {
 	}
 
 }
+```
 
 ###3.8.1 Use Access Handler For WebSocket Security
 
+In below example we return 404 for non WebSocket request 
+
+```nginx
+location /my-ws {
+        auto_upgrade_ws on;
+        access_handler_type java;
+        access_handler_name 'my.WSAccessHandler';
+        content_handler_type java; ###or clojure,groovy
+        content_handler_name 'nginx.clojure.java.WSEcho'; ###or ring handler for clojure
+        .....
+}
 ```
+
+```java
+package my;
+import nginx.clojure.java.NginxJavaRingHandler;
+import static nginx.clojure.java.Constants.*;
+
+public class WSAccessHandler implements NginxJavaRingHandler {
+  public Object[] invoke(Map<String, Object> request) {
+    if (GET != request.get("request-method") 
+        || !"websocket".equals(request.get("headers").get("upgrade"))) {
+      return new Object[]{404, null, null};
+    }
+    return PHASE_DONE;
+  }
+}
+
+```
+
 
 3.9  Java standard RESTful web services with Jersey
 -----------------

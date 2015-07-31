@@ -132,12 +132,11 @@ large amout of records and won't need too much java heap memory.</p>
             <span class="pl-c">//nginx-clojure will ignore this return because we have hijacked the request.</span>
             <span class="pl-k">return</span> <span class="pl-c1">null</span>;
         }
-    }
+    }</pre></div>
 
-<span class="pl-smi">The</span> complete java doc about hijack is below
+<p>The complete java doc about hijack is below</p>
 
-```java
-    <span class="pl-c">/**</span>
+<div class="highlight highlight-java"><pre>    <span class="pl-c">/**</span>
 <span class="pl-c">     * Get a hijacked Server Channel used to send message later typically in another thread</span>
 <span class="pl-c">     * If ignoreFilter is true all data output to channel won't be filtered</span>
 <span class="pl-c">     * by any nginx HTTP header/body filters such as gzip filter, chucked filter, etc.</span>
@@ -147,17 +146,15 @@ large amout of records and won't need too much java heap memory.</p>
 <span class="pl-c">     */</span>
     <span class="pl-k">public</span> <span class="pl-smi">NginxHttpServerChannel</span> hijack(<span class="pl-smi">NginxRequest</span> req, <span class="pl-k">boolean</span> ignoreFilter);</pre></div>
 
-<pre><code>
-### Send a Complete Response for Long Polling
+<h3>
+<a id="user-content-send-a-complete-response-for-long-polling" class="anchor" href="#send-a-complete-response-for-long-polling" aria-hidden="true"><span class="octicon octicon-link"></span></a>Send a Complete Response for Long Polling</h3>
 
-When some event happen which let a complete response must be sent to the Long Polling request client we can use `send-response!`(Clojure) or sendResponse (Java/Groovy) to send a complete response. This action is non-blocking and after completion the channel will be closed automatically.
+<p>When some event happen which let a complete response must be sent to the Long Polling request client we can use <code>send-response!</code>(Clojure) or sendResponse (Java/Groovy) to send a complete response. This action is non-blocking and after completion the channel will be closed automatically.</p>
 
-For Clojure
+<p>For Clojure</p>
 
-```clojure
-
-(send-response! ch {:status 200, :headers {"content-type" "text/plain"}, :body data}
-</code></pre>
+<div class="highlight highlight-clojure"><pre>
+(<span class="pl-en">send-response!</span> ch {<span class="pl-c1">:status</span> <span class="pl-c1">200</span>, <span class="pl-c1">:headers</span> {<span class="pl-s"><span class="pl-pds">"</span>content-type<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>text/plain<span class="pl-pds">"</span></span>}, <span class="pl-c1">:body</span> data}</pre></div>
 
 <p>For Java</p>
 
@@ -220,15 +217,11 @@ channel<span class="pl-k">.</span>send(<span class="pl-s"><span class="pl-pds">"
 <p>For Java</p>
 
 <div class="highlight highlight-java"><pre>
-channel<span class="pl-k">.</span>addListener(channel, <span class="pl-k">new</span> <span class="pl-k">ChannelListener&lt;<span class="pl-smi">NginxHttpServerChannel</span>&gt;</span>() {
+channel<span class="pl-k">.</span>addListener(channel, <span class="pl-k">new</span> <span class="pl-k">ChannelCloseAdapter&lt;<span class="pl-smi">NginxHttpServerChannel</span>&gt;</span>() {
                 <span class="pl-k">@Override</span>
                 <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onClose</span>(<span class="pl-smi">NginxHttpServerChannel</span> <span class="pl-v">data</span>) {
                     <span class="pl-smi">Init</span><span class="pl-k">.</span>serverSentEventSubscribers<span class="pl-k">.</span>remove(data);
                     info(<span class="pl-s"><span class="pl-pds">"</span>closed <span class="pl-pds">"</span></span> <span class="pl-k">+</span> data<span class="pl-k">.</span>request()<span class="pl-k">.</span>nativeRequest());
-                }
-
-                <span class="pl-k">@Override</span>
-                <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">onConnect</span>(<span class="pl-k">long</span> <span class="pl-v">status</span>, <span class="pl-smi">NginxHttpServerChannel</span> <span class="pl-v">data</span>) {
                 }
             });</pre></div>
 
@@ -520,9 +513,35 @@ Here we give a echo service example.</p>
         <span class="pl-k">return</span> <span class="pl-c1">null</span>;
     }
 
-}
+}</pre></div>
 
-###<span class="pl-c1">3.8</span><span class="pl-k">.</span><span class="pl-c1">1</span> <span class="pl-smi">Use</span> <span class="pl-smi">Access</span> <span class="pl-smi">Handler</span> <span class="pl-smi">For</span> <span class="pl-smi">WebSocket</span> <span class="pl-smi">Security</span>
+<h3>
+<a id="user-content-381-use-access-handler-for-websocket-security" class="anchor" href="#381-use-access-handler-for-websocket-security" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.8.1 Use Access Handler For WebSocket Security</h3>
+
+<p>In below example we return 404 for non WebSocket request </p>
+
+<div class="highlight highlight-nginx"><pre><span class="pl-k">location</span> <span class="pl-en">/my-ws </span>{
+        <span class="pl-k">auto_upgrade_ws</span> on;
+        <span class="pl-k">access_handler_type</span> java;
+        <span class="pl-k">access_handler_name</span> <span class="pl-s">'my.WSAccessHandler'</span>;
+        <span class="pl-k">content_handler_type</span> java; <span class="pl-c">###or clojure,groovy</span>
+        <span class="pl-k">content_handler_name</span> <span class="pl-s">'nginx.clojure.java.WSEcho'</span>; <span class="pl-c">###or ring handler for clojure</span>
+        .....
+}</pre></div>
+
+<div class="highlight highlight-java"><pre><span class="pl-k">package</span> <span class="pl-smi">my</span>;
+<span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.java.NginxJavaRingHandler</span>;
+<span class="pl-k">import static</span> <span class="pl-smi">nginx.clojure.java.Constants.*</span>;
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">WSAccessHandler</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
+  <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>) {
+    <span class="pl-k">if</span> (<span class="pl-c1">GET</span> <span class="pl-k">!=</span> request<span class="pl-k">.</span>get(<span class="pl-s"><span class="pl-pds">"</span>request-method<span class="pl-pds">"</span></span>) 
+        <span class="pl-k">||</span> <span class="pl-k">!</span><span class="pl-s"><span class="pl-pds">"</span>websocket<span class="pl-pds">"</span></span><span class="pl-k">.</span>equals(request<span class="pl-k">.</span>get(<span class="pl-s"><span class="pl-pds">"</span>headers<span class="pl-pds">"</span></span>)<span class="pl-k">.</span>get(<span class="pl-s"><span class="pl-pds">"</span>upgrade<span class="pl-pds">"</span></span>))) {
+      <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[]{<span class="pl-c1">404</span>, <span class="pl-c1">null</span>, <span class="pl-c1">null</span>};
+    }
+    <span class="pl-k">return</span> <span class="pl-c1">PHASE_DONE</span>;
+  }
+}
 </pre></div>
 
 <h2>
