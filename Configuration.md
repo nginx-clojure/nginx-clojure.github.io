@@ -240,7 +240,7 @@ Then we can reference it in nginx.conf
 
 ```nginx
        location /myClojure {
-         content_ handler_type 'clojure';
+          content_handler_type 'clojure';
           content_handler_name 'my.hello/hello-world';
        }
 ```
