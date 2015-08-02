@@ -232,7 +232,7 @@ It is also OK if you do not compile the Clojure/Groovy to java class file and ju
 <p>Then we can reference it in nginx.conf</p>
 
 <div class="highlight highlight-nginx"><pre>       <span class="pl-k">location</span> <span class="pl-en">/myClojure </span>{
-         <span class="pl-k">content_</span> handler_type <span class="pl-s">'clojure'</span>;
+          <span class="pl-k">content_handler_type</span> <span class="pl-s">'clojure'</span>;
           <span class="pl-k">content_handler_name</span> <span class="pl-s">'my.hello/hello-world'</span>;
        }</pre></div>
 
