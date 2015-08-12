@@ -76,6 +76,7 @@
 <!-- 						<li><a href="quickstart.html"><span class="glyphicon glyphicon-flash"></span> Quick Start</a></li> -->
 						<li><a href="installation.html"><span class="glyphicon glyphicon-hdd"></span> Installation</a></li>
 						<li><a href="configuration.html"><span class="glyphicon glyphicon-cog"></span> Configuration</a></li>
+						<li><a href="embed.html"><span class="glyphicon glyphicon-gift"></span> Embedding Nginx-Clojure into A standard App</a></li>
 						<li><a href="more.html#34-server-channel-for-long-polling--server-sent-events-sse"><span class="glyphicon glyphicon-envelope"></span> Server Channel for Long Polling & Server Sent Events</a></li>
 						<li><a href="more.html#35-subpub--broadcast-event"><span class="glyphicon glyphicon-signal"></span> Sub/Pub services with Broadcast Events</a></li>
 						<li><a href="more.html#36-asynchronous-client-channel"><span class="glyphicon glyphicon-road"></span> Asynchronous Client Channel</a></li>
@@ -536,6 +537,15 @@ Here we give a echo service example.</p>
         <span class="pl-k">content_handler_name</span> <span class="pl-s">'nginx.clojure.java.WSEcho'</span>; <span class="pl-c">###or ring handler for clojure</span>
         .....
 }</pre></div>
+
+<p>The directive <code>auto_upgrade_ws on</code> is equivalent to </p>
+
+<div class="highlight highlight-java"><pre>    <span class="pl-c">//NginxHttpServerChannel sc = r.hijack(true);</span>
+
+        <span class="pl-c">//If we use nginx directive `auto_upgrade_ws on;`, these three lines can be omitted.</span>
+        <span class="pl-k">if</span> (<span class="pl-k">!</span>sc<span class="pl-k">.</span>webSocketUpgrade(<span class="pl-c1">true</span>)) {
+            <span class="pl-k">return</span> <span class="pl-c1">null</span>;
+        }</pre></div>
 
 <p>For clojure</p>
 

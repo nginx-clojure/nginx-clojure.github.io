@@ -76,6 +76,7 @@
 <!-- 						<li><a href="quickstart.html"><span class="glyphicon glyphicon-flash"></span> Quick Start</a></li> -->
 						<li><a href="installation.html"><span class="glyphicon glyphicon-hdd"></span> Installation</a></li>
 						<li><a href="configuration.html"><span class="glyphicon glyphicon-cog"></span> Configuration</a></li>
+						<li><a href="embed.html"><span class="glyphicon glyphicon-gift"></span> Embedding Nginx-Clojure into A standard App</a></li>
 						<li><a href="more.html#34-server-channel-for-long-polling--server-sent-events-sse"><span class="glyphicon glyphicon-envelope"></span> Server Channel for Long Polling & Server Sent Events</a></li>
 						<li><a href="more.html#35-subpub--broadcast-event"><span class="glyphicon glyphicon-signal"></span> Sub/Pub services with Broadcast Events</a></li>
 						<li><a href="more.html#36-asynchronous-client-channel"><span class="glyphicon glyphicon-road"></span> Asynchronous Client Channel</a></li>
@@ -100,6 +101,23 @@
 <ol>
 <li><a href="http://sourceforge.net/projects/nginx-clojure/files/">Binaries of Releases</a></li>
 <li><a href="https://github.com/nginx-clojure/nginx-clojure/releases">Sources of Releases</a></li>
+</ol>
+
+<h2>
+<a id="user-content-041-2015-08-12" class="anchor" href="#041-2015-08-12" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.4.1 (2015-08-12)</h2>
+
+<ol>
+<li>New Feature: Coroutine based socket supports unix domain socket</li>
+<li>New Feature: APIs for Embedding Nginx-Clojure into a standard Clojure/Java/Groovy App (issue #86)</li>
+<li>New Feature: Autodetect jvm_path (issue #85)</li>
+<li>New Feature: Support to use annotation to mark a class or method to be suspenable in coroutine context (issue #84)</li>
+<li>Enhancement: Auto send error when meets a non websocket request with <code>auto_upgrade_ws</code> is on </li>
+<li>Enhancement: Add <code>websocket-upgrade!</code> to server channel API</li>
+<li>Enhancement: Add <code>WholeMessageAdapter</code> to make handling small websocket messages easier.</li>
+<li>Bug Fix: NginxHttpServerChannel.write(ByteBuffer buf) does not reset the buffer's position (issue #83)</li>
+<li>Bug Fix: No access to tomcat server 8.24 from nginx-clojure (issue #82)</li>
+<li>Binaries Distribution: Including some java sources for easy debug.</li>
+<li>Build Script: Autodetect JNI header files</li>
 </ol>
 
 <h2>

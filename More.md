@@ -463,6 +463,18 @@ location /my-ws {
 }
 ```
 
+The directive `auto_upgrade_ws on` is equivalent to 
+
+```java
+    //NginxHttpServerChannel sc = r.hijack(true);
+		
+		//If we use nginx directive `auto_upgrade_ws on;`, these three lines can be omitted.
+		if (!sc.webSocketUpgrade(true)) {
+			return null;
+		}
+```
+
+
 For clojure
 
 ```clojure

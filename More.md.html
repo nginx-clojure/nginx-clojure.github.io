@@ -441,6 +441,15 @@ Here we give a echo service example.</p>
         .....
 }</pre></div>
 
+<p>The directive <code>auto_upgrade_ws on</code> is equivalent to </p>
+
+<div class="highlight highlight-java"><pre>    <span class="pl-c">//NginxHttpServerChannel sc = r.hijack(true);</span>
+
+        <span class="pl-c">//If we use nginx directive `auto_upgrade_ws on;`, these three lines can be omitted.</span>
+        <span class="pl-k">if</span> (<span class="pl-k">!</span>sc<span class="pl-k">.</span>webSocketUpgrade(<span class="pl-c1">true</span>)) {
+            <span class="pl-k">return</span> <span class="pl-c1">null</span>;
+        }</pre></div>
+
 <p>For clojure</p>
 
 <div class="highlight highlight-clojure"><pre>(<span class="pl-k">defn</span> <span class="pl-e">echo</span> [^NginxRequest req]
