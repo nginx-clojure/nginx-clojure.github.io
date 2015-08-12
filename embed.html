@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta content="True" name="HandheldFriendly">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="viewport" content="width=device-width">    
+    <meta name="description" content="nginx-clojure.github.io : Nginx module for embedding Clojure / Java / Groovy programs, typically those Ring based handlers">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    
+
+
+		<!-- bootstrap cdn -->
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+		
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+		<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.0.min.js"></script>
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+		
+		<script src="javascripts/fix.js"></script>
+		
+		<link rel="stylesheet" type="text/css" media="screen" href="stylesheets/my.css">
+    <title>Configuration</title>
+  </head>
+
+  <body>
+  <div id="header">
+       <!-- HEADER -->
+    <nav id="header_wrap" class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <header id="header_logo_title"  class="inner container">
+          <ul class="external-link-buttons">
+	          <li>
+             <a id="forkme_banner" href="https://github.com/nginx-clojure/nginx-clojure" target="_blank">View on GitHub</a>
+            </li>
+            <li>
+             <a id="google_group_banner" href="https://groups.google.com/forum/#!forum/nginx-clojure" target="_blank">Google Group</a>
+            </li>
+	        </ul>
+          <div id="project_logo">
+          <h1 id="project_title">nginx-clojure</h1>
+          <ul class="social-buttons">
+	          <li>
+	            <iframe class="github-btn" src="github-btn.html?user=nginx-clojure&repo=nginx-clojure&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="102px" height="20px"></iframe>
+	          </li>
+	          <li>
+	            <iframe class="github-btn" src="github-btn.html?user=nginx-clojure&repo=nginx-clojure&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
+	          </li>
+	        </ul></div>
+          <h6 id="project_tagline">Nginx module for embedding Clojure / Java / Groovy programs, typically those Ring based handlers</h6>
+        </header>
+         <div class="btn-group" style="border-top-width: 1px;border-top-color: #fff;">
+          <a href="index.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-home"></span> Home</a>
+          <a href="quickstart.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-flash"></span> Quick Start</a>
+          <a href="downloads.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-download-alt"></span> Downloads</a>
+          <div class="btn-group">
+          <button type="button" class="btn btn-sample btn-lg dropdown-toggle" data-toggle="dropdown" id="docDropDownBtn"><span class="glyphicon glyphicon-cog"></span> Configuration <span class="caret"></span></button>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="configuration.html#21-jvm-path--class-path--other-jvm-options"><span class="glyphicon glyphicon-cog"></span> JVM Path,Class Path & Other JVM Options</a></li>
+						<li><a href="configuration.html#22-initialization-handler-for-nginx-worker"><span class="glyphicon glyphicon-cog"></span> Initialization Handler for nginx worker</a></li>
+						<li><a href="configuration.html#23-content-ring-handler-for-location"><span class="glyphicon glyphicon-cog"></span> Content Ring Handler for Location</a></li>
+						<li><a href="configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations"><span class="glyphicon glyphicon-cog"></span> Coroutine/Asynchronous Client Channel/Thread Pool </a></li>
+						<li><a href="configuration.html#25-nginx-rewrite-handler"><span class="glyphicon glyphicon-cog"></span> Nginx Rewrite Handler</a></li>
+						<li><a href="configuration.html#26-nginx-access-handler"><span class="glyphicon glyphicon-cog"></span> Nginx Access Handler</a></li>
+						<li><a href="configuration.html#27-niginx-header-filter"><span class="glyphicon glyphicon-cog"></span> Niginx Header Filter</a></li>
+					</ul>
+					</div>
+					<div class="btn-group">
+          <button type="button" class="btn btn-sample btn-lg dropdown-toggle" data-toggle="dropdown" id="docDropDownBtn"><span class="glyphicon glyphicon-book"></span> Documents <span class="caret"></span></button>
+					<ul class="dropdown-menu" role="menu">
+<!-- 						<li><a href="quickstart.html"><span class="glyphicon glyphicon-flash"></span> Quick Start</a></li> -->
+						<li><a href="installation.html"><span class="glyphicon glyphicon-hdd"></span> Installation</a></li>
+						<li><a href="configuration.html"><span class="glyphicon glyphicon-cog"></span> Configuration</a></li>
+						<li><a href="embed.html"><span class="glyphicon glyphicon-gift"></span> Embedding Nginx-Clojure into A standard App</a></li>
+						<li><a href="more.html#34-server-channel-for-long-polling--server-sent-events-sse"><span class="glyphicon glyphicon-envelope"></span> Server Channel for Long Polling & Server Sent Events</a></li>
+						<li><a href="more.html#35-subpub--broadcast-event"><span class="glyphicon glyphicon-signal"></span> Sub/Pub services with Broadcast Events</a></li>
+						<li><a href="more.html#36-asynchronous-client-channel"><span class="glyphicon glyphicon-road"></span> Asynchronous Client Channel</a></li>
+						<li><a href="more.html#37--about-logging"><span class="glyphicon glyphicon-th-list"></span> About Logging</a></li>
+						<li><a href="more.html#38--sever-side-websocket"><span class="glyphicon glyphicon-th-list"></span> Sever Side WebSocket</a></li>
+						<li><a href="more.html#39--java-standard-restful-web-services-with-jersey"><span class="glyphicon glyphicon-th-list"></span> Java standard RESTful web services with Jersey</a></li>
+						<li><a href="more.html#310-embeding-tomcat"><span class="glyphicon glyphicon-th-list"></span> Embeding Tomcat</a></li>
+						<li><a href="more.html"><span class="glyphicon glyphicon-th-list"></span> More about Nginx-Clojure</a></li>
+					</ul>
+					</div>
+			<a href="userfullLinks.html" class="btn btn-sample btn-lg"><span class="glyphicon glyphicon-share-alt"></span> Useful Links</a>
+          </div>  
+    </nav>
+
+  </div>
+      <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+           <h1>
+<a id="user-content-nginx-clojure-embed" class="anchor" href="#nginx-clojure-embed" aria-hidden="true"><span class="octicon octicon-link"></span></a>nginx-clojure-embed</h1>
+
+<p>Embeding Nginx-Clojure into a standard java/clojure app without additional Nginx process.
+It can make test/debug with nginx-clojure clojure/java handler quite easy.</p>
+
+<h1>
+<a id="user-content-jar-repository" class="anchor" href="#jar-repository" aria-hidden="true"><span class="octicon octicon-link"></span></a>Jar Repository</h1>
+
+<p>For Clojure</p>
+
+<div class="highlight highlight-clojure"><pre>[nginx-clojure/nginx-clojure-embed <span class="pl-s"><span class="pl-pds">"</span>0.4.1<span class="pl-pds">"</span></span>]</pre></div>
+
+<p>For Java (Maven)</p>
+
+<div class="highlight highlight-xml"><pre>&lt;<span class="pl-ent">repository</span>&gt;
+  &lt;<span class="pl-ent">id</span>&gt;clojars.org&lt;/<span class="pl-ent">id</span>&gt;
+  &lt;<span class="pl-ent">url</span>&gt;http://clojars.org/repo&lt;/<span class="pl-ent">url</span>&gt;
+&lt;/<span class="pl-ent">repository</span>&gt;</pre></div>
+
+<div class="highlight highlight-xml"><pre>&lt;<span class="pl-ent">dependency</span>&gt;
+  &lt;<span class="pl-ent">groupId</span>&gt;nginx-clojure&lt;/<span class="pl-ent">groupId</span>&gt;
+  &lt;<span class="pl-ent">artifactId</span>&gt;nginx-clojure-embed&lt;/<span class="pl-ent">artifactId</span>&gt;
+  &lt;<span class="pl-ent">version</span>&gt;0.4.1&lt;/<span class="pl-ent">version</span>&gt;
+&lt;/<span class="pl-ent">dependency</span>&gt;</pre></div>
+
+<h1>
+<a id="user-content-startstop-embedded-server" class="anchor" href="#startstop-embedded-server" aria-hidden="true"><span class="octicon octicon-link"></span></a>Start/Stop Embedded Server</h1>
+
+<p>For Clojure</p>
+
+<div class="highlight highlight-clojure"><pre>    <span class="pl-c">;;(1) Start it with ring handler and an options map</span>
+    <span class="pl-c">;;my-app can be a simple ring hanler or a compojure router.</span>
+    (<span class="pl-en">run-server</span> my-app {<span class="pl-c1">:port</span> <span class="pl-c1">8080</span>})
+
+
+   <span class="pl-c">;;(2) Start it with a nginx.conf file</span>
+    (<span class="pl-en">run-server</span> <span class="pl-s"><span class="pl-pds">"</span>/my-dir/nginx.conf<span class="pl-pds">"</span></span>)
+
+   <span class="pl-c">;;(3) Start it with a given work dir</span>
+    (<span class="pl-k">binding</span> [*nginx-work-dir* my-work-dir]
+      (<span class="pl-en">run-server</span> ...))
+
+   <span class="pl-c">;;(4) Stop the server</span>
+    (<span class="pl-en">stop-server</span>)</pre></div>
+
+<p>For Java</p>
+
+<div class="highlight highlight-java"><pre><span class="pl-c">//Start it with ring handler and an options map</span>
+<span class="pl-smi">NginxEmbedServer</span><span class="pl-k">.</span>getServer()<span class="pl-k">.</span>start(<span class="pl-s"><span class="pl-pds">"</span>my.HelloHandler<span class="pl-pds">"</span></span>, <span class="pl-smi">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-s"><span class="pl-pds">"</span>port<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>8081<span class="pl-pds">"</span></span>));
+
+
+<span class="pl-c">//Start it with with a nginx.conf file</span>
+<span class="pl-smi">NginxEmbedServer</span><span class="pl-k">.</span>getServer()<span class="pl-k">.</span>start(<span class="pl-s"><span class="pl-pds">"</span>/my-dir/nginx.conf<span class="pl-pds">"</span></span>);
+
+<span class="pl-c">//Start it with a given work dir</span>
+<span class="pl-smi">NginxEmbedServer</span><span class="pl-k">.</span>getServer()<span class="pl-k">.</span>setWorkDir(my<span class="pl-k">-</span>work<span class="pl-k">-</span>dir);
+<span class="pl-smi">NginxEmbedServer</span><span class="pl-k">.</span>getServer()<span class="pl-k">.</span>start(<span class="pl-c1">...</span>);
+
+
+<span class="pl-c">//Stop the server</span>
+<span class="pl-smi">NginxEmbedServer</span><span class="pl-k">.</span>getServer()<span class="pl-k">.</span>stop();</pre></div>
+
+<h1>
+<a id="user-content-default-options" class="anchor" href="#default-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>Default Options</h1>
+
+<div class="highlight highlight-clojure"><pre>          <span class="pl-s"><span class="pl-pds">"</span>error-log<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>logs/error.log<span class="pl-pds">"</span></span>,
+          <span class="pl-s"><span class="pl-pds">"</span>max-connections<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>1024<span class="pl-pds">"</span></span>,
+          <span class="pl-s"><span class="pl-pds">"</span>access-log<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>,
+          <span class="pl-s"><span class="pl-pds">"</span>keepalive-timeout<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>65<span class="pl-pds">"</span></span>,
+          <span class="pl-s"><span class="pl-pds">"</span>max-threads<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>8<span class="pl-pds">"</span></span>,
+          <span class="pl-s"><span class="pl-pds">"</span>host<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>0.0.0.0<span class="pl-pds">"</span></span>,
+          <span class="pl-s"><span class="pl-pds">"</span>port<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>8080<span class="pl-pds">"</span></span>,</pre></div>
+
+<p>User defined zones</p>
+
+<div class="highlight highlight-clojure"><pre>          <span class="pl-c">;;;at nginx.conf top level</span>
+          <span class="pl-s"><span class="pl-pds">"</span>global-user-defined<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>,
+
+          <span class="pl-c">;;;at nginx.conf http block</span>
+          <span class="pl-s"><span class="pl-pds">"</span>http-user-defined<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>,
+
+          <span class="pl-c">;;at nginx.conf types mapping block</span>
+          <span class="pl-s"><span class="pl-pds">"</span>types-user-defined<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>,
+
+          <span class="pl-c">;;at nginx.conf server block</span>
+          <span class="pl-s"><span class="pl-pds">"</span>server-user-defined<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>,
+
+          <span class="pl-c">;;at nginx.conf location block</span>
+          <span class="pl-s"><span class="pl-pds">"</span>location-user-defined<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> </pre></div>
+
+        </section>
+    </div>
+ <div id="footer">
+    <!-- FOOTER  -->
+	<div id="footer_wrap" class="outer">
+		<footer class="inner">
+			<p>
+				Powered by <a href="http://getbootstrap.com/">Twitter Bootstrap</a>
+			</p>
+		</footer>
+	</div>
+ </div>
+  
+	<script type="text/javascript">
+	  $("a[href^='http']").attr("target","_blank");
+	  setTimeout("fixNavbarIssue();", 100);
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl."
+				: "http://www.");
+		document
+				.write(unescape("%3Cscript src='"
+						+ gaJsHost
+						+ "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		try {
+			var pageTracker = _gat._getTracker("UA-53526038-1");
+			pageTracker._trackPageview();
+		} catch (err) {
+		}
+	</script>
+</body>
+  </html>
