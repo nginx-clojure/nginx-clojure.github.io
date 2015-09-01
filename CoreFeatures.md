@@ -1,16 +1,18 @@
 Core Features
 =================
 
-The latest release is v0.4.1, more detail changes about it can be found from [Release History](downloads.html).
+The latest release is v0.4.2, more detail changes about it can be found from [Release History](downloads.html).
 
 1. Compatible with [Ring](https://github.com/ring-clojure/ring/blob/master/SPEC) and obviously supports those Ring based frameworks, such as Compojure etc.
 1. Http Services by  using Clojure / Java / Groovy to write simple handlers for http services.
 1. Nginx Access Handler by Clojure / Java / Groovy
 1. Nginx  Header Filter by Clojure / Java / Groovy
+1. **_NEW_**: Support Sente, see [this PR](https://github.com/ptaoussanis/sente/pull/160)
+1. **_NEW_**: Support Per-message Compression Extensions (PMCEs) for WebSocket
 1. **_NEW_**: APIs for Embedding Nginx-Clojure into a Standard Clojure/Java/Groovy App
 1. **_NEW_**: Server Side Websocket
-1. **_NEW_**: A build-in Jersey container to support java standard RESTful web services (JAX-RS 2.0)
-1. **_NEW_**: Tomcat 8 embedding support (so servlet 3.1/jsp/sendfile/JSR-356 websocket work within nginx!)
+1. A build-in Jersey container to support java standard RESTful web services (JAX-RS 2.0)
+1. Tomcat 8 embedding support (so servlet 3.1/jsp/sendfile/JSR-356 websocket work within nginx!)
 1. Dynamic proxying by using Clojure / Java / Groovy to write a simple nginx rewrite handler to set var or return errors before proxy pass or content ring handler
 1. Non-blocking coroutine based socket which is Compatible with Java Socket API and works well with largely existing java library such as apache http client, mysql jdbc drivers. 
 With this feature  one java main thread can handle thousands of connections.
@@ -40,19 +42,19 @@ Nginx-Clojure has already been published to https://clojars.org/ whose maven rep
 </repository>
 ``` 
 
-After adding clojars repository, you can reference nginx-clojure 0.4.1 , e.g.
+After adding clojars repository, you can reference nginx-clojure 0.4.2 , e.g.
 
  Leiningen (clojure, no need to add clojars repository which is a default repository for Leiningen) 
 -----------------
  
 ```clojure
-[nginx-clojure "0.4.1"]
+[nginx-clojure "0.4.2"]
 ```
 Gradle (groovy/java)
 -----------------
  
 ```
-compile "nginx-clojure:nginx-clojure:0.4.1"
+compile "nginx-clojure:nginx-clojure:0.4.2"
 ```
 Maven
 -----------------
@@ -61,7 +63,7 @@ Maven
 <dependency>
   <groupId>nginx-clojure</groupId>
   <artifactId>nginx-clojure</artifactId>
-  <version>0.4.1</version>
+  <version>0.4.2</version>
 </dependency>
 ```
 

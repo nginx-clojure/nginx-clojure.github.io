@@ -1,12 +1,12 @@
 1. Installation
 =============
 
-The lastest release is 0.4.1. Please check the  [Update History](downloads.html) for more details.
+The lastest release is 0.4.2. Please check the  [Update History](downloads.html) for more details.
 
 1.1 Installation by Binary
 -------------
 
-1. First you can download  Release 0.4.1  from [here](https://sourceforge.net/projects/nginx-clojure/files/). 
+1. First you can download  Release 0.4.2  from [here](https://sourceforge.net/projects/nginx-clojure/files/). 
 The zip file includes Nginx-Clojure binaries about Linux x64, Linux i586, Win32, Win64 and Mac OS X.
 1. Unzip the zip file downloaded then rename the file `nginx-${os-arc}` to `nginx`, eg. for linux is `nginx-linux-x64`
 
@@ -43,6 +43,6 @@ For Win32 users MUST check out nginx source by hg because the zipped source does
 	$ cd nginx-clojure
 	$ lein jar
 	```
-	Then you'll find nginx-clojure-${version}.jar (eg. nginx-clojure-0.4.1.jar) in the target folder. 
+	Then you'll find nginx-clojure-${version}.jar (eg. nginx-clojure-0.4.2.jar) in the target folder. 
 	The jar file is self contained. If your project use clojure  it naturally depends on the clojure core jar, e.g clojure-1.5.1.jar.
 	If your project use groovy it naturally depends on the groovy runtime jar, e.g. groovy-2.3.4.jar.

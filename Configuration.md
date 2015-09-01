@@ -8,14 +8,14 @@ Setting JVM path and class path within `http {` block in  nginx.conf
 
 ```nginx
 
-    ###define jvm path
+    ###define jvm path, auto for auto-detect jvm path or a real path
     ###for win32,  jvm_path maybe is "C:/Program Files/Java/jdk1.7.0_25/jre/bin/server/jvm.dll";
     ###for macosx, jvm_path maybe is "/Library/Java/JavaVirtualMachines/1.6.0_65-b14-462.jdk/Contents/Libraries/libserver.dylib";
     ###for ubuntu, jvm_path maybe is "/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so";
     ###for centos, jvm_path maybe is "/usr/java/jdk1.6.0_45/jre/lib/amd64/server/libjvm.so";
     ###for centos 32bit, jvm_path maybe is "/usr/java/jdk1.7.0_51/jre/lib/i386/server/libjvm.so";
     
-    jvm_path "/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so";
+    jvm_path auto;
     
     ###jvm_options can be repeated once per option.
     

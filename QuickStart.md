@@ -4,7 +4,7 @@ Quick Start
 Installation
 --------------
 
-1. Download the latest binaries release v0.4.1 from [here](https://sourceforge.net/projects/nginx-clojure/files/). 
+1. Download the latest binaries release v0.4.2 from [here](https://sourceforge.net/projects/nginx-clojure/files/). 
 1. Unzip the zip file downloaded then rename the file `nginx-${os-arc}` to `nginx`, eg. for linux is `nginx-linux-x64`
 
 >If you want to compile it with your own nginx please check [HERE](installation.html)
@@ -24,7 +24,7 @@ Configuration
 	jvm_var my_other_jars 'my_jar_dir/clojure-1.5.1.jar';
 		
 	### my app classpath, windows user should use ';' as the separator
-	jvm_options "-Djava.class.path=jars/nginx-clojure-0.4.1.jar:#{my_other_jars}";
+	jvm_options "-Djava.class.path=jars/nginx-clojure-0.4.2.jar:#{my_other_jars}";
 	
   ###or we can put jars in some directories, e.g. jars-dir1, jars-dir2
   ###so that all jars or direct sub directories from these directories will be appended to the jvm classpath
