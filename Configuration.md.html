@@ -90,7 +90,7 @@ e.g. When <code>worker_processes</code> is 8, the debug ports will range from po
 
 <ol>
 <li>The number of embed JVMs is the same with Nginx <code>worker_processes</code>, so if <code>worker_processes</code> &gt; 1 we maybe need <a href="https://github.com/nginx-clojure/nginx-clojure/issues/38">nginx-clojure broadcast API</a>, shared memory (e.g <a href="https://github.com/OpenHFT/Chronicle-Map">SharedHashMap/Chronicle-Map</a>) or 
-even external service(e.g. redis, database) to  coordinate the state.</li>
+even external service(e.g. redis, database) to  coordinate the state or use cookie based session store to manage session information, e.g. <a href="https://github.com/mmcgrana/ring/wiki/Sessions">ring.middleware.session.cookie/cookie-store</a>.</li>
 <li>When importing Swing We Must specifiy <code>jvm_options "-Djava.awt.headless=true"</code> , otherwise the nginx will hang.</li>
 <li>By adding the location of your clojure source files to the classpath,then just issue "nginx -s reload" and changes to the sources get picked up!</li>
 <li>You can remove clojure-1.5.1.jar from class path and point at your "lein uberjar" to pick up a different version of clojure. </li>
@@ -675,7 +675,7 @@ e.g.</p>
     }</pre></div>
 
 <h2>
-<a id="user-content-27-niginx-header-filter" class="anchor" href="#27-niginx-header-filter" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.7 Niginx Header Filter</h2>
+<a id="user-content-27-nginx-header-filter" class="anchor" href="#27-nginx-header-filter" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.7 Nginx Header Filter</h2>
 
 <p>We can use Nginx Header Filter written by  Java/Clojure/Groovy to do some useful things, e.g. </p>
 

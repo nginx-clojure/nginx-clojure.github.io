@@ -92,7 +92,7 @@ Check [this section](configuration.html#24-chose--coroutine-based-socket-or-asyn
 These tips are really useful. Most of them are from real users. Thanks [Rickr Nook](https://github.com/rickr-nook) who give us some useful tips.
 
 1. The number of embed JVMs is the same with Nginx `worker_processes`, so if `worker_processes` > 1 we maybe need [nginx-clojure broadcast API][], shared memory (e.g [SharedHashMap/Chronicle-Map][]) or 
-even external service(e.g. redis, database) to  coordinate the state.
+even external service(e.g. redis, database) to  coordinate the state or use cookie based session store to manage session information, e.g. [ring.middleware.session.cookie/cookie-store](https://github.com/mmcgrana/ring/wiki/Sessions).
 1. When importing Swing We Must specifiy `jvm_options "-Djava.awt.headless=true"` , otherwise the nginx will hang.
 1. By adding the location of your clojure source files to the classpath,then just issue "nginx -s reload" and changes to the sources get picked up!
 1. You can remove clojure-1.5.1.jar from class path and point at your "lein uberjar" to pick up a different version of clojure. 
@@ -665,7 +665,7 @@ e.g.
 	}
 ```
 
-2.7 Niginx Header Filter
+2.7 Nginx Header Filter
 -----------------
 
 We can use Nginx Header Filter written by  Java/Clojure/Groovy to do some useful things, e.g. 

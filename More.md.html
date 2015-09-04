@@ -714,6 +714,19 @@ lein jar</pre></div>
           <span class="pl-c">#write_page_size 2k;</span>
       }</pre></div>
 
+<h2>
+<a id="user-content-session-management" class="anchor" href="#session-management" aria-hidden="true"><span class="octicon octicon-link"></span></a>Session Management</h2>
+
+<p>If <code>worker_processes</code> &gt; 1 there will be more than one jvm instances viz. more tomcat instances so to get synchronized session information we can not use the default tomcat session manger.
+Instead we may consider to use either of</p>
+
+<ol>
+<li>Cookie based Session Store  viz. storing all session attribute information into cookies.</li>
+<li>Shared HashMap among processes in the same machine ,e.g. <a href="https://github.com/OpenHFT/Chronicle-Map">Chronicle Map</a>
+</li>
+<li>External Session Store,  e.g.  Redis / MySQL / Memcached Session Store</li>
+</ol>
+
 <h3>
 <a id="user-content-for-performance" class="anchor" href="#for-performance" aria-hidden="true"><span class="octicon octicon-link"></span></a>For Performance</h3>
 
@@ -755,3 +768,25 @@ In conf/logging.properties remove all <code>java.util.logging.ConsoleHandler</co
 }</pre></div>
 
 <p><code>gzip</code> can also appear at http, server blocks. More details can be found <a href="http://nginx.org/en/docs/http/ngx_http_gzip_module.html">HERE</a></p>
+
+<h2>
+<a id="user-content-311-more-about-nginx-worker-process" class="anchor" href="#311-more-about-nginx-worker-process" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.11 More about Nginx Worker Process</h2>
+
+<p>The number of Nginx worker processes can be configured by nginx directive <a href="http://nginx.org/en/docs/ngx_core_module.html#worker_processes">worker_processes</a>.
+e.g. We use 8 Nginx worker processes:</p>
+
+<div class="highlight highlight-nginx"><pre><span class="pl-k">worker_processes</span> <span class="pl-s">8</span>;</pre></div>
+
+<p>Because a JVM instance will be embeded into per Nginx worker process so if there are more than one Nginx worker prcocesses there will be more than one JVM instances.
+So if we want to get synchronized session information we can not use the default tomcat session manger. Instead we may consider to use either of </p>
+
+<ol>
+<li>Cookie based Session Store  viz. storing all session attribute information into cookies.</li>
+<li>Shared HashMap among processes in the same machine ,e.g. <a href="https://github.com/OpenHFT/Chronicle-Map">Chronicle Map</a>
+</li>
+<li>External Session Store,  e.g.  Redis / MySQL / Memcached Session Store</li>
+</ol>
+
+<p>When there are more than one Nginx worker prcocesses sub/pub services also need to be taken care of. Subscribers may connect to JVM instances which maybe are different
+with the JVM instance which the publisher send message to. So we need to use <a href="more.html#35-subpub--broadcast-event">broadcast API</a> from nginx-clojure
+and broadcast message to all Nginx worker prcocesses.</p>
