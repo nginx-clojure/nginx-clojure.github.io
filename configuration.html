@@ -178,7 +178,7 @@ e.g. When <code>worker_processes</code> is 8, the debug ports will range from po
 <h3>
 <a id="user-content-advanced-jvm-options-for-io" class="anchor" href="#advanced-jvm-options-for-io" aria-hidden="true"><span class="octicon octicon-link"></span></a>Advanced JVM Options for I/O</h3>
 
-<p>Check <a href="configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations">this section</a> for more deitals about choice and configuration about <code>thread pool</code> , <code>coroutined</code> based socket or <code>asynchronous socket/channel</code>.</p>
+<p>Check <a href="configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations">this section</a> for more deitals about choice and configuration about <code>thread pool</code> , <code>coroutine</code> based socket or <code>asynchronous socket/channel</code>.</p>
 
 <h3>
 <a id="user-content-some-useful-tips" class="anchor" href="#some-useful-tips" aria-hidden="true"><span class="octicon octicon-link"></span></a>Some Useful Tips</h3>
@@ -547,13 +547,44 @@ all threads are exhuasted. When facing large amount of connections this choice i
 a bigger number.</p>
 
 <h2>
-<a id="user-content-25-nginx-rewrite-handler" class="anchor" href="#25-nginx-rewrite-handler" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.5 Nginx rewrite handler</h2>
+<a id="user-content-25-nginx-rewrite-handler" class="anchor" href="#25-nginx-rewrite-handler" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.5 Nginx Rewrite Handler</h2>
 
 <p>A nginx rewrite handler can be used to set var or return errors before proxy pass or content ring handler. 
 If the rewrite handler returns <code>phase-done</code> (Clojure) or  <code>PHASE_DONE</code> (Groovy/Java), nginx will continue to invoke proxy_pass or 
 content ring handler.
 If the rewrite handler returns a general response, nginx will send this response to the client and stop to continue to invoke proxy_pass or 
 content ring handler.</p>
+
+<blockquote>
+<p><strong>Note:</strong>
+All rewrite directives,  such as <code>rewrite</code>, <code>set</code>,  will be executed after the invocation nginx clojure rewrite handler even if 
+they are declared before nginx rewrtite handler.
+So the below example maybe is wrong. For more details about Nginx Variable please check this  <a href="http://openresty.org/download/agentzh-nginx-tutorials-en.html">nginx tutorial</a><br>
+which explains perfectly the variable scope.</p>
+</blockquote>
+
+<div class="highlight highlight-nginx"><pre>
+       <span class="pl-k">location</span> <span class="pl-en">/myproxy </span>{
+          <span class="pl-c">## It maybe is WRONG!!!</span>
+          <span class="pl-c">## Because execution of directive `set` is after the execution of Nginx-Clojure rewrite handler</span>
+          <span class="pl-k">set</span> <span class="pl-smi">$myhost</span> <span class="pl-s">""</span>;
+          <span class="pl-k">rewrite_handler_type</span> <span class="pl-s">'clojure'</span>;
+          <span class="pl-k">rewrite_handler_code</span> <span class="pl-s">' ....</span>
+<span class="pl-s">          '</span>;
+          <span class="pl-k">proxy_pass</span> <span class="pl-smi">$myhost</span>
+       }    
+</pre></div>
+
+<p>This example is right and there we declare variable $myhost at the outside of <code>location {</code> block.</p>
+
+<div class="highlight highlight-nginx"><pre>       <span class="pl-k">set</span> <span class="pl-smi">$myhost</span> <span class="pl-s">""</span>;
+       <span class="pl-k">location</span> <span class="pl-en">/myproxy </span>{
+          <span class="pl-k">rewrite_handler_type</span> <span class="pl-s">'clojure'</span>;
+          <span class="pl-k">rewrite_handler_code</span> <span class="pl-s">' ....</span>
+<span class="pl-s">          '</span>;
+          <span class="pl-k">proxy_pass</span> <span class="pl-smi">$myhost</span>
+       }    
+</pre></div>
 
 <h3>
 <a id="user-content-251-simple-example-about-nginx-rewrite-handler" class="anchor" href="#251-simple-example-about-nginx-rewrite-handler" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.5.1 Simple Example about Nginx rewrite handler</h3>
@@ -607,23 +638,6 @@ content ring handler.</p>
        }    
 </pre></div>
 
-<blockquote>
-<p><strong>Note:</strong>
- The below example is wrong becuase so far Nginx-Clojure has do nothing about making sure Nginx-Clojure rewrite handler execution is before/after the execution of directive <code>set</code>.
-  For more details about Nginx Variable please check this  <a href="http://openresty.org/download/agentzh-nginx-tutorials-en.html">nginx tutorial</a>  which explains perfectly the variable scope.</p>
-</blockquote>
-
-<div class="highlight highlight-nginx"><pre>
-       <span class="pl-k">location</span> <span class="pl-en">/myproxy </span>{
-          <span class="pl-c">##WRONG!!! Because execution of directive `set` maybe is after the execution of Nginx-Clojure rewrite handler</span>
-          <span class="pl-k">set</span> <span class="pl-smi">$myhost</span> <span class="pl-s">""</span>;
-          <span class="pl-k">rewrite_handler_type</span> <span class="pl-s">'clojure'</span>;
-          <span class="pl-k">rewrite_handler_code</span> <span class="pl-s">' ....</span>
-<span class="pl-s">          '</span>;
-          <span class="pl-k">proxy_pass</span> <span class="pl-smi">$myhost</span>
-       }    
-</pre></div>
-
 <p>The equivalent java code is here</p>
 
 <div class="highlight highlight-java"><pre>
@@ -658,63 +672,7 @@ content ring handler.</p>
 </pre></div>
 
 <h3>
-<a id="user-content-253-simple-access-controller-by-nginx-rewrite-handler" class="anchor" href="#253-simple-access-controller-by-nginx-rewrite-handler" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.5.3 Simple Access Controller By Nginx rewrite handler</h3>
-
-<p>For clojure</p>
-
-<div class="highlight highlight-nginx"><pre> <span class="pl-k">handler_type</span> <span class="pl-s">'clojure'</span>;
- <span class="pl-k">rewrite_handler_code</span> <span class="pl-s">'</span>
-<span class="pl-s">     (do (use <span class="pl-cce">\'</span>[nginx.clojure.core]) </span>
-<span class="pl-s">           (import <span class="pl-cce">\'</span>[com\.test AuthenticationHandler]) </span>
-<span class="pl-s">                (fn[req]</span>
-<span class="pl-s">                          (if ((AuthenticationHandler.)  req)</span>
-<span class="pl-s">                             ;AuthenticationHandler returns true so we go to proxy_pass</span>
-<span class="pl-s">                             phase-done </span>
-<span class="pl-s">                             ;else return 403</span>
-<span class="pl-s">                             {:status 403}</span>
-<span class="pl-s">                             )))</span>
-<span class="pl-s">          '</span>;
-<span class="pl-k">proxy_pass</span> http://localhost:8084;</pre></div>
-
-<p>For Java</p>
-
-<ul>
-<li>
-<p>nginx.conf</p>
-
-<div class="highlight highlight-nginx"><pre>    <span class="pl-k">rewrite_handler_type</span> <span class="pl-s">'java'</span>;
-    <span class="pl-k">rewrite_handler_name</span> <span class="pl-s">'com.test.MyHandler'</span>;
-    <span class="pl-k">proxy_pass</span> http://localhost:8084;</pre></div>
-</li>
-<li>
-<p>MyHandler.java</p>
-
-<div class="highlight highlight-java"><pre><span class="pl-k">package</span> <span class="pl-smi">com.test</span>;
-<span class="pl-k">import static</span> <span class="pl-smi">nginx.clojure.java.Constants.*</span>;
-<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">MyHandler</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
-
-    <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>,<span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">req</span>) {
-
-       <span class="pl-c">/*do some computing here*/</span>
-
-        <span class="pl-k">if</span> (goto<span class="pl-k">-</span>proxy<span class="pl-k">-</span>pass) {
-               <span class="pl-k">return</span>  <span class="pl-c1">PHASE_DONE</span>;
-        }<span class="pl-k">else</span> {  <span class="pl-c">//return 403</span>
-              <span class="pl-k">return</span> <span class="pl-k">Object</span>[] resps <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] {
-                              <span class="pl-smi">Constants</span><span class="pl-c1"><span class="pl-k">.</span>STATUS</span>, <span class="pl-c1">403</span>, 
-                             <span class="pl-c">//add some headers -- optional for no-20X response</span>
-                             <span class="pl-c">//Constants.HEADERS, nginx.clojure.java.ArrayMap.create(new Object[]{CONTENT_TYPE,"text/plain"}),</span>
-                             <span class="pl-c">//body text -- optional for no-20X response</span>
-                             <span class="pl-c">// Constants.BODY, "xxxxxxxxxxxxxx!"</span>
-                             };
-        }
-    }
-</pre></div>
-
-<h3>
-<a id="user-content-254-access-request-body-in-nginx-rewrite-handler" class="anchor" href="#254-access-request-body-in-nginx-rewrite-handler" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.5.4 Access request BODY in Nginx rewrite handler</h3>
-</li>
-</ul>
+<a id="user-content-253-access-request-body-in-nginx-rewrite-handler" class="anchor" href="#253-access-request-body-in-nginx-rewrite-handler" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.5.3 Access request BODY in Nginx Rewrite Handler</h3>
 
 <p>Try <code>always_read_body on;</code>  where about the location you want to access the request body in a JAVA rewrite handler.
 We also added an example(for unit testing) about this, in nginx.conf</p>

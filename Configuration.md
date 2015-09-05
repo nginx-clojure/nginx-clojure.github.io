@@ -85,7 +85,7 @@ http {
 
 ###Advanced JVM Options for I/O
 
-Check [this section](configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations) for more deitals about choice and configuration about `thread pool` , `coroutined` based socket or `asynchronous socket/channel`.
+Check [this section](configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations) for more deitals about choice and configuration about `thread pool` , `coroutine` based socket or `asynchronous socket/channel`.
 
 ###Some Useful Tips
 
@@ -430,7 +430,7 @@ jvm_workers 40;
 Now Nginx-Clojure will create a thread pool with fixed 40 threads  per JVM instance/Nginx worker to handle requests. If you get more memory, you can set
 a bigger number.
 
-2.5 Nginx rewrite handler
+2.5 Nginx Rewrite Handler
 -----------------
 
 A nginx rewrite handler can be used to set var or return errors before proxy pass or content ring handler. 
@@ -438,6 +438,39 @@ If the rewrite handler returns `phase-done` (Clojure) or  `PHASE_DONE` (Groovy/J
 content ring handler.
 If the rewrite handler returns a general response, nginx will send this response to the client and stop to continue to invoke proxy_pass or 
 content ring handler.
+
+> **Note:**
+All rewrite directives,  such as `rewrite`, `set`,  will be executed after the invocation nginx clojure rewrite handler even if 
+they are declared before nginx rewrtite handler.
+So the below example maybe is wrong. For more details about Nginx Variable please check this  [nginx tutorial](http://openresty.org/download/agentzh-nginx-tutorials-en.html)  
+which explains perfectly the variable scope.
+
+```nginx
+
+       location /myproxy {
+          ## It maybe is WRONG!!!
+          ## Because execution of directive `set` is after the execution of Nginx-Clojure rewrite handler
+          set $myhost "";
+          rewrite_handler_type 'clojure';
+          rewrite_handler_code ' ....
+          ';
+          proxy_pass $myhost
+       }    
+
+```
+
+This example is right and there we declare variable $myhost at the outside of `location {` block.
+
+```nginx
+       set $myhost "";
+       location /myproxy {
+          rewrite_handler_type 'clojure';
+          rewrite_handler_code ' ....
+          ';
+          proxy_pass $myhost
+       }    
+
+```
 
 ### 2.5.1 Simple Example about Nginx rewrite handler
 
@@ -493,23 +526,6 @@ We can also  use this feature to complete a simple dynamic balancer , e.g.
 
 ```
 
-> **Note:**
->  The below example is wrong becuase so far Nginx-Clojure has do nothing about making sure Nginx-Clojure rewrite handler execution is before/after the execution of directive `set`.
->   For more details about Nginx Variable please check this  [nginx tutorial](http://openresty.org/download/agentzh-nginx-tutorials-en.html)  which explains perfectly the variable scope.
-
-```nginx
-
-       location /myproxy {
-          ##WRONG!!! Because execution of directive `set` maybe is after the execution of Nginx-Clojure rewrite handler
-          set $myhost "";
-          rewrite_handler_type 'clojure';
-          rewrite_handler_code ' ....
-          ';
-          proxy_pass $myhost
-       }    
-
-```
-
 The equivalent java code is here
 
 ```java
@@ -545,63 +561,9 @@ Then we set the java rewrtite handler in nginx.conf
        }    
 
 ```
-
-### 2.5.3 Simple Access Controller By Nginx rewrite handler
-
-For clojure
-
-```nginx
- handler_type 'clojure';
- rewrite_handler_code '
-     (do (use \'[nginx.clojure.core]) 
-           (import \'[com\.test AuthenticationHandler]) 
-                (fn[req]
-                          (if ((AuthenticationHandler.)  req)
-                             ;AuthenticationHandler returns true so we go to proxy_pass
-                             phase-done 
-                             ;else return 403
-                             {:status 403}
-                             )))
-          ';
-proxy_pass http://localhost:8084;
-```
-
-For Java
-* nginx.conf
- 
-	```nginx
-		rewrite_handler_type 'java';
-		rewrite_handler_name 'com.test.MyHandler';
-		proxy_pass http://localhost:8084;
-	```
-		
-* MyHandler.java
- 
-	```java
-package com.test;
-import static nginx.clojure.java.Constants.*;
-public class MyHandler implements NginxJavaRingHandler {
 	
-		public Object[] invoke(Map<String,Object> req) {
-		
-		   /*do some computing here*/
-		   
-		    if (goto-proxy-pass) {
-		           return  PHASE_DONE;
-		    }else {  //return 403
-		          return Object[] resps = new Object[] {
-		                          Constants.STATUS, 403, 
-		                         //add some headers -- optional for no-20X response
-		                         //Constants.HEADERS, nginx.clojure.java.ArrayMap.create(new Object[]{CONTENT_TYPE,"text/plain"}),
-		                         //body text -- optional for no-20X response
-		                         // Constants.BODY, "xxxxxxxxxxxxxx!"
-		                         };
-		    }
-		}
 	
-	```
-	
-	### 2.5.4 Access request BODY in Nginx rewrite handler
+### 2.5.3 Access request BODY in Nginx Rewrite Handler
 	
 Try `always_read_body on;`  where about the location you want to access the request body in a JAVA rewrite handler.
 We also added an example(for unit testing) about this, in nginx.conf
