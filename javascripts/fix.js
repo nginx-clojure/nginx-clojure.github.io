@@ -20,7 +20,7 @@ Usage
     
     if(hash!=""){
       //$(document).scrollTop(($(hash).offset().top) - $(".navbar-fixed-top").height());  
-    	$(document).scrollTop(($('a[href='+hash+']').position().top - 200));
+    	$(document).scrollTop(($('#user-content-'+hash.substring(1)).position().top - 200));
 //    	$(document).scrollTop(($(hash).position().top - 200));
     }
  
@@ -42,7 +42,7 @@ Usage
     anchorsList[i].onclick=function(){
       $(originalOnClick);
 //      $(document).scrollTop(($(hash).offset().top) - $(".navbar-fixed-top").height());
-      $(document).scrollTop(($('a[href='+hash+']').position().top - 200));
+      $(document).scrollTop(($('#user-content-'+hash.substring(1)).position().top - 200));
       return false;
     };
   }

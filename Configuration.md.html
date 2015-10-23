@@ -6,7 +6,7 @@
 
 <p>Setting JVM path and class path within <code>http {</code> block in  nginx.conf</p>
 
-<div class="highlight highlight-nginx"><pre>
+<div class="highlight highlight-source-nginx"><pre>
     <span class="pl-c">###define jvm path, auto for auto-detect jvm path or a real path</span>
     <span class="pl-c">###for win32,  jvm_path maybe is "C:/Program Files/Java/jdk1.7.0_25/jre/bin/server/jvm.dll";</span>
     <span class="pl-c">###for macosx, jvm_path maybe is "/Library/Java/JavaVirtualMachines/1.6.0_65-b14-462.jdk/Contents/Libraries/libserver.dylib";</span>
@@ -16,16 +16,16 @@
 
     <span class="pl-k">jvm_path</span> auto;
 
-    <span class="pl-c">###jvm_options can be repeated once per option.</span>
-
     <span class="pl-c">###define class paths</span>
     <span class="pl-c">###for clojure, you should append clojure core jar</span>
     <span class="pl-c">###for groovy, you should append groovy runtime jar</span>
-    <span class="pl-k">jvm_options</span> <span class="pl-s">"-Djava.class.path=#{my_jar_root}/nginx-clojure-0.2.7.jar"</span>;
+    <span class="pl-c">### when wildchar * is used after a path, all jars and sub-directories will appended to</span>
+    <span class="pl-c">### the jvm classpath. Note that on windows use `;` as separator instead of `:`</span>
+    <span class="pl-k">jvm_classpath</span> <span class="pl-s">"mylibs1/*:mylibs2/*:/myclasses"</span>;
 
-    <span class="pl-c">###or we can put jars in some directories, e.g. jars-dir1, jars-dir2</span>
-    <span class="pl-c">###so that all jars/sub directories from these directories will be appended the jvm classpath</span>
-    <span class="pl-k">jvm_options</span> <span class="pl-s">"-Djava.ext.dirs=jars-dir1:jars-dir2"</span>
+
+    <span class="pl-c">###define jvm options</span>
+    <span class="pl-c">###jvm_options can be repeated once per option.</span>
 
     <span class="pl-c">###uncomment next two line to define jvm heap memory</span>
     <span class="pl-c">#jvm_options "-Xms1024m";</span>
@@ -41,7 +41,7 @@
 
 <p>It 's a new feature since v0.2.5. We can define variables and reuse them in jvm_options to make configurations neat.</p>
 
-<div class="highlight highlight-nginx"><pre>
+<div class="highlight highlight-source-nginx"><pre>
     <span class="pl-c">###define nginx_clojure_jar</span>
     <span class="pl-k">jvm_var</span> nginx_clojure_jar <span class="pl-s">'/home/who/git/nginx-clojure/target/nginx-clojure-0.2.5.jar'</span>;
     <span class="pl-c">###reference variable nginx_clojure_jar, starts with #{ different from nginx variable</span>
@@ -61,7 +61,7 @@
 <p>It 's a new feature since v0.2.5.
 If the <code>worker_processes</code> &gt; 1, the below code will cause error for multiple JVMs try listen on the same debug port <code>2400</code>.</p>
 
-<div class="highlight highlight-nginx"><pre>
+<div class="highlight highlight-source-nginx"><pre>
     <span class="pl-k">jvm_options</span> <span class="pl-s">"-Xdebug"</span>;
     <span class="pl-k">jvm_options</span> <span class="pl-s">"-Xrunjdwp:server=y,transport=dt_socket,address=2400,suspend=n"</span>;</pre></div>
 
@@ -69,7 +69,7 @@ If the <code>worker_processes</code> &gt; 1, the below code will cause error for
 on creating every JVM.
 e.g. When <code>worker_processes</code> is 8, the debug ports will range from port <code>2401</code> to <code>2408</code></p>
 
-<div class="highlight highlight-nginx"><pre>
+<div class="highlight highlight-source-nginx"><pre>
 <span class="pl-k">worker_processes</span>  <span class="pl-s">8</span>;
 
 <span class="pl-k">http</span> {
@@ -105,7 +105,7 @@ even external service(e.g. redis, database) to  coordinate the state or use cook
 
 <p>For Clojure</p>
 
-<div class="highlight highlight-nginx"><pre><span class="pl-k">http</span> {
+<div class="highlight highlight-source-nginx"><pre><span class="pl-k">http</span> {
 ......
     <span class="pl-k">jvm_handler_type</span> <span class="pl-s">'clojure'</span>; 
     <span class="pl-c"># or for external handler  we can use jvm_init_handler_name my.test/InitHandler;</span>
@@ -121,14 +121,14 @@ even external service(e.g. redis, database) to  coordinate the state or use cook
 
 <p>For Java/groovy</p>
 
-<div class="highlight highlight-nginx"><pre><span class="pl-k">http</span> {
+<div class="highlight highlight-source-nginx"><pre><span class="pl-k">http</span> {
 ......
     <span class="pl-k">jvm_handler_type</span> <span class="pl-s">'java'</span>; <span class="pl-c"># or handler_type 'groovy'</span>
     <span class="pl-k">jvm_init_handler_name</span> <span class="pl-s">'my.test/InitHandler'</span>; 
 ....
 }</pre></div>
 
-<div class="highlight highlight-java"><pre>    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">JVMInitHandler</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
+<div class="highlight highlight-source-java"><pre>    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">JVMInitHandler</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
         <span class="pl-k">@Override</span>
         <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">ctx</span>) {
             <span class="pl-smi">NginxClojureRT</span><span class="pl-k">.</span>log<span class="pl-k">.</span>info(<span class="pl-s"><span class="pl-pds">"</span>JVMInitHandler invoked!<span class="pl-pds">"</span></span>);
@@ -144,7 +144,7 @@ For more detail example of ring handler please see the next secion.</p>
 <ul>
 <li>By default if the initialization failed the nginx won't start successfully and the worker will exit after reporting an error message in error log file but the master keep running and take the port.</li>
 <li>Because the maybe more than one nginx worker processes, so this code will run everytime per worker starting. </li>
-<li>If you use <a href="https://github.com/OpenHFT/Chronicle-Map">SharedHashMap/Chronicle-Map</a>  to share data 
+<li>If you use [Shared Map][], [Chronicle-Map][]  to share data 
 among nginx worker processes, Java file lock can be used to let only one nginx worker process do the initialization.</li>
 <li>If you <a href="configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations">enabled coroutine support</a>, nginx maybe will start successfully even if your initialization failed after some socket operations. If you case it, you can 
 use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.</li>
@@ -152,7 +152,7 @@ use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.
 
 <p>For clojure</p>
 
-<div class="highlight highlight-nginx"><pre>        <span class="pl-k">handler_code</span> <span class="pl-s">'</span>
+<div class="highlight highlight-source-nginx"><pre>        <span class="pl-k">handler_code</span> <span class="pl-s">'</span>
 <span class="pl-s">        (do</span>
 <span class="pl-s">            (use <span class="pl-cce">\'</span>nginx.clojure.core)</span>
 <span class="pl-s">            (without-coroutine</span>
@@ -180,7 +180,7 @@ use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.
 
 <p>For Clojure : </p>
 
-<div class="highlight highlight-nginx"><pre>       <span class="pl-k">location</span> <span class="pl-en">/clojure </span>{
+<div class="highlight highlight-source-nginx"><pre>       <span class="pl-k">location</span> <span class="pl-en">/clojure </span>{
           <span class="pl-k">handler_type</span> <span class="pl-s">'clojure'</span>;
           <span class="pl-k">handler_code</span> <span class="pl-s">' </span>
 <span class="pl-s">                        (fn[req]</span>
@@ -196,7 +196,7 @@ use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.
 
 <p>For Groovy :</p>
 
-<div class="highlight highlight-nginx"><pre>       <span class="pl-k">location</span> <span class="pl-en">/groovy </span>{
+<div class="highlight highlight-source-nginx"><pre>       <span class="pl-k">location</span> <span class="pl-en">/groovy </span>{
           <span class="pl-k">content_handler_type</span> <span class="pl-s">'groovy'</span>;
           <span class="pl-k">content_handler_code</span> <span class="pl-s">' </span>
 <span class="pl-s">               import nginx.clojure.java.NginxJavaRingHandler;</span>
@@ -221,7 +221,7 @@ It is also OK if you do not compile the Clojure/Groovy to java class file and ju
 
 <p>For Clojure the exteranl Ring handler example is here</p>
 
-<div class="highlight highlight-clojure"><pre>(<span class="pl-k">ns</span> <span class="pl-e">my.hello</span>)
+<div class="highlight highlight-source-clojure"><pre>(<span class="pl-k">ns</span> <span class="pl-e">my.hello</span>)
 (<span class="pl-k">defn</span> <span class="pl-e">hello-world</span> [request]
   {<span class="pl-c1">:status</span> <span class="pl-c1">200</span>
    <span class="pl-c1">:headers</span> {<span class="pl-s"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>text/plain<span class="pl-pds">"</span></span>}
@@ -231,7 +231,7 @@ It is also OK if you do not compile the Clojure/Groovy to java class file and ju
 
 <p>Then we can reference it in nginx.conf</p>
 
-<div class="highlight highlight-nginx"><pre>       <span class="pl-k">location</span> <span class="pl-en">/myClojure </span>{
+<div class="highlight highlight-source-nginx"><pre>       <span class="pl-k">location</span> <span class="pl-en">/myClojure </span>{
           <span class="pl-k">content_handler_type</span> <span class="pl-s">'clojure'</span>;
           <span class="pl-k">content_handler_name</span> <span class="pl-s">'my.hello/hello-world'</span>;
        }</pre></div>
@@ -240,7 +240,7 @@ It is also OK if you do not compile the Clojure/Groovy to java class file and ju
 
 <p>For Java</p>
 
-<div class="highlight highlight-java"><pre><span class="pl-k">package</span> <span class="pl-smi">mytest</span>;
+<div class="highlight highlight-source-java"><pre><span class="pl-k">package</span> <span class="pl-smi">mytest</span>;
 <span class="pl-k">import static</span> <span class="pl-smi">nginx.clojure.MiniConstants.*</span>;
 
 <span class="pl-k">import</span> <span class="pl-smi">java.util.HashMap</span>;
@@ -259,14 +259,14 @@ It is also OK if you do not compile the Clojure/Groovy to java class file and ju
 
 <p>In nginx.conf</p>
 
-<div class="highlight highlight-nginx"><pre>       <span class="pl-k">location</span> <span class="pl-en">/myJava </span>{
+<div class="highlight highlight-source-nginx"><pre>       <span class="pl-k">location</span> <span class="pl-en">/myJava </span>{
           <span class="pl-k">content_handler_type</span> <span class="pl-s">'java'</span>;
           <span class="pl-k">content_handler_name</span> <span class="pl-s">'mytest.Hello'</span>;
        }</pre></div>
 
 <p>For Groovy</p>
 
-<div class="highlight highlight-groovy"><pre>   <span class="pl-k">package</span> <span class="pl-smi">mytest</span>;
+<div class="highlight highlight-source-groovy"><pre>   <span class="pl-k">package</span> <span class="pl-smi">mytest</span>;
    <span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.java.NginxJavaRingHandler</span>;
    <span class="pl-k">import</span> <span class="pl-smi">java.util.Map</span>;
    <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">HelloGroovy</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
@@ -339,7 +339,7 @@ thread in java is costlier than coroutine, facing large amount of connections th
 <li>
 <p>Turn on Run Tool Mode</p>
 
-<div class="highlight highlight-nginx"><pre><span class="pl-k">http</span> {
+<div class="highlight highlight-source-nginx"><pre><span class="pl-k">http</span> {
 ...
 
 <span class="pl-c">#To make sure generated Class Waving Configuration File won't be mixed by many workers. </span>
@@ -356,14 +356,14 @@ thread in java is costlier than coroutine, facing large amount of connections th
 <li>
 <p>Setting Output Path of Waving Configuration File</p>
 
-<div class="highlight highlight-nginx"><pre><span class="pl-c">#Optional The default value is $nginx-workdir/nginx.clojure.wave.CfgToolOutFile</span>
+<div class="highlight highlight-source-nginx"><pre><span class="pl-c">#Optional The default value is $nginx-workdir/nginx.clojure.wave.CfgToolOutFile</span>
 <span class="pl-c">#Setting Output Path of Waving Configuration File, </span>
 <span class="pl-k">jvm_options</span> <span class="pl-s">"-Dnginx.clojure.wave.CfgToolOutFile=/tmp/my-wave-cfg.txt"</span>;</pre></div>
 </li>
 <li>
 <p>Setting Dump Configuration Service</p>
 
-<div class="highlight highlight-nginx"><pre>  <span class="pl-k">location</span> <span class="pl-en">/dump </span>{
+<div class="highlight highlight-source-nginx"><pre>  <span class="pl-k">location</span> <span class="pl-en">/dump </span>{
      <span class="pl-k">content_handler_type</span> <span class="pl-s">'java'</span>;
      <span class="pl-k">content_handler_name</span> <span class="pl-s">'nginx.clojure.java.WaveConfigurationDumpHandler'</span>;       
   }</pre></div>
@@ -373,7 +373,7 @@ thread in java is costlier than coroutine, facing large amount of connections th
 <li>
 <p>After All responses completed We'll get a generated class waving configuration file e.g <code>my-wave-cfg.txt</code> by access Dump Configuration Service.</p>
 
-<div class="highlight highlight-bash"><pre>/<span class="pl-k">*</span>use curl or just put the Dump Service url to browser and click GO<span class="pl-k">!</span>
+<div class="highlight highlight-source-shell"><pre>/<span class="pl-k">*</span>use curl or just put the Dump Service url to browser and click GO<span class="pl-k">!</span>
  <span class="pl-k">*</span>Dump Service will generate Waving Configuration File to the path defined by 
  <span class="pl-k">*</span>java system property <span class="pl-s"><span class="pl-pds">`</span>nginx.clojure.wave.CfgToolOutFile<span class="pl-pds">`</span></span>
  <span class="pl-k">*</span>/
@@ -390,7 +390,7 @@ curl -v http://localhost:8080/dump</pre></div>
 <li>
 <p>Turn on Coroutine Support</p>
 
-<div class="highlight highlight-nginx"><pre><span class="pl-k">http</span> {
+<div class="highlight highlight-source-nginx"><pre><span class="pl-k">http</span> {
 ...
 <span class="pl-c">#make sure it is reset to a normal number after  above step, e.g. 8 worker processes.</span>
 <span class="pl-k">worker_processes</span>  <span class="pl-s">8</span>;
@@ -440,7 +440,7 @@ all threads are exhuasted. When facing large amount of connections this choice i
 
 <p>eg.</p>
 
-<div class="highlight highlight-nginx"><pre>
+<div class="highlight highlight-source-nginx"><pre>
 <span class="pl-c">#turn off coroutine mode,  n means do nothing. You can also comment this line to turn off coroutine mode </span>
 <span class="pl-k">jvm_options</span> <span class="pl-s">"-javaagent:jars/nginx-clojure-0.2.7.jar=nmb"</span>;
 
@@ -466,7 +466,7 @@ So the below example maybe is wrong. For more details about Nginx Variable pleas
 which explains perfectly the variable scope.</p>
 </blockquote>
 
-<div class="highlight highlight-nginx"><pre>
+<div class="highlight highlight-source-nginx"><pre>
        <span class="pl-k">location</span> <span class="pl-en">/myproxy </span>{
           <span class="pl-c">## It maybe is WRONG!!!</span>
           <span class="pl-c">## Because execution of directive `set` is after the execution of Nginx-Clojure rewrite handler</span>
@@ -474,18 +474,18 @@ which explains perfectly the variable scope.</p>
           <span class="pl-k">rewrite_handler_type</span> <span class="pl-s">'clojure'</span>;
           <span class="pl-k">rewrite_handler_code</span> <span class="pl-s">' ....</span>
 <span class="pl-s">          '</span>;
-          <span class="pl-k">proxy_pass</span> <span class="pl-smi">$myhost</span>
+          <span class="pl-k">proxy_pass</span> <span class="pl-smi">$myhost</span>;
        }    
 </pre></div>
 
 <p>This example is right and there we declare variable $myhost at the outside of <code>location {</code> block.</p>
 
-<div class="highlight highlight-nginx"><pre>       <span class="pl-k">set</span> <span class="pl-smi">$myhost</span> <span class="pl-s">""</span>;
+<div class="highlight highlight-source-nginx"><pre>       <span class="pl-k">set</span> <span class="pl-smi">$myhost</span> <span class="pl-s">""</span>;
        <span class="pl-k">location</span> <span class="pl-en">/myproxy </span>{
           <span class="pl-k">rewrite_handler_type</span> <span class="pl-s">'clojure'</span>;
           <span class="pl-k">rewrite_handler_code</span> <span class="pl-s">' ....</span>
 <span class="pl-s">          '</span>;
-          <span class="pl-k">proxy_pass</span> <span class="pl-smi">$myhost</span>
+          <span class="pl-k">proxy_pass</span> <span class="pl-smi">$myhost</span>;
        }    
 </pre></div>
 
@@ -494,7 +494,7 @@ which explains perfectly the variable scope.</p>
 
 <p>Here's a simple clojure example for Nginx rewrite handler :</p>
 
-<div class="highlight highlight-nginx"><pre>
+<div class="highlight highlight-source-nginx"><pre>
        <span class="pl-k">set</span> <span class="pl-smi">$myvar</span> <span class="pl-s">""</span>;
 
        <span class="pl-k">location</span> <span class="pl-en">/rewritesimple </span>{
@@ -524,7 +524,7 @@ which explains perfectly the variable scope.</p>
 
 <p>We can also  use this feature to complete a simple dynamic balancer , e.g.</p>
 
-<div class="highlight highlight-nginx"><pre>
+<div class="highlight highlight-source-nginx"><pre>
        <span class="pl-k">set</span> <span class="pl-smi">$myhost</span> <span class="pl-s">""</span>;
 
        <span class="pl-k">location</span> <span class="pl-en">/myproxy </span>{
@@ -537,13 +537,13 @@ which explains perfectly the variable scope.</p>
 <span class="pl-s">                          (set-ngx-var! req "myhost" myhost)</span>
 <span class="pl-s">                          phase-done))</span>
 <span class="pl-s">          '</span>;
-          <span class="pl-k">proxy_pass</span> <span class="pl-smi">$myhost</span>
+          <span class="pl-k">proxy_pass</span> <span class="pl-smi">$myhost</span>;
        }    
 </pre></div>
 
 <p>The equivalent java code is here</p>
 
-<div class="highlight highlight-java"><pre>
+<div class="highlight highlight-source-java"><pre>
 <span class="pl-k">package</span> <span class="pl-smi">my.test</span>;
 
 <span class="pl-k">import static</span> <span class="pl-smi">nginx.clojure.java.Constants.*</span>;
@@ -564,13 +564,13 @@ which explains perfectly the variable scope.</p>
 
 <p>Then we set the java rewrtite handler in nginx.conf</p>
 
-<div class="highlight highlight-nginx"><pre>
+<div class="highlight highlight-source-nginx"><pre>
        <span class="pl-k">set</span> <span class="pl-smi">$myhost</span> <span class="pl-s">""</span>;
 
        <span class="pl-k">location</span> <span class="pl-en">/myproxy </span>{
           <span class="pl-k">rewrite_handler_type</span> <span class="pl-s">'java'</span>;
           <span class="pl-k">rewrite_handler_name</span> <span class="pl-s">'my.test.MyRewriteProxyPassHandler'</span>;
-          <span class="pl-k">proxy_pass</span> <span class="pl-smi">$myhost</span>
+          <span class="pl-k">proxy_pass</span> <span class="pl-smi">$myhost</span>;
        }    
 </pre></div>
 
@@ -580,7 +580,7 @@ which explains perfectly the variable scope.</p>
 <p>Try <code>always_read_body on;</code>  where about the location you want to access the request body in a JAVA rewrite handler.
 We also added an example(for unit testing) about this, in nginx.conf</p>
 
-<div class="highlight highlight-nginx"><pre>
+<div class="highlight highlight-source-nginx"><pre>
       <span class="pl-k">set</span> <span class="pl-smi">$myup</span> <span class="pl-s">""</span>;
 
        <span class="pl-k">location</span> <span class="pl-en">/javarewritebybodyproxy </span>{
@@ -601,14 +601,14 @@ Access Handler has the same form with Rewrite Handler. When it returns <code>PHA
 directly typically with some error information , e.g. <code>401 Unauthorized</code>, <code>403 Forbidden</code> .
 e.g.</p>
 
-<div class="highlight highlight-nginx"><pre>
+<div class="highlight highlight-source-nginx"><pre>
           <span class="pl-k">location</span> <span class="pl-en">/basicAuth </span>{
                <span class="pl-k">access_handler_type</span> <span class="pl-s">'java'</span>;
                  <span class="pl-k">access_handler_name</span> <span class="pl-s">'my.BasicAuthHandler'</span>;
                  ....
               }</pre></div>
 
-<div class="highlight highlight-java"><pre>
+<div class="highlight highlight-source-java"><pre>
     <span class="pl-c">/**</span>
 <span class="pl-c">     * This is an  example of HTTP basic Authentication.</span>
 <span class="pl-c">     * It will require visitor to input a user name (xfeep) and password (hello!) </span>
@@ -646,17 +646,17 @@ e.g.</p>
 
 <p>Header Filter Access Handler has the same return form with Rewrite Handler/ Access Handler.
  When it returns <code>PHASE_DONE</code>, nginx will continue the next phase otherwise nginx will response
- directly typically with some error information a.</p>
+ directly typically with some error information.</p>
 
 <p>For Java/Groovy</p>
 
-<div class="highlight highlight-nginx"><pre>      <span class="pl-k">location</span> <span class="pl-en">/javafilter </span>{
+<div class="highlight highlight-source-nginx"><pre>      <span class="pl-k">location</span> <span class="pl-en">/javafilter </span>{
               <span class="pl-k">header_filter_type</span> <span class="pl-s">'java'</span>;
               <span class="pl-k">header_filter_name</span> <span class="pl-s">'my.AddMoreHeaders'</span>;
                ..................
               }</pre></div>
 
-<div class="highlight highlight-java"><pre><span class="pl-k">package</span> <span class="pl-smi">my</span>;
+<div class="highlight highlight-source-java"><pre><span class="pl-k">package</span> <span class="pl-smi">my</span>;
 
 <span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.java.NginxJavaRingHandler</span>;
 <span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.java.Constants</span>;
@@ -674,13 +674,13 @@ e.g.</p>
 
 <p>For Clojure</p>
 
-<div class="highlight highlight-nginx"><pre>      <span class="pl-k">location</span> <span class="pl-en">/javafilter </span>{
+<div class="highlight highlight-source-nginx"><pre>      <span class="pl-k">location</span> <span class="pl-en">/javafilter </span>{
               <span class="pl-k">header_filter_type</span> <span class="pl-s">'clojure'</span>;
               <span class="pl-k">header_filter_name</span> <span class="pl-s">'my/remove-and-add-more-headers'</span>;
                ..................
               }</pre></div>
 
-<div class="highlight highlight-clojure"><pre>(<span class="pl-k">ns</span> <span class="pl-e">my</span>
+<div class="highlight highlight-source-clojure"><pre>(<span class="pl-k">ns</span> <span class="pl-e">my</span>
   (<span class="pl-c1">:use</span> [nginx.clojure.core])
   (<span class="pl-c1">:require</span>  [clj-http.client <span class="pl-c1">:as</span> client]))
 

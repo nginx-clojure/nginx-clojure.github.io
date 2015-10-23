@@ -17,16 +17,16 @@ Setting JVM path and class path within `http {` block in  nginx.conf
     
     jvm_path auto;
     
-    ###jvm_options can be repeated once per option.
-    
     ###define class paths
     ###for clojure, you should append clojure core jar
     ###for groovy, you should append groovy runtime jar
-    jvm_options "-Djava.class.path=#{my_jar_root}/nginx-clojure-0.2.7.jar";
+    ### when wildchar * is used after a path, all jars and sub-directories will appended to
+    ### the jvm classpath. Note that on windows use `;` as separator instead of `:`
+    jvm_classpath "mylibs1/*:mylibs2/*:/myclasses";
     
-    ###or we can put jars in some directories, e.g. jars-dir1, jars-dir2
-    ###so that all jars/sub directories from these directories will be appended the jvm classpath
-    jvm_options "-Djava.ext.dirs=jars-dir1:jars-dir2"
+    
+    ###define jvm options
+    ###jvm_options can be repeated once per option.
     
     ###uncomment next two line to define jvm heap memory
     #jvm_options "-Xms1024m";
@@ -150,7 +150,7 @@ Please Keep these in your mind:
 
 * By default if the initialization failed the nginx won't start successfully and the worker will exit after reporting an error message in error log file but the master keep running and take the port.
 * Because the maybe more than one nginx worker processes, so this code will run everytime per worker starting. 
-* If you use [SharedHashMap/Chronicle-Map][]  to share data 
+* If you use [Shared Map][], [Chronicle-Map][]  to share data 
 among nginx worker processes, Java file lock can be used to let only one nginx worker process do the initialization.
 * If you [enabled coroutine support][], nginx maybe will start successfully even if your initialization failed after some socket operations. If you case it, you can 
 use `nginx.clojure.core/without-coroutine` to wrap your handler, e.g.
@@ -454,7 +454,7 @@ which explains perfectly the variable scope.
           rewrite_handler_type 'clojure';
           rewrite_handler_code ' ....
           ';
-          proxy_pass $myhost
+          proxy_pass $myhost;
        }    
 
 ```
@@ -467,7 +467,7 @@ This example is right and there we declare variable $myhost at the outside of `l
           rewrite_handler_type 'clojure';
           rewrite_handler_code ' ....
           ';
-          proxy_pass $myhost
+          proxy_pass $myhost;
        }    
 
 ```
@@ -521,7 +521,7 @@ We can also  use this feature to complete a simple dynamic balancer , e.g.
 						  (set-ngx-var! req "myhost" myhost)
 						  phase-done))
           ';
-          proxy_pass $myhost
+          proxy_pass $myhost;
        }    
 
 ```
@@ -557,7 +557,7 @@ Then we set the java rewrtite handler in nginx.conf
        location /myproxy {
           rewrite_handler_type 'java';
           rewrite_handler_name 'my.test.MyRewriteProxyPassHandler';
-          proxy_pass $myhost
+          proxy_pass $myhost;
        }    
 
 ```
@@ -638,7 +638,7 @@ We can use Nginx Header Filter written by  Java/Clojure/Groovy to do some useful
 
 Header Filter Access Handler has the same return form with Rewrite Handler/ Access Handler.
  When it returns `PHASE_DONE`, nginx will continue the next phase otherwise nginx will response
- directly typically with some error information a.
+ directly typically with some error information.
 
 For Java/Groovy
 
