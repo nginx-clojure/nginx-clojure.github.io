@@ -13,7 +13,7 @@
 <li>New Feature: Add directive <a href="//nginx-clojure.github.io/directives.html#jvm_classpath">jvm_classpath</a> which supports wildcard character * (issue #95)</li>
 <li>New Feature: Add directive <a href="//nginx-clojure.github.io/directives.html#jvm_classpath_check">jvm_classpath_check</a> which is enabled by default and when it is enabled access permission about classpaths will be checked.</li>
 <li>New Feature: Add <a href="//nginx-clojure.github.io/subpub.html">NginxPubSubTopic(Java)/PubSubTopic(Clojure)</a> to simplify handling messages among Nginx worker processes. (issue #97)</li>
-<li>New Feature: [Shared Map based on shared memory]<a href="issue%20#96"></a> and it has two implementations : tinymap &amp; hashmap.</li>
+<li>New Feature: <a href="//nginx-clojure.github.io/sharedmap.html">Shared Map based on shared memory</a> (issue #96) and it has two implementations : tinymap &amp; hashmap.</li>
 <li>New Feature: <a href="//nginx-clojure.github.io/sharedmap.html">Shared Map based Ring session store</a> (issue #98)</li>
 <li>Enhancement: on-broadcast-event-decode!/on-broadcast! returns a removal function which can be used to remove the registered decoder/listener</li>
 <li>Enhancement: embedded nginx-clojure becomes friendly to mock tests and  also fix issue #101</li>
@@ -210,5 +210,3 @@ Make Clojure/Java/Groovy handler configurations have the same form. e.g. The old
 <li>Supports Java Thread Pool for handle request</li>
 <li>Fast Static File Service</li>
 </ol>
-
-<p>[Shared Hash Map based on shared memory]: </p>
