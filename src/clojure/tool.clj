@@ -31,7 +31,8 @@
         "footer" "header" "CoreFeatures.md" "Configuration.md"
         "HISTORY.md" "Installation.md" "More.md" "QuickStart.md"
         "StaticFile.md" "UserfullLinks.md"
-        "Embed.md" "Directives.md"] (map (fn [v] [v (slurp (str v ".html"))])) (into {})))
+        "Embed.md" "Directives.md"
+        "SubPub.md" "SharedMap.md"] (map (fn [v] [v (slurp (str v ".html"))])) (into {})))
 
 (defn gen-html [all-contents, content-key, out-file]
   (spit out-file (-> 
@@ -50,7 +51,9 @@
       "QuickStart.md" "quickstart.html"
    "UserfullLinks.md" "userfullLinks.html"
    "Embed.md" "embed.html"
-   "Directives.md" "directives.html"})
+   "Directives.md" "directives.html"
+   "SubPub.md" "subpub.html"
+   "SharedMap.md" "sharedmap.html"})
 
 (defn need-re-gen [md]
   (let [mdf (clojure.java.io/file md)

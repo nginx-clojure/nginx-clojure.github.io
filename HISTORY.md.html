@@ -7,6 +7,27 @@
 </ol>
 
 <h2>
+<a id="user-content-043-2015-10-25" class="anchor" href="#043-2015-10-25" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.4.3 (2015-10-25)</h2>
+
+<ol>
+<li>New Feature: Add directive <a href="//nginx-clojure.github.io/directives.html#jvm_classpath">jvm_classpath</a> which supports wildcard character * (issue #95)</li>
+<li>New Feature: Add directive <a href="//nginx-clojure.github.io/directives.html#jvm_classpath_check">jvm_classpath_check</a> which is enabled by default and when it is enabled access permission about classpaths will be checked.</li>
+<li>New Feature: Add <a href="//nginx-clojure.github.io/subpub.html">NginxPubSubTopic(Java)/PubSubTopic(Clojure)</a> to simplify handling messages among Nginx worker processes. (issue #97)</li>
+<li>New Feature: [Shared Map based on shared memory]<a href="issue%20#96"></a> and it has two implementations : tinymap &amp; hashmap.</li>
+<li>New Feature: <a href="//nginx-clojure.github.io/sharedmap.html">Shared Map based Ring session store</a> (issue #98)</li>
+<li>Enhancement: on-broadcast-event-decode!/on-broadcast! returns a removal function which can be used to remove the registered decoder/listener</li>
+<li>Enhancement: embedded nginx-clojure becomes friendly to mock tests and  also fix issue #101</li>
+<li>Bug Fix: After stopping an embedded Nginx-Clojure server keep-alived connections become CLOSE_WAIT.</li>
+<li>Bug Fix: HackUtil.decode decodes unnecessary chars when several strings share one char[] generally on JDK 6</li>
+<li>Bug Fix: jvm crashes with thread pool mode when open_file_cache is enabled.</li>
+<li>Bug Fix: Fix compile errors when no sha1-implementation/zlib can be found (issue #99)</li>
+<li>Example Project: Add <a href="https://github.com/nginx-clojure/nginx-clojure/tree/master/example-projects/clojure-web-example">an example project about clojure web dev</a> to show how to develop &amp; deploy with Nginx-Clojure. Thanks to <a href="https://github.com/ptaoussanis">Peter Taoussanis</a> without whose
+comments there would not be such example project. (issue #91)</li>
+<li>Documents: Add <a href="http://nginx-clojure.github.io/directives.html">Directives Reference</a>
+</li>
+</ol>
+
+<h2>
 <a id="user-content-042-2015-08-31" class="anchor" href="#042-2015-08-31" aria-hidden="true"><span class="octicon octicon-link"></span></a>0.4.2 (2015-08-31)</h2>
 
 <ol>
@@ -189,3 +210,5 @@ Make Clojure/Java/Groovy handler configurations have the same form. e.g. The old
 <li>Supports Java Thread Pool for handle request</li>
 <li>Fast Static File Service</li>
 </ol>
+
+<p>[Shared Hash Map based on shared memory]: </p>

@@ -4,7 +4,7 @@ Quick Start
 Installation
 --------------
 
-1. Download the latest binaries release v0.4.2 from [here](https://sourceforge.net/projects/nginx-clojure/files/). 
+1. Download the latest binaries release v0.4.3 from [here](https://sourceforge.net/projects/nginx-clojure/files/). 
 1. Unzip the zip file downloaded then rename the file `nginx-${os-arc}` to `nginx`, eg. for linux is `nginx-linux-x64`
 
 >If you want to compile it with your own nginx please check [HERE](installation.html)
@@ -16,26 +16,19 @@ Configuration
 
 	```nginx
 	### jvm dynamic library path
-	### auto or  a real path, e,g /usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so
+	### auto or a real path, e,g /usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so
 	jvm_path auto;
-	
-	### my app jars e.g. clojure-1.5.1.jar , groovy-2.3.4.jar,etc.
-	### if we only use Java handler we need not place clojure-xxx.jar here.
-	jvm_var my_other_jars 'my_jar_dir/clojure-1.5.1.jar';
 		
-	### my app classpath, windows user should use ';' as the separator
-	### for clojure devs the simplest way is to use the result jar file from `lein uberjar` here
-	jvm_options "-Djava.class.path=jars/nginx-clojure-0.4.2.jar:#{my_other_jars}";
+	### Set my app jars and resources, it must include nginx-clojure runtime jar,e.g. nginx-clojure-0.4.3.jar and 
+	##  for clojure user clojure runtime jar is also needed.
+	### See http://nginx-clojure.github.io/directives.html#jvm_classpath
+	jvm_classpath 'libs/*'; #windows user should use ';' as the separator
 	
-  ###or we can put jars in some directories, e.g. jars-dir1, jars-dir2
-  ###so that all jars or direct sub directories from these directories will be appended to the jvm classpath
-  ##Note: if you use build-in extensions (e.g. SUN JCE) from jdk please append these dirs, e.g. the value of 
-  ##            System.getProperty("java.ext.dirs")
-  jvm_options "-Djava.ext.dirs=jars-dir1:jars-dir2";
 	```
 1. Setting Inline Http Service Handler
 
-	For Clojure:
+* **Clojure**
+
 	```nginx
        ##Within `server {` block in nginx.conf
        location /clojure {
@@ -51,7 +44,8 @@ Configuration
        }
 	```
 	
-	For Groovy:
+* **Groovy**
+
 	```nginx
        ##Within `server {` block in nginx.conf
        location /groovy {
@@ -70,13 +64,14 @@ Configuration
        }
 	```
 
-	For Java:
+* **Java**
 	> **Note:**
 	So far nginx-clojure has not supported inline java handler, please see the next section to learn how to use an external java handler.
 	
 1. Setting Compojure Router/External Http Service Handler
 
-	For Clojure:
+* **Clojure**
+
 	```nginx
 	##Within `server {` block in nginx.conf
 	location / {
@@ -99,7 +94,7 @@ Configuration
   ```
 
 
-	For Java:
+* **Java**
 
 	```nginx
        ##Within `server {` block in nginx.conf
@@ -184,4 +179,16 @@ Stop
 $ ./nginx -s stop
 ```
 
+Examples
+--------------
+
+### [clojure-web-example](https://github.com/nginx-clojure/nginx-clojure/tree/master/example-projects/clojure-web-example)
+
+A basic example about nginx-clojure & clojure web dev. It uses:
+* [Compojure](https://github.com/weavejester/compojure) (for uri routing)
+* [Hiccup](https://github.com/weavejester/hiccup) (for html rendering)
+* [Websocket API](http://nginx-clojure.github.io/more.html#38--sever-side-websocket) & [Sub/Pub API]() (to demo a simple chatroom)
+* ring.middleware.reload (for auto-reloading modified namespaces in dev environments)
+
+See it on [github](https://github.com/nginx-clojure/nginx-clojure/tree/master/example-projects/clojure-web-example).
 

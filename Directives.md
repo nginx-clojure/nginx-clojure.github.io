@@ -71,7 +71,7 @@ jvm_classpath '#{myAgent}:/opt/anotherLibs/*';
 * **Default**:	—
 * **Context**:	http
 
-Defines class pathes. When '/*' is used after a directory path all jar files and sub-directories will be used as the jvm classpath. e.g. If /opt/mylibs has below structure.
+Defines class paths. When '/*' is used after a directory path all jar files and sub-directories will be used as the jvm classpath. e.g. If /opt/mylibs has below structure.
 
 ```
 /opt/mylibs/
@@ -96,20 +96,46 @@ It is equivalent to
 jvm_options '-Djava.class.path=/opt/mylibs/a.jar:/opt/mylibs/b.jar:/opt/mylibs/classes:/opt/mylibs/resources'
 ```
 
+We can also define serveral class paths by using separator `:` (UNIX like OS) or `;` (Windows), e.g.
+
+```nginx
+jvm_classpath /opt/mylibs/*:/opt/my-another-libs/*:/opt/my-resources;
+## for windows user
+# jvm_classpath c:/mylibs/*;c:/my-another-libs/*;c:/my-resources;
+```
+
+
 ## jvm_classpath_check
 
 * **Syntax**:	**jvm_classpath_check** on | off;
 * **Default**:	on
 * **Context**:	http
 
+Enables/disables checking access permission of jvm classpath. Default is on.
+
 ## jvm_options
 
-* **Syntax**:	**jvm_options** *option-value*;
+* **Syntax**:	**jvm_options** *jvm-option*;
 * **Default**:	—
 * **Context**:	http
 * **repeatable** true
 
-Enables/disables checking access permission of jvm classpath. Default is on.
+Defines one jvm option. e.g.
+
+```nginx
+## set initial Java heap size
+jvm_options -Xms250m;
+
+## set maximum Java heap size
+jvm_options -Xmx1024m;
+
+## set java thread stack size
+jvm_options -Xss128k;
+
+## set java system property
+jvm_options -Djava.awt.headless=true;
+```
+ 
 
 ## jvm_workers
 

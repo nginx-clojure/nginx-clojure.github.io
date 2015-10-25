@@ -1,0 +1,126 @@
+<h1>
+<a id="user-content-shared-map--session-store" class="anchor" href="#shared-map--session-store" aria-hidden="true"><span class="octicon octicon-link"></span></a>Shared Map &amp; Session Store</h1>
+
+<h2>
+<a id="user-content-shared-map" class="anchor" href="#shared-map" aria-hidden="true"><span class="octicon octicon-link"></span></a>Shared Map</h2>
+
+<p>Shared map is used to share data among nginx worker processes without any other external services
+ (e.g. redis, memorycached ) or libraries (e.g. SharedHashMap/Chronicle-Map, nginx lua shared dic). 
+So far it has two implementations: tiny map &amp; hash map both of which use MurmurHash3 32-bit to 
+generate hash code. The key/value of shared hash map can be <code>int</code>,<code>long</code>,<code>String</code>, <code>byte array</code>.</p>
+
+<p><strong>limitation</strong></p>
+
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>entry structure size(Bytes)</th>
+<th>table structure size(Bytes)</th>
+<th>space limit</th>
+<th>entries limit</th>
+<th>key limit</th>
+<th>value limit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tiny map</td>
+<td>24</td>
+<td>entries x 4</td>
+<td>4G (64-bit) or 2G (32-bit)</td>
+<td>2^31=2.14Billions</td>
+<td>16M</td>
+<td>4G (64-bit) or 2G (32-bit)</td>
+</tr>
+<tr>
+<td>hash map</td>
+<td>40(64-bit) or 28(32-bit)</td>
+<td>entries x 8(64-bit) or 4 (32-bit)</td>
+<td>OS process memory limit</td>
+<td>2^63 (64-bit) or 2^31 (32-bit)</td>
+<td>OS process memory limit</td>
+<td>OS process memory limit</td>
+</tr>
+</tbody>
+</table>
+
+<p>But note that if needed memory size is less than half of OS page size the real allocated size of nginx slab only can be 
+2^3 = 8, 2^4 = 16, 2^5 = 32,..., 2^(ngx_pagesize_shift - 1).So on 64-bit OS entry structure size of tiny map really
+uses 32Bytes hash map uses 64Bytes. We'll do some optimize work in the future versions.</p>
+
+<p>Neither tiny map nor hash map will rehash entries because both of them will have a constant number of buckets once they are initialized. </p>
+
+<pre><code>${number of buckets}  =  round_up_to_power_of_2( ${entries} * 0.75 ) 
+</code></pre>
+
+<p><strong>Optimization for int/long</strong></p>
+
+<p>Some optimization have been done about java int/long key/value, int/long key/value and they won't allocate additional memory 
+because them are stored in the entry structure itself.
+e.g. in a hash map for a java long key (64bits) we will store it into </p>
+
+<ol>
+<li> entry.key (64-bit OS) or</li>
+<li> entry.key &amp; entry.ksize (32-bit OS) because size of java long is constant we can reuse entry.ksize.</li>
+</ol>
+
+<p>viz. use c code </p>
+
+<div class="highlight highlight-source-c"><pre>
+*((<span class="pl-c1">uint64_t</span> *)(<span class="pl-k">void</span>*)&amp;entry-&gt;key) = ${64bits java <span class="pl-k">long</span> value};
+</pre></div>
+
+<p><strong>Example</strong></p>
+
+<p>Here's an example to use shared map to count uri access times.</p>
+
+<p>In nginx.conf</p>
+
+<div class="highlight highlight-source-nginx"><pre>    <span class="pl-k">shared_map</span> uri_access_counters  tinymap?space=1m&amp;entries=8096;</pre></div>
+
+<ul>
+<li><strong>clojure</strong></li>
+</ul>
+
+<div class="highlight highlight-source-clojure"><pre>
+<span class="pl-c">;; be friendly to embeded nginx-clojure where we maybe def shared map before server starts</span>
+(<span class="pl-k">def</span> <span class="pl-e">dsmap</span> (<span class="pl-en">delay</span> (<span class="pl-en">nginx.clojure.clj.ClojureSharedHashMap.</span> <span class="pl-s"><span class="pl-pds">"</span>uri_access_counters<span class="pl-pds">"</span></span>)))
+
+<span class="pl-c">;; if uri not exists set 1 otherwise increase its count.</span>
+(<span class="pl-k">when</span> (<span class="pl-en">zero?</span> (<span class="pl-en">.putIntIfAbsent</span> @dsmap uri (<span class="pl-en">int</span> <span class="pl-c1">1</span>)))
+  (<span class="pl-en">.atomicAddInt</span> @dsmap uri (<span class="pl-en">int</span> <span class="pl-c1">1</span>)))</pre></div>
+
+<ul>
+<li><strong>Java</strong></li>
+</ul>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-c">// get the shared map. Mostly we do this in a handler</span>
+<span class="pl-c">// (e.g. jvm init handler, content handler) 's constructor.</span>
+<span class="pl-smi">NginxSharedHashMap</span> smap <span class="pl-k">=</span> <span class="pl-smi">NginxSharedHashMap</span><span class="pl-k">.</span>build(<span class="pl-s"><span class="pl-pds">"</span>uri_access_counters<span class="pl-pds">"</span></span>);
+
+<span class="pl-c">//if uri not exists set 1 otherwise increase its count.</span>
+<span class="pl-c">//putIntIfAbsent is a faster version of putIfAbsent for int value</span>
+<span class="pl-k">if</span> (smap<span class="pl-k">.</span>putIntIfAbsent(uri, <span class="pl-c1">1</span>) <span class="pl-k">!=</span> <span class="pl-c1">0</span>) {
+  smap<span class="pl-k">.</span>atomicAddInt(uri, <span class="pl-c1">1</span>);
+}</pre></div>
+
+<h2>
+<a id="user-content-shared-map-based-ring-session-store" class="anchor" href="#shared-map-based-ring-session-store" aria-hidden="true"><span class="octicon octicon-link"></span></a>Shared Map Based Ring Session Store</h2>
+
+<p>When worker_processes  &gt; 1 in nginx.conf, we can not use the default in-memory session store
+because there're more than one JVM instances and requests from the same session perhaps
+will be handled by different JVM instances. We can try cookie store, or shared map based ring session store
+and if we use redis to shared sessions we can try <a href="https://github.com/ptaoussanis/carmine">carmine-store</a> or 
+<a href="https://github.com/wuzhe/clj-redis-session">redis session store</a>.
+Create a shared map based ring session store is very simple. e.g.</p>
+
+<p>In nginx.conf</p>
+
+<div class="highlight highlight-source-nginx"><pre><span class="pl-k">shared_map</span> my-session-store tinymap?space=10m&amp;entries=1024;</pre></div>
+
+<ul>
+<li><strong>Clojure</strong></li>
+</ul>
+
+<div class="highlight highlight-source-clojure"><pre>(<span class="pl-k">def</span> <span class="pl-e">nginx.clojure.session</span>/<span class="pl-e">my-session-store</span> (<span class="pl-en">shared-map-store</span> <span class="pl-s"><span class="pl-pds">"</span>my-session-store<span class="pl-pds">"</span></span>))</pre></div>

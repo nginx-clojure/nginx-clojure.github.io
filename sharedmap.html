@@ -99,88 +99,131 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
            <h1>
-<a id="user-content-core-features" class="anchor" href="#core-features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Core Features</h1>
-
-<p>The latest release is v0.4.3, more detail changes about it can be found from <a href="//nginx-clojure.github.io/downloads.html">Release History</a>.</p>
-
-<ol>
-<li>Compatible with <a href="https://github.com/ring-clojure/ring/blob/master/SPEC">Ring</a> and obviously supports those Ring based frameworks, such as Compojure etc.</li>
-<li>Http Services by  using Clojure / Java / Groovy to write simple handlers for http services.</li>
-<li>Nginx Access Handler by Clojure / Java / Groovy</li>
-<li>Nginx Header Filter by Clojure / Java / Groovy</li>
-<li>
-<strong><em>NEW</em></strong>: Pub/Sub Among Nginx Worker Processes</li>
-<li>
-<strong><em>NEW</em></strong>: Shared Map based on shared memory &amp; Shared Map based Ring session store</li>
-<li>
-<strong><em>NEW</em></strong>: Support Sente, see <a href="https://github.com/ptaoussanis/sente/pull/160">this PR</a>
-</li>
-<li>
-<strong><em>NEW</em></strong>: Support Per-message Compression Extensions (PMCEs) for WebSocket</li>
-<li>APIs for Embedding Nginx-Clojure into a Standard Clojure/Java/Groovy App</li>
-<li>Server Side Websocket</li>
-<li>A build-in Jersey container to support java standard RESTful web services (JAX-RS 2.0)</li>
-<li>Tomcat 8 embedding support (so servlet 3.1/jsp/sendfile/JSR-356 websocket work within nginx!)</li>
-<li>Dynamic proxying by using Clojure / Java / Groovy to write a simple nginx rewrite handler to set var or return errors before proxy pass or content ring handler</li>
-<li>Non-blocking coroutine based socket which is Compatible with Java Socket API and works well with largely existing java library such as apache http client, mysql jdbc drivers. 
-With this feature  one java main thread can handle thousands of connections.</li>
-<li>Handle multiple sockets parallel in sub coroutines, e.g. we can invoke two remote services at the same time.</li>
-<li>Asynchronous callback API of socket/Channel  for some advanced usage</li>
-<li>Long Polling &amp; Server Sent Events</li>
-<li>Run initialization clojure code when nginx worker starting</li>
-<li>Support user defined http request method</li>
-<li>Compatible with the Nginx lastest stable version 1.8.0. (Nginx 1.6.x, 1.4.x is also ok, older version is not tested and maybe works.)</li>
-<li>One of  benifits of <a href="http://nginx.org/">Nginx</a> is worker processes are automatically restarted by a master process if they crash</li>
-<li>Utilizes lazy headers and direct memory operation between <a href="http://nginx.org/">Nginx</a> and JVM to fast handle dynamic contents from Clojure or Java code.</li>
-<li>Utilizes <a href="http://nginx.org/">Nginx</a> zero copy file sending mechanism to fast handle static contents controlled by Clojure or Java code.</li>
-<li>Supports Linux x64, Linux x86 32bit, Win32, Win64  and Mac OS X. Freebsd version can also be got from Freebsd ports.</li>
-</ol>
-
-<p>By the way it is very fast, the benchmarks can be found <a href="https://github.com/ptaoussanis/clojure-web-server-benchmarks/">HERE(with wrk2)</a>.</p>
-
-<h1>
-<a id="user-content-jar-repository" class="anchor" href="#jar-repository" aria-hidden="true"><span class="octicon octicon-link"></span></a>Jar Repository</h1>
-
-<p>Nginx-Clojure has already been published to <a href="https://clojars.org/">https://clojars.org/</a> whose maven repository is </p>
-
-<div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">repository</span>&gt;
-  &lt;<span class="pl-ent">id</span>&gt;clojars.org&lt;/<span class="pl-ent">id</span>&gt;
-  &lt;<span class="pl-ent">url</span>&gt;http://clojars.org/repo&lt;/<span class="pl-ent">url</span>&gt;
-&lt;/<span class="pl-ent">repository</span>&gt;</pre></div>
-
-<p>After adding clojars repository, you can reference nginx-clojure 0.4.2 , e.g.</p>
+<a id="user-content-shared-map--session-store" class="anchor" href="#shared-map--session-store" aria-hidden="true"><span class="octicon octicon-link"></span></a>Shared Map &amp; Session Store</h1>
 
 <h2>
-<a id="user-content--leiningen-clojure-no-need-to-add-clojars-repository-which-is-a-default-repository-for-leiningen-" class="anchor" href="#-leiningen-clojure-no-need-to-add-clojars-repository-which-is-a-default-repository-for-leiningen-" aria-hidden="true"><span class="octicon octicon-link"></span></a> Leiningen (clojure, no need to add clojars repository which is a default repository for Leiningen) </h2>
+<a id="user-content-shared-map" class="anchor" href="#shared-map" aria-hidden="true"><span class="octicon octicon-link"></span></a>Shared Map</h2>
 
-<div class="highlight highlight-source-clojure"><pre>[nginx-clojure <span class="pl-s"><span class="pl-pds">"</span>0.4.2<span class="pl-pds">"</span></span>]</pre></div>
+<p>Shared map is used to share data among nginx worker processes without any other external services
+ (e.g. redis, memorycached ) or libraries (e.g. SharedHashMap/Chronicle-Map, nginx lua shared dic). 
+So far it has two implementations: tiny map &amp; hash map both of which use MurmurHash3 32-bit to 
+generate hash code. The key/value of shared hash map can be <code>int</code>,<code>long</code>,<code>String</code>, <code>byte array</code>.</p>
 
-<h2>
-<a id="user-content-gradle-groovyjava" class="anchor" href="#gradle-groovyjava" aria-hidden="true"><span class="octicon octicon-link"></span></a>Gradle (groovy/java)</h2>
+<p><strong>limitation</strong></p>
 
-<pre><code>compile "nginx-clojure:nginx-clojure:0.4.2"
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>entry structure size(Bytes)</th>
+<th>table structure size(Bytes)</th>
+<th>space limit</th>
+<th>entries limit</th>
+<th>key limit</th>
+<th>value limit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tiny map</td>
+<td>24</td>
+<td>entries x 4</td>
+<td>4G (64-bit) or 2G (32-bit)</td>
+<td>2^31=2.14Billions</td>
+<td>16M</td>
+<td>4G (64-bit) or 2G (32-bit)</td>
+</tr>
+<tr>
+<td>hash map</td>
+<td>40(64-bit) or 28(32-bit)</td>
+<td>entries x 8(64-bit) or 4 (32-bit)</td>
+<td>OS process memory limit</td>
+<td>2^63 (64-bit) or 2^31 (32-bit)</td>
+<td>OS process memory limit</td>
+<td>OS process memory limit</td>
+</tr>
+</tbody>
+</table>
+
+<p>But note that if needed memory size is less than half of OS page size the real allocated size of nginx slab only can be 
+2^3 = 8, 2^4 = 16, 2^5 = 32,..., 2^(ngx_pagesize_shift - 1).So on 64-bit OS entry structure size of tiny map really
+uses 32Bytes hash map uses 64Bytes. We'll do some optimize work in the future versions.</p>
+
+<p>Neither tiny map nor hash map will rehash entries because both of them will have a constant number of buckets once they are initialized. </p>
+
+<pre><code>${number of buckets}  =  round_up_to_power_of_2( ${entries} * 0.75 ) 
 </code></pre>
 
-<h2>
-<a id="user-content-maven" class="anchor" href="#maven" aria-hidden="true"><span class="octicon octicon-link"></span></a>Maven</h2>
+<p><strong>Optimization for int/long</strong></p>
 
-<div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">dependency</span>&gt;
-  &lt;<span class="pl-ent">groupId</span>&gt;nginx-clojure&lt;/<span class="pl-ent">groupId</span>&gt;
-  &lt;<span class="pl-ent">artifactId</span>&gt;nginx-clojure&lt;/<span class="pl-ent">artifactId</span>&gt;
-  &lt;<span class="pl-ent">version</span>&gt;0.4.2&lt;/<span class="pl-ent">version</span>&gt;
-&lt;/<span class="pl-ent">dependency</span>&gt;</pre></div>
+<p>Some optimization have been done about java int/long key/value, int/long key/value and they won't allocate additional memory 
+because them are stored in the entry structure itself.
+e.g. in a hash map for a java long key (64bits) we will store it into </p>
 
-<h1>
-<a id="user-content-license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h1>
+<ol>
+<li> entry.key (64-bit OS) or</li>
+<li> entry.key &amp; entry.ksize (32-bit OS) because size of java long is constant we can reuse entry.ksize.</li>
+</ol>
 
-<p>Copyright © 2013-2015 Zhang, Yuexiang (xfeep) and released under the BSD 3-Clause license.</p>
+<p>viz. use c code </p>
 
-<p>This program uses:</p>
+<div class="highlight highlight-source-c"><pre>
+*((<span class="pl-c1">uint64_t</span> *)(<span class="pl-k">void</span>*)&amp;entry-&gt;key) = ${64bits java <span class="pl-k">long</span> value};
+</pre></div>
+
+<p><strong>Example</strong></p>
+
+<p>Here's an example to use shared map to count uri access times.</p>
+
+<p>In nginx.conf</p>
+
+<div class="highlight highlight-source-nginx"><pre>    <span class="pl-k">shared_map</span> uri_access_counters  tinymap?space=1m&amp;entries=8096;</pre></div>
 
 <ul>
-<li>Re-rooted ASM bytecode engineering library which is distributed under the BSD 3-Clause license</li>
-<li>Modified Continuations Library Written by Matthias Mann  is distributed under the BSD 3-Clause license</li>
+<li><strong>clojure</strong></li>
 </ul>
+
+<div class="highlight highlight-source-clojure"><pre>
+<span class="pl-c">;; be friendly to embeded nginx-clojure where we maybe def shared map before server starts</span>
+(<span class="pl-k">def</span> <span class="pl-e">dsmap</span> (<span class="pl-en">delay</span> (<span class="pl-en">nginx.clojure.clj.ClojureSharedHashMap.</span> <span class="pl-s"><span class="pl-pds">"</span>uri_access_counters<span class="pl-pds">"</span></span>)))
+
+<span class="pl-c">;; if uri not exists set 1 otherwise increase its count.</span>
+(<span class="pl-k">when</span> (<span class="pl-en">zero?</span> (<span class="pl-en">.putIntIfAbsent</span> @dsmap uri (<span class="pl-en">int</span> <span class="pl-c1">1</span>)))
+  (<span class="pl-en">.atomicAddInt</span> @dsmap uri (<span class="pl-en">int</span> <span class="pl-c1">1</span>)))</pre></div>
+
+<ul>
+<li><strong>Java</strong></li>
+</ul>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-c">// get the shared map. Mostly we do this in a handler</span>
+<span class="pl-c">// (e.g. jvm init handler, content handler) 's constructor.</span>
+<span class="pl-smi">NginxSharedHashMap</span> smap <span class="pl-k">=</span> <span class="pl-smi">NginxSharedHashMap</span><span class="pl-k">.</span>build(<span class="pl-s"><span class="pl-pds">"</span>uri_access_counters<span class="pl-pds">"</span></span>);
+
+<span class="pl-c">//if uri not exists set 1 otherwise increase its count.</span>
+<span class="pl-c">//putIntIfAbsent is a faster version of putIfAbsent for int value</span>
+<span class="pl-k">if</span> (smap<span class="pl-k">.</span>putIntIfAbsent(uri, <span class="pl-c1">1</span>) <span class="pl-k">!=</span> <span class="pl-c1">0</span>) {
+  smap<span class="pl-k">.</span>atomicAddInt(uri, <span class="pl-c1">1</span>);
+}</pre></div>
+
+<h2>
+<a id="user-content-shared-map-based-ring-session-store" class="anchor" href="#shared-map-based-ring-session-store" aria-hidden="true"><span class="octicon octicon-link"></span></a>Shared Map Based Ring Session Store</h2>
+
+<p>When worker_processes  &gt; 1 in nginx.conf, we can not use the default in-memory session store
+because there're more than one JVM instances and requests from the same session perhaps
+will be handled by different JVM instances. We can try cookie store, or shared map based ring session store
+and if we use redis to shared sessions we can try <a href="https://github.com/ptaoussanis/carmine">carmine-store</a> or 
+<a href="https://github.com/wuzhe/clj-redis-session">redis session store</a>.
+Create a shared map based ring session store is very simple. e.g.</p>
+
+<p>In nginx.conf</p>
+
+<div class="highlight highlight-source-nginx"><pre><span class="pl-k">shared_map</span> my-session-store tinymap?space=10m&amp;entries=1024;</pre></div>
+
+<ul>
+<li><strong>Clojure</strong></li>
+</ul>
+
+<div class="highlight highlight-source-clojure"><pre>(<span class="pl-k">def</span> <span class="pl-e">nginx.clojure.session</span>/<span class="pl-e">my-session-store</span> (<span class="pl-en">shared-map-store</span> <span class="pl-s"><span class="pl-pds">"</span>my-session-store<span class="pl-pds">"</span></span>))</pre></div>
 
         </section>
     </div>
