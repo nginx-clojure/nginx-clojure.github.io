@@ -71,14 +71,15 @@ jvm_classpath '#{myAgent}:/opt/anotherLibs/*';
 * **Default**:	—
 * **Context**:	http
 
-Defines class paths. When '/*' is used after a directory path all jar files and sub-directories will be used as the jvm classpath. e.g. If /opt/mylibs has below structure.
+Defines class paths those are separated by "`:`" (Unix like OS) or "`;`" (Windows) . When '`/*`' is used after a directory path all files and direct sub-directories will be used as the jvm class path entries. e.g. If /opt/mylibs has below structure.
 
 ```
 /opt/mylibs/
 -----------/a.jar
 -----------/b.jar
------------/classes   (sub-directory)
------------/resources (sub-directory)
+-----------/c.zip     
+-----------/classes   (direct sub-directory)
+-----------/resources (direct sub-directory)
 ```
 
 And we use below declaration.
@@ -93,7 +94,7 @@ jvm_classpath /opt/mylibs/*;
 It is equivalent to 
 
 ```nginx
-jvm_options '-Djava.class.path=/opt/mylibs/a.jar:/opt/mylibs/b.jar:/opt/mylibs/classes:/opt/mylibs/resources'
+jvm_options '-Djava.class.path=/opt/mylibs/a.jar:/opt/mylibs/b.jar:/opt/mylibs/c.zip:/opt/mylibs/classes:/opt/mylibs/resources'
 ```
 
 We can also define serveral class paths by using separator `:` (UNIX like OS) or `;` (Windows), e.g.
@@ -103,6 +104,11 @@ jvm_classpath /opt/mylibs/*:/opt/my-another-libs/*:/opt/my-resources;
 ## for windows user
 # jvm_classpath c:/mylibs/*;c:/my-another-libs/*;c:/my-resources;
 ```
+
+**Note that the behavior about wildcard `*` here is different from `-cp` or `-classpath` option
+of jdk/jre java command where wildcard `*` only means jar files and non-jar files and sub-directories
+won't be included.**
+
 
 
 ## jvm_classpath_check

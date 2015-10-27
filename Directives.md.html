@@ -92,13 +92,14 @@
 <strong>Context</strong>:  http</li>
 </ul>
 
-<p>Defines class paths. When '/*' is used after a directory path all jar files and sub-directories will be used as the jvm classpath. e.g. If /opt/mylibs has below structure.</p>
+<p>Defines class paths those are separated by "<code>:</code>" (Unix like OS) or "<code>;</code>" (Windows) . When '<code>/*</code>' is used after a directory path all files and direct sub-directories will be used as the jvm class path entries. e.g. If /opt/mylibs has below structure.</p>
 
 <pre><code>/opt/mylibs/
 -----------/a.jar
 -----------/b.jar
------------/classes   (sub-directory)
------------/resources (sub-directory)
+-----------/c.zip     
+-----------/classes   (direct sub-directory)
+-----------/resources (direct sub-directory)
 </code></pre>
 
 <p>And we use below declaration.</p>
@@ -111,13 +112,17 @@
 
 <p>It is equivalent to </p>
 
-<div class="highlight highlight-source-nginx"><pre><span class="pl-k">jvm_options</span> <span class="pl-s">'-Djava.class.path=/opt/mylibs/a.jar:/opt/mylibs/b.jar:/opt/mylibs/classes:/opt/mylibs/resources'</span></pre></div>
+<div class="highlight highlight-source-nginx"><pre><span class="pl-k">jvm_options</span> <span class="pl-s">'-Djava.class.path=/opt/mylibs/a.jar:/opt/mylibs/b.jar:/opt/mylibs/c.zip:/opt/mylibs/classes:/opt/mylibs/resources'</span></pre></div>
 
 <p>We can also define serveral class paths by using separator <code>:</code> (UNIX like OS) or <code>;</code> (Windows), e.g.</p>
 
 <div class="highlight highlight-source-nginx"><pre><span class="pl-k">jvm_classpath</span> /opt/mylibs/*:/opt/my-another-libs/*:/opt/my-resources;
 <span class="pl-c">## for windows user</span>
 <span class="pl-c"># jvm_classpath c:/mylibs/*;c:/my-another-libs/*;c:/my-resources;</span></pre></div>
+
+<p><strong>Note that the behavior about wildcard <code>*</code> here is different from <code>-cp</code> or <code>-classpath</code> option
+of jdk/jre java command where wildcard <code>*</code> only means jar files and non-jar files and sub-directories
+won't be included.</strong></p>
 
 <h2>
 <a id="user-content-jvm_classpath_check" class="anchor" href="#jvm_classpath_check" aria-hidden="true"><span class="octicon octicon-link"></span></a>jvm_classpath_check</h2>
