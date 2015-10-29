@@ -171,11 +171,36 @@ e.g.
 
 ```nginx
 jvm_handler_type java;
-jvm_init_handler_name com.foo.handlers.MyHelloHandler;
+jvm_init_handler_name com.foo.handlers.MyJvmInitHandler;
 
 ## or for clojure
 jvm_handler_type clojure;
-jvm_init_handler_name foo.core/MyHelloHandler;
+jvm_init_handler_name foo.core/my-jvm-init-handler;
+```
+
+* **Java**
+
+```java
+package com.foo.handlers;
+
+import nginx.clojure.java.NginxJavaRingHandler;
+
+public class MyJvmInitHandler implements NginxJavaRingHandler {
+  public Object[] invoke(Map<String, String> fakeReq) {
+    //do some initializing here
+  }
+}
+
+```
+
+
+* **Clojure**
+
+```clojure
+(ns foo.core)
+(defn my-jvm-init-handler[_]
+  ;;; do some initializing here 
+ )
 ```
 
 ## jvm_init_handler_code
@@ -213,7 +238,7 @@ e.g.
 
 ```nginx
 jvm_handler_type clojure;
-jvm_init_handler_code '(fn[_]
+jvm_exit_handler_code '(fn[_]
                        (do-some-cleaning-work)
                        nil)
 ';
@@ -284,6 +309,7 @@ Then we can reference it in nginx.conf
 ```java
 package mytest;
 import static nginx.clojure.MiniConstants.*;
+import nginx.clojure.java.NginxJavaRingHandler;
 
 import java.util.HashMap;
 import java.util.Map;

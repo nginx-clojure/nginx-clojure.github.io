@@ -212,11 +212,35 @@ When we use jvm init handler/exit handler we must define it. </p>
 <p>e.g.</p>
 
 <div class="highlight highlight-source-nginx"><pre><span class="pl-k">jvm_handler_type</span> java;
-<span class="pl-k">jvm_init_handler_name</span> com.foo.handlers.MyHelloHandler;
+<span class="pl-k">jvm_init_handler_name</span> com.foo.handlers.MyJvmInitHandler;
 
 <span class="pl-c">## or for clojure</span>
 <span class="pl-k">jvm_handler_type</span> clojure;
-<span class="pl-k">jvm_init_handler_name</span> foo.core/MyHelloHandler;</pre></div>
+<span class="pl-k">jvm_init_handler_name</span> foo.core/my-jvm-init-handler;</pre></div>
+
+<ul>
+<li><strong>Java</strong></li>
+</ul>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">package</span> <span class="pl-smi">com.foo.handlers</span>;
+
+<span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.java.NginxJavaRingHandler</span>;
+
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">MyJvmInitHandler</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
+  <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">String</span>&gt;</span> <span class="pl-v">fakeReq</span>) {
+    <span class="pl-c">//do some initializing here</span>
+  }
+}
+</pre></div>
+
+<ul>
+<li><strong>Clojure</strong></li>
+</ul>
+
+<div class="highlight highlight-source-clojure"><pre>(<span class="pl-k">ns</span> <span class="pl-e">foo.core</span>)
+(<span class="pl-k">defn</span> <span class="pl-e">my-jvm-init-handler</span>[_]
+  <span class="pl-c">;;; do some initializing here </span>
+ )</pre></div>
 
 <h2>
 <a id="user-content-jvm_init_handler_code" class="anchor" href="#jvm_init_handler_code" aria-hidden="true"><span class="octicon octicon-link"></span></a>jvm_init_handler_code</h2>
@@ -267,7 +291,7 @@ When we use jvm init handler/exit handler we must define it. </p>
 <p>e.g.</p>
 
 <div class="highlight highlight-source-nginx"><pre><span class="pl-k">jvm_handler_type</span> clojure;
-<span class="pl-k">jvm_init_handler_code</span> <span class="pl-s">'(fn[_]</span>
+<span class="pl-k">jvm_exit_handler_code</span> <span class="pl-s">'(fn[_]</span>
 <span class="pl-s">                       (do-some-cleaning-work)</span>
 <span class="pl-s">                       nil)</span>
 <span class="pl-s">'</span>;</pre></div>
@@ -359,6 +383,7 @@ be inherited by child server/location/nested-location context.</p>
 
 <div class="highlight highlight-source-java"><pre><span class="pl-k">package</span> <span class="pl-smi">mytest</span>;
 <span class="pl-k">import static</span> <span class="pl-smi">nginx.clojure.MiniConstants.*</span>;
+<span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.java.NginxJavaRingHandler</span>;
 
 <span class="pl-k">import</span> <span class="pl-smi">java.util.HashMap</span>;
 <span class="pl-k">import</span> <span class="pl-smi">java.util.Map</span>;
