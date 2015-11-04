@@ -454,6 +454,21 @@ public class WSAccessHandler implements NginxJavaRingHandler {
 3.9  Java standard RESTful web services with Jersey
 -----------------
 
+* **Get Jar File**
+
+We can get the released version from [clojars](https://clojars.org/nginx-clojure/nginx-jersey) or 
+the jar in [nginx-clojure binary release](https://sourceforge.net/projects/nginx-clojure/files/) 
+
+For get the latest version from the github source
+
+```shell
+git clone https://github.com/nginx-clojure/nginx-clojure
+cd nginx-clojure/nginx-jersey
+lein jar
+```
+
+*  **Configuration**
+
 in nginx.conf
 
 ```nginx

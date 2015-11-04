@@ -423,6 +423,24 @@ Here we give a echo service example.</p>
 <h2>
 <a id="user-content-39--java-standard-restful-web-services-with-jersey" class="anchor" href="#39--java-standard-restful-web-services-with-jersey" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.9  Java standard RESTful web services with Jersey</h2>
 
+<ul>
+<li><strong>Get Jar File</strong></li>
+</ul>
+
+<p>We can get the released version from <a href="https://clojars.org/nginx-clojure/nginx-jersey">clojars</a> or 
+the jar in <a href="https://sourceforge.net/projects/nginx-clojure/files/">nginx-clojure binary release</a> </p>
+
+<p>For get the latest version from the github source</p>
+
+<div class="highlight highlight-source-shell"><pre>git clone https://github.com/nginx-clojure/nginx-clojure
+<span class="pl-c1">cd</span> nginx-clojure/nginx-jersey
+lein jar</pre></div>
+
+<ul>
+<li> <strong>Configuration</strong>
+</li>
+</ul>
+
 <p>in nginx.conf</p>
 
 <div class="highlight highlight-source-nginx"><pre>      <span class="pl-k">location</span> <span class="pl-en">/jersey </span>{

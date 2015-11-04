@@ -101,13 +101,13 @@
            <h1>
 <a id="user-content-1-installation" class="anchor" href="#1-installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Installation</h1>
 
-<p>The lastest release is 0.4.2. Please check the  <a href="downloads.html">Update History</a> for more details.</p>
+<p>The lastest release is 0.4.3. Please check the  <a href="downloads.html">Update History</a> for more details.</p>
 
 <h2>
 <a id="user-content-11-installation-by-binary" class="anchor" href="#11-installation-by-binary" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.1 Installation by Binary</h2>
 
 <ol>
-<li>First you can download  Release 0.4.2  from <a href="https://sourceforge.net/projects/nginx-clojure/files/">here</a>. 
+<li>First you can download  Release 0.4.3  from <a href="https://sourceforge.net/projects/nginx-clojure/files/">here</a>. 
 The zip file includes Nginx-Clojure binaries about Linux x64, Linux i586, Win32, Win64 and Mac OS X.</li>
 <li>Unzip the zip file downloaded then rename the file <code>nginx-${os-arc}</code> to <code>nginx</code>, eg. for linux is <code>nginx-linux-x64</code>
 </li>
@@ -127,13 +127,13 @@ For Win32 users MUST check out nginx source by hg because the zipped source does
 <li>
 <p>Make sure jdk (version should be 1.6+ ) is installed, we can use <code>javac</code>, <code>java</code>, e.g.</p>
 
-<div class="highlight highlight-shell"><pre><span class="pl-smi">$javac</span> -version
+<div class="highlight highlight-source-shell"><pre><span class="pl-smi">$javac</span> -version
 javac 1.7.0_45</pre></div>
 </li>
 <li>
 <p>Add Nginx-Clojure module to Nginx configure command, here is a simplest example without more details about <a href="http://wiki.nginx.org/InstallOptions">InstallOptions</a></p>
 
-<div class="highlight highlight-bash"><pre><span class="pl-c">#If nginx source is checked out from hg, please replace ./configure with auto/configure</span>
+<div class="highlight highlight-source-shell"><pre><span class="pl-c">#If nginx source is checked out from hg, please replace ./configure with auto/configure</span>
 $./configure \
     --add-module=nginx-clojure/src/c
 $ make
@@ -144,7 +144,7 @@ $ make install</pre></div>
 
 <p>Please check the lein version <code>lein version</code>, it should be at least 2.0.0.</p>
 
-<div class="highlight highlight-bash"><pre>$ <span class="pl-c1">cd</span> nginx-clojure
+<div class="highlight highlight-source-shell"><pre>$ <span class="pl-c1">cd</span> nginx-clojure
 $ lein jar</pre></div>
 
 <p>Then you'll find nginx-clojure-${version}.jar (eg. nginx-clojure-0.4.2.jar) in the target folder. 
