@@ -1,6 +1,7 @@
 4. Useful Links
 =================
-
+* [Clojure Web Example for Nginx-Clojure](https://github.com/nginx-clojure/nginx-clojure/tree/master/example-projects/clojure-web-example)
+* [Integration Example for C Module](https://github.com/nginx-clojure/nginx-clojure/tree/master/example-projects/c-module-integration-example)
 * [Ring Documents](https://github.com/ring-clojure/ring/wiki)
 * [Comojure Documents](https://github.com/weavejester/compojure/wiki)
 * [Simple Examples](https://github.com/nginx-clojure/nginx-clojure/tree/master/test/nginx-working-dir/conf/nginx-coroutine.conf) in Nginx Clojure Testing Configuration & [Testing Client Code](https://github.com/nginx-clojure/nginx-clojure/tree/master/test/clojure/nginx/clojure/test_all.clj)
