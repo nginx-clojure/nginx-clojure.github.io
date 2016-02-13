@@ -1,11 +1,11 @@
 <h1>
-<a id="user-content-3-more-about-nginx-clojure" class="anchor" href="#3-more-about-nginx-clojure" aria-hidden="true"><span class="octicon octicon-link"></span></a>3. More about Nginx-Clojure</h1>
+<a id="user-content-3-more-about-nginx-clojure" class="anchor" href="#3-more-about-nginx-clojure" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. More about Nginx-Clojure</h1>
 
 <h2>
-<a id="user-content-30-more-about-apis" class="anchor" href="#30-more-about-apis" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.0 More about APIs</h2>
+<a id="user-content-30-more-about-apis" class="anchor" href="#30-more-about-apis" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.0 More about APIs</h2>
 
 <h3>
-<a id="user-content-request--response" class="anchor" href="#request--response" aria-hidden="true"><span class="octicon octicon-link"></span></a>Request &amp; Response</h3>
+<a id="user-content-request--response" class="anchor" href="#request--response" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Request &amp; Response</h3>
 
 <p>For Clojure the request map and response map are defined by the ring SEPC at <a href="https://github.com/ring-clojure/ring/blob/master/SPEC">https://github.com/ring-clojure/ring/blob/master/SPEC</a> .</p>
 
@@ -39,7 +39,7 @@
 </blockquote>
 
 <h2>
-<a id="user-content-31-handle-multiple-coroutine-based-sockets-parallel" class="anchor" href="#31-handle-multiple-coroutine-based-sockets-parallel" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.1 Handle Multiple Coroutine Based Sockets Parallel</h2>
+<a id="user-content-31-handle-multiple-coroutine-based-sockets-parallel" class="anchor" href="#31-handle-multiple-coroutine-based-sockets-parallel" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.1 Handle Multiple Coroutine Based Sockets Parallel</h2>
 
 <p>Sometimes we need invoke serveral remote services before completing the ring  response. For better performance we need a way to handle multiple sockets parallel in sub coroutines.</p>
 
@@ -62,12 +62,12 @@
 </pre></div>
 
 <h2>
-<a id="user-content-32-shared-map-among-nginx-workers" class="anchor" href="#32-shared-map-among-nginx-workers" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.2 Shared Map among Nginx Workers</h2>
+<a id="user-content-32-shared-map-among-nginx-workers" class="anchor" href="#32-shared-map-among-nginx-workers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.2 Shared Map among Nginx Workers</h2>
 
 <p>See <a href="sharedmap.html">Shared Map &amp; Session Store</a>.</p>
 
 <h2>
-<a id="user-content-33-user-defined-http-method" class="anchor" href="#33-user-defined-http-method" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.3 User Defined Http Method</h2>
+<a id="user-content-33-user-defined-http-method" class="anchor" href="#33-user-defined-http-method" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.3 User Defined Http Method</h2>
 
 <p>Some web services need user defined http request method to define special operations beyond standard http request methods. </p>
 
@@ -87,12 +87,12 @@
 </pre></div>
 
 <h2>
-<a id="user-content-34-server-channel-for-long-polling--server-sent-events-sse" class="anchor" href="#34-server-channel-for-long-polling--server-sent-events-sse" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.4 Server Channel for Long Polling &amp; Server Sent Events (SSE)</h2>
+<a id="user-content-34-server-channel-for-long-polling--server-sent-events-sse" class="anchor" href="#34-server-channel-for-long-polling--server-sent-events-sse" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.4 Server Channel for Long Polling &amp; Server Sent Events (SSE)</h2>
 
 <p>Since v0.2.5, nginx-clojure provides union form of <a href="https://github.com/nginx-clojure/nginx-clojure/issues/41">hijack API</a> to do with Long Polling &amp; Server Sent Events (SSE).</p>
 
 <h3>
-<a id="user-content-hijack-the-request" class="anchor" href="#hijack-the-request" aria-hidden="true"><span class="octicon octicon-link"></span></a>Hijack the Request</h3>
+<a id="user-content-hijack-the-request" class="anchor" href="#hijack-the-request" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hijack the Request</h3>
 
 <p>We can hijack the request to get a http server channel to sent some messages later. After hijacking the return result from ring handler will be ignore so we can finely control when &amp; what to be sent to the client.</p>
 
@@ -143,7 +143,7 @@
     <span class="pl-k">public</span> <span class="pl-smi">NginxHttpServerChannel</span> hijack(<span class="pl-smi">NginxRequest</span> req, <span class="pl-k">boolean</span> ignoreFilter);</pre></div>
 
 <h3>
-<a id="user-content-send-a-complete-response-for-long-polling" class="anchor" href="#send-a-complete-response-for-long-polling" aria-hidden="true"><span class="octicon octicon-link"></span></a>Send a Complete Response for Long Polling</h3>
+<a id="user-content-send-a-complete-response-for-long-polling" class="anchor" href="#send-a-complete-response-for-long-polling" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Send a Complete Response for Long Polling</h3>
 
 <p>When some event happen which let a complete response must be sent to the Long Polling request client we can use <code>send-response!</code>(Clojure) or sendResponse (Java/Groovy) to send a complete response. This action is non-blocking and after completion the channel will be closed automatically.</p>
 
@@ -160,7 +160,7 @@ channel<span class="pl-k">.</span>sendResponse(<span class="pl-k">new</span> <sp
                 message});</pre></div>
 
 <h3>
-<a id="user-content-send-messages-for-server-sent-events-sse" class="anchor" href="#send-messages-for-server-sent-events-sse" aria-hidden="true"><span class="octicon octicon-link"></span></a>Send Messages for Server Sent Events (SSE)</h3>
+<a id="user-content-send-messages-for-server-sent-events-sse" class="anchor" href="#send-messages-for-server-sent-events-sse" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Send Messages for Server Sent Events (SSE)</h3>
 
 <p>First we can use <code>send-headers!</code>(Clojure) or <code>sendHeaders</code> (Java/Groovy) to send a SSE header. Then we
 can use <code>send!</code> (Clojure) or <code>send</code> (Java/Groovy) to send later messages. The last two parameters of send
@@ -194,7 +194,7 @@ channel<span class="pl-k">.</span>send(<span class="pl-s"><span class="pl-pds">"
 channel<span class="pl-k">.</span>send(<span class="pl-s"><span class="pl-pds">"</span>data: Bye, bye.<span class="pl-cce">\r\n</span><span class="pl-pds">"</span></span>, <span class="pl-c1">true</span>, <span class="pl-c1">true</span>)</pre></div>
 
 <h3>
-<a id="user-content-listener-about-the-closed-event-of-channel" class="anchor" href="#listener-about-the-closed-event-of-channel" aria-hidden="true"><span class="octicon octicon-link"></span></a>Listener about the Closed Event of Channel</h3>
+<a id="user-content-listener-about-the-closed-event-of-channel" class="anchor" href="#listener-about-the-closed-event-of-channel" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Listener about the Closed Event of Channel</h3>
 
 <p>A closed event will happen immediately when channel is closed by either of these three cases:</p>
 
@@ -222,7 +222,7 @@ channel<span class="pl-k">.</span>addListener(channel, <span class="pl-k">new</s
             });</pre></div>
 
 <h2>
-<a id="user-content-35-subpub--broadcast-event" class="anchor" href="#35-subpub--broadcast-event" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.5 Sub/Pub &amp; broadcast Event</h2>
+<a id="user-content-35-subpub--broadcast-event" class="anchor" href="#35-subpub--broadcast-event" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.5 Sub/Pub &amp; broadcast Event</h2>
 
 <p>Suppose our Nginx instance has 3 workers (worker process not jvm_workers which is just thread number of thread pool in jvm). Now we want to provide sub/pub service. e.g.</p>
 
@@ -241,7 +241,7 @@ Although for large-scale application we can use sub/pub service from Redis on ng
 <p>More details can be found from <a href="subpub.html">Pub/Sub Among Nginx Worker Processes</a></p>
 
 <h2>
-<a id="user-content-36-asynchronous-client-channel" class="anchor" href="#36-asynchronous-client-channel" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.6 Asynchronous Client Channel</h2>
+<a id="user-content-36-asynchronous-client-channel" class="anchor" href="#36-asynchronous-client-channel" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.6 Asynchronous Client Channel</h2>
 
 <p>Asynchronous Client Channel is wrapper of Asynchronous Client Socket for more easier usage. 
 So far Asynchronous Channel <em>cann't</em> work with thread pool mode. The Asynchronous Channel 
@@ -256,7 +256,7 @@ API is a little like Java 7 NIO.2 Asynchronous Channel and more details can be f
 </ul>
 
 <h2>
-<a id="user-content-37--about-logging" class="anchor" href="#37--about-logging" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.7  About Logging</h2>
+<a id="user-content-37--about-logging" class="anchor" href="#37--about-logging" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.7  About Logging</h2>
 
 <p>For logging with nginx-clojure  there are some ways</p>
 
@@ -291,10 +291,10 @@ API is a little like Java 7 NIO.2 Asynchronous Channel and more details can be f
 <p>Then we 'll get log files whose name just like myapp.2014-09-12-1.log,  myapp.2014-09-12-2.log.</p>
 
 <h2>
-<a id="user-content-38--sever-side-websocket" class="anchor" href="#38--sever-side-websocket" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.8  Sever Side WebSocket</h2>
+<a id="user-content-38--sever-side-websocket" class="anchor" href="#38--sever-side-websocket" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.8  Sever Side WebSocket</h2>
 
 <h3>
-<a id="user-content-381-echo-service-example" class="anchor" href="#381-echo-service-example" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.8.1 Echo Service Example</h3>
+<a id="user-content-381-echo-service-example" class="anchor" href="#381-echo-service-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.8.1 Echo Service Example</h3>
 
 <p>Sever Side WebSocket, like long polling/Server Sent Events, also use hijack API to get a NginxHttpServerChannel to send / receive messages. 
 Here we give a echo service example.</p>
@@ -392,7 +392,7 @@ Here we give a echo service example.</p>
 }</pre></div>
 
 <h3>
-<a id="user-content-381-use-access-handler-for-websocket-security" class="anchor" href="#381-use-access-handler-for-websocket-security" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.8.1 Use Access Handler For WebSocket Security</h3>
+<a id="user-content-381-use-access-handler-for-websocket-security" class="anchor" href="#381-use-access-handler-for-websocket-security" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.8.1 Use Access Handler For WebSocket Security</h3>
 
 <p>In below example we return 404 for non WebSocket request </p>
 
@@ -421,7 +421,7 @@ Here we give a echo service example.</p>
 </pre></div>
 
 <h2>
-<a id="user-content-39--java-standard-restful-web-services-with-jersey" class="anchor" href="#39--java-standard-restful-web-services-with-jersey" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.9  Java standard RESTful web services with Jersey</h2>
+<a id="user-content-39--java-standard-restful-web-services-with-jersey" class="anchor" href="#39--java-standard-restful-web-services-with-jersey" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.9  Java standard RESTful web services with Jersey</h2>
 
 <ul>
 <li><strong>Get Jar File</strong></li>
@@ -517,10 +517,10 @@ callback({
 })</pre></div>
 
 <h2>
-<a id="user-content-310-embeding-tomcat" class="anchor" href="#310-embeding-tomcat" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.10 Embeding Tomcat</h2>
+<a id="user-content-310-embeding-tomcat" class="anchor" href="#310-embeding-tomcat" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.10 Embeding Tomcat</h2>
 
 <h3>
-<a id="user-content-which-version" class="anchor" href="#which-version" aria-hidden="true"><span class="octicon octicon-link"></span></a>Which Version?</h3>
+<a id="user-content-which-version" class="anchor" href="#which-version" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Which Version?</h3>
 
 <table>
 <thead>
@@ -545,7 +545,7 @@ callback({
 </table>
 
 <h3>
-<a id="user-content-get-jar-file" class="anchor" href="#get-jar-file" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get Jar File</h3>
+<a id="user-content-get-jar-file" class="anchor" href="#get-jar-file" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Get Jar File</h3>
 
 <p>We can get the released version from <a href="https://clojars.org/nginx-clojure/nginx-tomcat8">clojars</a> or 
 the jar in <a href="https://sourceforge.net/projects/nginx-clojure/files/">nginx-clojure binary release</a> </p>
@@ -557,7 +557,7 @@ the jar in <a href="https://sourceforge.net/projects/nginx-clojure/files/">nginx
 lein jar</pre></div>
 
 <h3>
-<a id="user-content-configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h3>
+<a id="user-content-configuration" class="anchor" href="#configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration</h3>
 
 <p>in nginx.conf</p>
 
@@ -600,23 +600,23 @@ lein jar</pre></div>
       }</pre></div>
 
 <h2>
-<a id="user-content-session-management" class="anchor" href="#session-management" aria-hidden="true"><span class="octicon octicon-link"></span></a>Session Management</h2>
+<a id="user-content-session-management" class="anchor" href="#session-management" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Session Management</h2>
 
 <p>If <code>worker_processes</code> &gt; 1 there will be more than one jvm instances viz. more tomcat instances so to get synchronized session information we can not use the default tomcat session manger.
 Instead we may consider to use either of</p>
 
 <ol>
-<li>Cookie based Session Store  viz. storing all session attribute information into cookies.</li>
-<li>Shared HashMap among processes in the same machine ,e.g. <a href="https://github.com/OpenHFT/Chronicle-Map">Chronicle Map</a>
+<li>Cookied based Session Store  viz. storing all session attribute information into cookies.</li>
+<li>Shared HashMap among processes in the same machine ,e.g. nginx-clojure built-in <a href="https://nginx-clojure.github.io/sharedmap.html">Shared Map</a>, OpenHFT <a href="https://github.com/OpenHFT/Chronicle-Map">Chronicle Map</a>
 </li>
 <li>External Session Store,  e.g.  Redis / MySQL / Memcached Session Store</li>
 </ol>
 
 <h3>
-<a id="user-content-for-performance" class="anchor" href="#for-performance" aria-hidden="true"><span class="octicon octicon-link"></span></a>For Performance</h3>
+<a id="user-content-for-performance" class="anchor" href="#for-performance" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>For Performance</h3>
 
 <h4>
-<a id="user-content-disable-tomcat-access-log" class="anchor" href="#disable-tomcat-access-log" aria-hidden="true"><span class="octicon octicon-link"></span></a>Disable Tomcat Access Log</h4>
+<a id="user-content-disable-tomcat-access-log" class="anchor" href="#disable-tomcat-access-log" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Disable Tomcat Access Log</h4>
 
 <p>When we need access log , use Nginx access log instead of Tomcat access log.</p>
 
@@ -629,7 +629,7 @@ Instead we may consider to use either of</p>
 <span class="pl-c">--&gt;</span></pre></div>
 
 <h4>
-<a id="user-content-disable-logging-to-console" class="anchor" href="#disable-logging-to-console" aria-hidden="true"><span class="octicon octicon-link"></span></a>Disable logging to console</h4>
+<a id="user-content-disable-logging-to-console" class="anchor" href="#disable-logging-to-console" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Disable logging to console</h4>
 
 <p>Because Tomcat console log is duplicate with other log such as catalina log, manager log ,etc, so it can be disabled.
 In conf/logging.properties remove all <code>java.util.logging.ConsoleHandler</code></p>
@@ -639,7 +639,7 @@ In conf/logging.properties remove all <code>java.util.logging.ConsoleHandler</co
 .handlers = 1catalina.org.apache.juli.AsyncFileHandler</pre></div>
 
 <h4>
-<a id="user-content-dont-enable-tomcat-compression" class="anchor" href="#dont-enable-tomcat-compression" aria-hidden="true"><span class="octicon octicon-link"></span></a>Don't Enable Tomcat Compression</h4>
+<a id="user-content-dont-enable-tomcat-compression" class="anchor" href="#dont-enable-tomcat-compression" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Don't Enable Tomcat Compression</h4>
 
 <p>By default compression is off , do not turn it on.</p>
 
@@ -655,7 +655,7 @@ In conf/logging.properties remove all <code>java.util.logging.ConsoleHandler</co
 <p><code>gzip</code> can also appear at http, server blocks. More details can be found <a href="http://nginx.org/en/docs/http/ngx_http_gzip_module.html">HERE</a></p>
 
 <h2>
-<a id="user-content-311-more-about-nginx-worker-process" class="anchor" href="#311-more-about-nginx-worker-process" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.11 More about Nginx Worker Process</h2>
+<a id="user-content-311-more-about-nginx-worker-process" class="anchor" href="#311-more-about-nginx-worker-process" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.11 More about Nginx Worker Process</h2>
 
 <p>The number of Nginx worker processes can be configured by nginx directive <a href="http://nginx.org/en/docs/ngx_core_module.html#worker_processes">worker_processes</a>.
 e.g. We use 8 Nginx worker processes:</p>
@@ -667,7 +667,7 @@ So if we want to get synchronized session information we can not use the default
 
 <ol>
 <li>Cookie based Session Store  viz. storing all session attribute information into cookies.</li>
-<li>Shared HashMap among processes in the same machine ,e.g. <a href="https://github.com/OpenHFT/Chronicle-Map">Chronicle Map</a>
+<li>Shared HashMap among processes in the same machine ,e.g. nginx-clojure built-in <a href="https://nginx-clojure.github.io/sharedmap.html">Shared Map</a>, OpenHFT <a href="https://github.com/OpenHFT/Chronicle-Map">Chronicle Map</a>
 </li>
 <li>External Session Store,  e.g.  Redis / MySQL / Memcached Session Store</li>
 </ol>

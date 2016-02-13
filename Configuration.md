@@ -91,7 +91,7 @@ Check [this section](configuration.html#24-chose--coroutine-based-socket-or-asyn
 
 These tips are really useful. Most of them are from real users. Thanks [Rickr Nook](https://github.com/rickr-nook) who give us some useful tips.
 
-1. The number of embed JVMs is the same with Nginx `worker_processes`, so if `worker_processes` > 1 we maybe need [nginx-clojure broadcast API][], shared memory (e.g [SharedHashMap/Chronicle-Map][]) or 
+1. The number of embed JVMs is the same with Nginx `worker_processes`, so if `worker_processes` > 1 we maybe need [nginx-clojure broadcast API][], shared memory (e.g nginx-clojure built-in [Shared Map][], OpenHFT [Chronicle Map][]) or 
 even external service(e.g. redis, database) to  coordinate the state or use cookie based session store to manage session information, e.g. [ring.middleware.session.cookie/cookie-store](https://github.com/mmcgrana/ring/wiki/Sessions).
 1. When importing Swing We Must specifiy `jvm_options "-Djava.awt.headless=true"` , otherwise the nginx will hang.
 1. By adding the location of your clojure source files to the classpath,then just issue "nginx -s reload" and changes to the sources get picked up!
@@ -150,7 +150,7 @@ Please Keep these in your mind:
 
 * By default if the initialization failed the nginx won't start successfully and the worker will exit after reporting an error message in error log file but the master keep running and take the port.
 * Because the maybe more than one nginx worker processes, so this code will run everytime per worker starting. 
-* If you use [Shared Map][], [Chronicle-Map][]  to share data 
+* If you use nginx-clojure built-in [Shared Map][] or OpenHFT [Chronicle Map][]  to share data 
 among nginx worker processes, Java file lock can be used to let only one nginx worker process do the initialization.
 * If you [enabled coroutine support][], nginx maybe will start successfully even if your initialization failed after some socket operations. If you case it, you can 
 use `nginx.clojure.core/without-coroutine` to wrap your handler, e.g.
@@ -693,7 +693,8 @@ For Clojure
 ```
 	
 [nginx-clojure broadcast API]: https://github.com/nginx-clojure/nginx-clojure/issues/38
-[SharedHashMap/Chronicle-Map]: https://github.com/OpenHFT/Chronicle-Map
+[Shared Map]: https://nginx-clojure.github.io/sharedmap.html
+[Chronicle Map]: https://github.com/OpenHFT/Chronicle-Map
 [Asynchronous Socket/Channel]: more.html#36-asynchronous-channel
 [2.1 JVM Path , Class Path & Other JVM Options]: configuration.html#21-jvm-path--class-path--other-jvm-options
 [enabled coroutine support]: configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations

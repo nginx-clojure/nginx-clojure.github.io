@@ -1,8 +1,8 @@
 <h1>
-<a id="user-content-2-configurations" class="anchor" href="#2-configurations" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. Configurations</h1>
+<a id="user-content-2-configurations" class="anchor" href="#2-configurations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Configurations</h1>
 
 <h2>
-<a id="user-content-21-jvm-path--class-path--other-jvm-options" class="anchor" href="#21-jvm-path--class-path--other-jvm-options" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.1 JVM Path , Class Path &amp; Other JVM Options</h2>
+<a id="user-content-21-jvm-path--class-path--other-jvm-options" class="anchor" href="#21-jvm-path--class-path--other-jvm-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.1 JVM Path , Class Path &amp; Other JVM Options</h2>
 
 <p>Setting JVM path and class path within <code>http {</code> block in  nginx.conf</p>
 
@@ -37,7 +37,7 @@
     <span class="pl-c">#jvm_options "-Xrunjdwp:server=y,transport=dt_socket,address=840#{pno},suspend=n";</span></pre></div>
 
 <h3>
-<a id="user-content-reusable-variables" class="anchor" href="#reusable-variables" aria-hidden="true"><span class="octicon octicon-link"></span></a>Reusable Variables</h3>
+<a id="user-content-reusable-variables" class="anchor" href="#reusable-variables" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Reusable Variables</h3>
 
 <p>It 's a new feature since v0.2.5. We can define variables and reuse them in jvm_options to make configurations neat.</p>
 
@@ -56,7 +56,7 @@
     <span class="pl-k">jvm_options</span> <span class="pl-s">"-Djava.class.path=#{ncjar}:#{mrr}/clj-http/clj-http/0.7.8/clj-http-0.7.8.jar"</span>;</pre></div>
 
 <h3>
-<a id="user-content-specify-debug-ports-for-jvms" class="anchor" href="#specify-debug-ports-for-jvms" aria-hidden="true"><span class="octicon octicon-link"></span></a>Specify Debug Ports for JVMs</h3>
+<a id="user-content-specify-debug-ports-for-jvms" class="anchor" href="#specify-debug-ports-for-jvms" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Specify Debug Ports for JVMs</h3>
 
 <p>It 's a new feature since v0.2.5.
 If the <code>worker_processes</code> &gt; 1, the below code will cause error for multiple JVMs try listen on the same debug port <code>2400</code>.</p>
@@ -79,17 +79,17 @@ e.g. When <code>worker_processes</code> is 8, the debug ports will range from po
 }</pre></div>
 
 <h3>
-<a id="user-content-advanced-jvm-options-for-io" class="anchor" href="#advanced-jvm-options-for-io" aria-hidden="true"><span class="octicon octicon-link"></span></a>Advanced JVM Options for I/O</h3>
+<a id="user-content-advanced-jvm-options-for-io" class="anchor" href="#advanced-jvm-options-for-io" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Advanced JVM Options for I/O</h3>
 
 <p>Check <a href="configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations">this section</a> for more deitals about choice and configuration about <code>thread pool</code> , <code>coroutine</code> based socket or <code>asynchronous socket/channel</code>.</p>
 
 <h3>
-<a id="user-content-some-useful-tips" class="anchor" href="#some-useful-tips" aria-hidden="true"><span class="octicon octicon-link"></span></a>Some Useful Tips</h3>
+<a id="user-content-some-useful-tips" class="anchor" href="#some-useful-tips" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Some Useful Tips</h3>
 
 <p>These tips are really useful. Most of them are from real users. Thanks <a href="https://github.com/rickr-nook">Rickr Nook</a> who give us some useful tips.</p>
 
 <ol>
-<li>The number of embed JVMs is the same with Nginx <code>worker_processes</code>, so if <code>worker_processes</code> &gt; 1 we maybe need <a href="https://github.com/nginx-clojure/nginx-clojure/issues/38">nginx-clojure broadcast API</a>, shared memory (e.g <a href="https://github.com/OpenHFT/Chronicle-Map">SharedHashMap/Chronicle-Map</a>) or 
+<li>The number of embed JVMs is the same with Nginx <code>worker_processes</code>, so if <code>worker_processes</code> &gt; 1 we maybe need <a href="https://github.com/nginx-clojure/nginx-clojure/issues/38">nginx-clojure broadcast API</a>, shared memory (e.g nginx-clojure built-in <a href="https://nginx-clojure.github.io/sharedmap.html">Shared Map</a>, OpenHFT <a href="https://github.com/OpenHFT/Chronicle-Map">Chronicle Map</a>) or 
 even external service(e.g. redis, database) to  coordinate the state or use cookie based session store to manage session information, e.g. <a href="https://github.com/mmcgrana/ring/wiki/Sessions">ring.middleware.session.cookie/cookie-store</a>.</li>
 <li>When importing Swing We Must specifiy <code>jvm_options "-Djava.awt.headless=true"</code> , otherwise the nginx will hang.</li>
 <li>By adding the location of your clojure source files to the classpath,then just issue "nginx -s reload" and changes to the sources get picked up!</li>
@@ -99,7 +99,7 @@ even external service(e.g. redis, database) to  coordinate the state or use cook
 </ol>
 
 <h2>
-<a id="user-content-22-initialization-handler-for-nginx-worker" class="anchor" href="#22-initialization-handler-for-nginx-worker" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.2 Initialization Handler for nginx worker</h2>
+<a id="user-content-22-initialization-handler-for-nginx-worker" class="anchor" href="#22-initialization-handler-for-nginx-worker" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.2 Initialization Handler for nginx worker</h2>
 
 <p>You can embed clojure/groovy code in the <code>http {</code> block to do initialization when nginx worker starting. e.g</p>
 
@@ -144,7 +144,7 @@ For more detail example of ring handler please see the next secion.</p>
 <ul>
 <li>By default if the initialization failed the nginx won't start successfully and the worker will exit after reporting an error message in error log file but the master keep running and take the port.</li>
 <li>Because the maybe more than one nginx worker processes, so this code will run everytime per worker starting. </li>
-<li>If you use [Shared Map][], [Chronicle-Map][]  to share data 
+<li>If you use nginx-clojure built-in <a href="https://nginx-clojure.github.io/sharedmap.html">Shared Map</a> or OpenHFT <a href="https://github.com/OpenHFT/Chronicle-Map">Chronicle Map</a>  to share data 
 among nginx worker processes, Java file lock can be used to let only one nginx worker process do the initialization.</li>
 <li>If you <a href="configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations">enabled coroutine support</a>, nginx maybe will start successfully even if your initialization failed after some socket operations. If you case it, you can 
 use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.</li>
@@ -163,7 +163,7 @@ use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.
 <span class="pl-s">        '</span>;</pre></div>
 
 <h2>
-<a id="user-content-23-content-ring-handler-for-location" class="anchor" href="#23-content-ring-handler-for-location" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.3 Content Ring Handler for Location</h2>
+<a id="user-content-23-content-ring-handler-for-location" class="anchor" href="#23-content-ring-handler-for-location" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.3 Content Ring Handler for Location</h2>
 
 <p>Within <code>location</code> block, </p>
 
@@ -176,7 +176,7 @@ use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.
 </ul>
 
 <h3>
-<a id="user-content-231-inline-ring-handler" class="anchor" href="#231-inline-ring-handler" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.3.1 Inline Ring Handler</h3>
+<a id="user-content-231-inline-ring-handler" class="anchor" href="#231-inline-ring-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.3.1 Inline Ring Handler</h3>
 
 <p>For Clojure : </p>
 
@@ -214,7 +214,7 @@ use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.
 <p>Now you can start nginx and access http://localhost:8080/groovy, if some error happens please check error.log file. </p>
 
 <h3>
-<a id="user-content-232-reference-of-external-ring-handlers" class="anchor" href="#232-reference-of-external-ring-handlers" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.3.2 Reference of External Ring Handlers</h3>
+<a id="user-content-232-reference-of-external-ring-handlers" class="anchor" href="#232-reference-of-external-ring-handlers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.3.2 Reference of External Ring Handlers</h3>
 
 <p>Please make sure the external Ring handler is in a certain jar file or a directory included by your classpath.
 It is also OK if you do not compile the Clojure/Groovy to java class file and just put the source of them in a certain jar file or a directory included by your classpath. </p>
@@ -282,7 +282,7 @@ It is also OK if you do not compile the Clojure/Groovy to java class file and ju
 <p>You should set your  JAR files or directory to class path, see <a href="configuration.html#21-jvm-path--class-path--other-jvm-options">2.1 JVM Path , Class Path &amp; Other JVM Options</a> .</p>
 
 <h2>
-<a id="user-content-24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations" class="anchor" href="#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.4 Chose  Coroutine based Socket Or Asynchronous Socket/Channel Or Thread Pool for slow I/O operations</h2>
+<a id="user-content-24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations" class="anchor" href="#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.4 Chose  Coroutine based Socket Or Asynchronous Socket/Channel Or Thread Pool for slow I/O operations</h2>
 
 <p>If the http service should do some slow I/O operations such as access external http service, database, etc.  nginx worker will be blocked by those operations 
 and the new  user  request even static file request will be blocked. It really sucks！ Before v0.2.0 the only choice is using thread pool but now we have 
@@ -330,10 +330,10 @@ thread in java is costlier than coroutine, facing large amount of connections th
 </ol>
 
 <h3>
-<a id="user-content-241-enable-coroutine-based-client-socket" class="anchor" href="#241-enable-coroutine-based-client-socket" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.4.1 Enable Coroutine based Client Socket</h3>
+<a id="user-content-241-enable-coroutine-based-client-socket" class="anchor" href="#241-enable-coroutine-based-client-socket" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.4.1 Enable Coroutine based Client Socket</h3>
 
 <h4>
-<a id="user-content-1-get-a-user-defined-class-waving-configuration-file-for-your-web-app" class="anchor" href="#1-get-a-user-defined-class-waving-configuration-file-for-your-web-app" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Get a User Defined Class Waving Configuration File for Your Web App</h4>
+<a id="user-content-1-get-a-user-defined-class-waving-configuration-file-for-your-web-app" class="anchor" href="#1-get-a-user-defined-class-waving-configuration-file-for-your-web-app" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Get a User Defined Class Waving Configuration File for Your Web App</h4>
 
 <ul>
 <li>
@@ -384,7 +384,7 @@ curl -v http://localhost:8080/dump</pre></div>
 </ul>
 
 <h4>
-<a id="user-content-2-enable-coroutine-support" class="anchor" href="#2-enable-coroutine-support" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. Enable Coroutine Support</h4>
+<a id="user-content-2-enable-coroutine-support" class="anchor" href="#2-enable-coroutine-support" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Enable Coroutine Support</h4>
 
 <ul>
 <li>
@@ -426,14 +426,14 @@ curl -v http://localhost:8080/dump</pre></div>
 </ul>
 
 <h3>
-<a id="user-content-242-use-asynchronous-client-socketchannel" class="anchor" href="#242-use-asynchronous-client-socketchannel" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.4.2 Use Asynchronous Client Socket/Channel</h3>
+<a id="user-content-242-use-asynchronous-client-socketchannel" class="anchor" href="#242-use-asynchronous-client-socketchannel" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.4.2 Use Asynchronous Client Socket/Channel</h3>
 
 <p>Asynchronous Socket/Channel Can be used with default mode or coroutined enabled mode without any additional settings. It just a set of API.
 It uses event driven pattern and works with a java callback handler or clojure function for callback. Asynchronous Channel is wrapper of Asynchronous Socket
 for more easier usage. More examples can be found from this section <a href="more.html#36-asynchronous-channel">Asynchronous Socket/Channel</a>. </p>
 
 <h3>
-<a id="user-content-243-use-thread-pool" class="anchor" href="#243-use-thread-pool" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.4.3 Use Thread Pool</h3>
+<a id="user-content-243-use-thread-pool" class="anchor" href="#243-use-thread-pool" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.4.3 Use Thread Pool</h3>
 
 <p>If your tasks are often blocked by slow I/O operations, the thread pool method can make the nginx worker not blocked until
 all threads are exhuasted. When facing large amount of connections this choice isn't as good as above coroutine based choice or asynchronous socket.</p>
@@ -450,7 +450,7 @@ all threads are exhuasted. When facing large amount of connections this choice i
 a bigger number.</p>
 
 <h2>
-<a id="user-content-25-nginx-rewrite-handler" class="anchor" href="#25-nginx-rewrite-handler" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.5 Nginx Rewrite Handler</h2>
+<a id="user-content-25-nginx-rewrite-handler" class="anchor" href="#25-nginx-rewrite-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.5 Nginx Rewrite Handler</h2>
 
 <p>A nginx rewrite handler can be used to set var or return errors before proxy pass or content ring handler. 
 If the rewrite handler returns <code>phase-done</code> (Clojure) or  <code>PHASE_DONE</code> (Groovy/Java), nginx will continue to invoke proxy_pass or 
@@ -490,7 +490,7 @@ which explains perfectly the variable scope.</p>
 </pre></div>
 
 <h3>
-<a id="user-content-251-simple-example-about-nginx-rewrite-handler" class="anchor" href="#251-simple-example-about-nginx-rewrite-handler" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.5.1 Simple Example about Nginx rewrite handler</h3>
+<a id="user-content-251-simple-example-about-nginx-rewrite-handler" class="anchor" href="#251-simple-example-about-nginx-rewrite-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.5.1 Simple Example about Nginx rewrite handler</h3>
 
 <p>Here's a simple clojure example for Nginx rewrite handler :</p>
 
@@ -520,7 +520,7 @@ which explains perfectly the variable scope.</p>
 </pre></div>
 
 <h3>
-<a id="user-content-252-simple-dynamic-balancer-by-nginx-rewrite-handler" class="anchor" href="#252-simple-dynamic-balancer-by-nginx-rewrite-handler" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.5.2 Simple Dynamic Balancer By Nginx rewrite handler</h3>
+<a id="user-content-252-simple-dynamic-balancer-by-nginx-rewrite-handler" class="anchor" href="#252-simple-dynamic-balancer-by-nginx-rewrite-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.5.2 Simple Dynamic Balancer By Nginx rewrite handler</h3>
 
 <p>We can also  use this feature to complete a simple dynamic balancer , e.g.</p>
 
@@ -575,7 +575,7 @@ which explains perfectly the variable scope.</p>
 </pre></div>
 
 <h3>
-<a id="user-content-253-access-request-body-in-nginx-rewrite-handler" class="anchor" href="#253-access-request-body-in-nginx-rewrite-handler" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.5.3 Access request BODY in Nginx Rewrite Handler</h3>
+<a id="user-content-253-access-request-body-in-nginx-rewrite-handler" class="anchor" href="#253-access-request-body-in-nginx-rewrite-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.5.3 Access request BODY in Nginx Rewrite Handler</h3>
 
 <p>Try <code>always_read_body on;</code>  where about the location you want to access the request body in a JAVA rewrite handler.
 We also added an example(for unit testing) about this, in nginx.conf</p>
@@ -593,7 +593,7 @@ We also added an example(for unit testing) about this, in nginx.conf</p>
 <p>The example java rewrite handler code can be found from <a href="https://github.com/nginx-clojure/nginx-clojure/blob/master/test/java/nginx/clojure/java/RewriteHandlerTestSet4NginxJavaRingHandler.java#L35">https://github.com/nginx-clojure/nginx-clojure/blob/master/test/java/nginx/clojure/java/RewriteHandlerTestSet4NginxJavaRingHandler.java#L35</a>     </p>
 
 <h2>
-<a id="user-content-26-nginx-access-handler" class="anchor" href="#26-nginx-access-handler" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.6 Nginx Access Handler</h2>
+<a id="user-content-26-nginx-access-handler" class="anchor" href="#26-nginx-access-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.6 Nginx Access Handler</h2>
 
 <p>Although we can do similar things within a rewrite handler but using Nginx Access Handler will further define roles of all kind of handlers.
 Nginx Access Handler will run after Rewrite Handler and before Content Handler (e.g. general content ring handler ,  proxy_pass, etc.).
@@ -633,7 +633,7 @@ e.g.</p>
     }</pre></div>
 
 <h2>
-<a id="user-content-27-nginx-header-filter" class="anchor" href="#27-nginx-header-filter" aria-hidden="true"><span class="octicon octicon-link"></span></a>2.7 Nginx Header Filter</h2>
+<a id="user-content-27-nginx-header-filter" class="anchor" href="#27-nginx-header-filter" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.7 Nginx Header Filter</h2>
 
 <p>We can use Nginx Header Filter written by  Java/Clojure/Groovy to do some useful things, e.g. </p>
 

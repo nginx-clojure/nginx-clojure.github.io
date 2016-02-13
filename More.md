@@ -622,9 +622,9 @@ in nginx.conf
 
 If `worker_processes` > 1 there will be more than one jvm instances viz. more tomcat instances so to get synchronized session information we can not use the default tomcat session manger.
 Instead we may consider to use either of
- 
-1. Cookie based Session Store  viz. storing all session attribute information into cookies.
-1. Shared HashMap among processes in the same machine ,e.g. [Chronicle Map](https://github.com/OpenHFT/Chronicle-Map)
+
+1. Cookied based Session Store  viz. storing all session attribute information into cookies.
+1. Shared HashMap among processes in the same machine ,e.g. nginx-clojure built-in [Shared Map][], OpenHFT [Chronicle Map][]
 1. External Session Store,  e.g.  Redis / MySQL / Memcached Session Store
 
 
@@ -673,12 +673,6 @@ location /examples {
 `gzip` can also appear at http, server blocks. More details can be found [HERE](http://nginx.org/en/docs/http/ngx_http_gzip_module.html)
 
 
-[nginx-clojure broadcast API]: https://github.com/nginx-clojure/nginx-clojure/issues/38
-[SharedHashMap/Chronicle-Map]: https://github.com/OpenHFT/Chronicle-Map
-[hijack API]: https://github.com/nginx-clojure/nginx-clojure/issues/41
-[Asynchronous Channel API]: https://github.com/nginx-clojure/nginx-clojure/issues/37
-[2.2 Initialization Handler for nginx worker]: configuration.html#user-content-22-initialization-handler-for-nginx-worker
-
 3.11 More about Nginx Worker Process
 -----------------
 The number of Nginx worker processes can be configured by nginx directive [worker_processes](http://nginx.org/en/docs/ngx_core_module.html#worker_processes).
@@ -692,10 +686,17 @@ Because a JVM instance will be embeded into per Nginx worker process so if there
 So if we want to get synchronized session information we can not use the default tomcat session manger. Instead we may consider to use either of 
 
 1. Cookie based Session Store  viz. storing all session attribute information into cookies.
-1. Shared HashMap among processes in the same machine ,e.g. [Chronicle Map](https://github.com/OpenHFT/Chronicle-Map)
+1. Shared HashMap among processes in the same machine ,e.g. nginx-clojure built-in [Shared Map][], OpenHFT [Chronicle Map][]
 1. External Session Store,  e.g.  Redis / MySQL / Memcached Session Store
 
 When there are more than one Nginx worker prcocesses sub/pub services also need to be taken care of. Subscribers may connect to JVM instances which maybe are different
 with the JVM instance which the publisher send message to. So we need to use [broadcast API](more.html#35-subpub--broadcast-event) from nginx-clojure
 and broadcast message to all Nginx worker prcocesses.
+
+[nginx-clojure broadcast API]: https://github.com/nginx-clojure/nginx-clojure/issues/38
+[Shared Map]: https://nginx-clojure.github.io/sharedmap.html
+[Chronicle Map]: https://github.com/OpenHFT/Chronicle-Map
+[hijack API]: https://github.com/nginx-clojure/nginx-clojure/issues/41
+[Asynchronous Channel API]: https://github.com/nginx-clojure/nginx-clojure/issues/37
+[2.2 Initialization Handler for nginx worker]: configuration.html#user-content-22-initialization-handler-for-nginx-worker
 

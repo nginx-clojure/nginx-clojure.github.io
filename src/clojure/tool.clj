@@ -26,6 +26,19 @@
       (.getName f))
 ))
 
+(def md-title-map
+  {"CoreFeatures.md"  "Home@Nginx-Clojure"
+   "Configuration.md" "Configurations@Nginx-Clojure"
+         "HISTORY.md" "History@Nginx-Clojure"
+    "Installation.md" "Installation@Nginx-Clojure"
+        "More.md"     "More@Nginx-Clojure" 
+      "QuickStart.md" "Quick Start@Nginx-Clojure"
+   "UserfullLinks.md" "Useful Links@Nginx-Clojure"
+   "Embed.md" "Emebdding@Nginx-Clojure"
+   "Directives.md" "Directives Reference@Nginx-Clojure"
+   "SubPub.md" "Pub/Sub@Nginx-Clojure"
+   "SharedMap.md" "Shared Map & Session Store@Nginx-Clojure"})
+
 (defn load-all-content []
   (->> ["content-template"
         "footer" "header" "CoreFeatures.md" "Configuration.md"
@@ -37,6 +50,7 @@
 (defn gen-html [all-contents, content-key, out-file]
   (spit out-file (-> 
                    (all-contents "content-template")
+                   (clojure.string/replace-first "#{title}" (md-title-map content-key))
                    (clojure.string/replace-first "#{header}" (all-contents "header"))
                    (clojure.string/replace-first "#{content}" (all-contents content-key))
                    (clojure.string/replace-first "#{footer}" (all-contents "footer"))
