@@ -69,6 +69,8 @@
 						<li><a href="configuration.html#25-nginx-rewrite-handler"><span class="glyphicon glyphicon-cog"></span> Nginx Rewrite Handler</a></li>
 						<li><a href="configuration.html#26-nginx-access-handler"><span class="glyphicon glyphicon-cog"></span> Nginx Access Handler</a></li>
 						<li><a href="configuration.html#27-nginx-header-filter"><span class="glyphicon glyphicon-cog"></span> Nginx Header Filter</a></li>
+						<li><a href="configuration.html#28-nginx-body-filter"><span class="glyphicon glyphicon-cog"></span> Nginx Body Filter</a></li>
+						
 					</ul>
 					</div>
 					<div class="btn-group">
@@ -101,7 +103,7 @@
            <h1>
 <a id="user-content-core-features" class="anchor" href="#core-features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Core Features</h1>
 
-<p>The latest release is v0.4.3, more detail changes about it can be found from <a href="//nginx-clojure.github.io/downloads.html">Release History</a>.</p>
+<p>The latest release is v0.4.4, more detail changes about it can be found from <a href="//nginx-clojure.github.io/downloads.html">Release History</a>.</p>
 
 <ol>
 <li>Compatible with <a href="https://github.com/ring-clojure/ring/blob/master/SPEC">Ring</a> and obviously supports those Ring based frameworks, such as Compojure etc.</li>
@@ -109,14 +111,12 @@
 <li>Nginx Access Handler by Clojure / Java / Groovy</li>
 <li>Nginx Header Filter by Clojure / Java / Groovy</li>
 <li>
-<strong><em>NEW</em></strong>: Pub/Sub Among Nginx Worker Processes</li>
-<li>
-<strong><em>NEW</em></strong>: Shared Map based on shared memory &amp; Shared Map based Ring session store</li>
-<li>
-<strong><em>NEW</em></strong>: Support Sente, see <a href="https://github.com/ptaoussanis/sente/pull/160">this PR</a>
+<strong><em>NEW</em></strong>: Nginx Body Filter by Clojure / Java / Groovy</li>
+<li>Pub/Sub Among Nginx Worker Processes</li>
+<li>Shared Map based on shared memory &amp; Shared Map based Ring session store</li>
+<li>Support Sente, see <a href="https://github.com/ptaoussanis/sente/pull/160">this PR</a>
 </li>
-<li>
-<strong><em>NEW</em></strong>: Support Per-message Compression Extensions (PMCEs) for WebSocket</li>
+<li>Support Per-message Compression Extensions (PMCEs) for WebSocket</li>
 <li>APIs for Embedding Nginx-Clojure into a Standard Clojure/Java/Groovy App</li>
 <li>Server Side Websocket</li>
 <li>A build-in Jersey container to support java standard RESTful web services (JAX-RS 2.0)</li>
@@ -148,17 +148,17 @@ With this feature  one java main thread can handle thousands of connections.</li
   &lt;<span class="pl-ent">url</span>&gt;http://clojars.org/repo&lt;/<span class="pl-ent">url</span>&gt;
 &lt;/<span class="pl-ent">repository</span>&gt;</pre></div>
 
-<p>After adding clojars repository, you can reference nginx-clojure 0.4.3 , e.g.</p>
+<p>After adding clojars repository, you can reference nginx-clojure 0.4.4 , e.g.</p>
 
 <h2>
 <a id="user-content--leiningen-clojure-no-need-to-add-clojars-repository-which-is-a-default-repository-for-leiningen-" class="anchor" href="#-leiningen-clojure-no-need-to-add-clojars-repository-which-is-a-default-repository-for-leiningen-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a> Leiningen (clojure, no need to add clojars repository which is a default repository for Leiningen) </h2>
 
-<div class="highlight highlight-source-clojure"><pre>[nginx-clojure <span class="pl-s"><span class="pl-pds">"</span>0.4.3<span class="pl-pds">"</span></span>]</pre></div>
+<div class="highlight highlight-source-clojure"><pre>[nginx-clojure <span class="pl-s"><span class="pl-pds">"</span>0.4.4<span class="pl-pds">"</span></span>]</pre></div>
 
 <h2>
 <a id="user-content-gradle-groovyjava" class="anchor" href="#gradle-groovyjava" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Gradle (groovy/java)</h2>
 
-<pre><code>compile "nginx-clojure:nginx-clojure:0.4.3"
+<pre><code>compile "nginx-clojure:nginx-clojure:0.4.4"
 </code></pre>
 
 <h2>
@@ -167,8 +167,13 @@ With this feature  one java main thread can handle thousands of connections.</li
 <div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">dependency</span>&gt;
   &lt;<span class="pl-ent">groupId</span>&gt;nginx-clojure&lt;/<span class="pl-ent">groupId</span>&gt;
   &lt;<span class="pl-ent">artifactId</span>&gt;nginx-clojure&lt;/<span class="pl-ent">artifactId</span>&gt;
-  &lt;<span class="pl-ent">version</span>&gt;0.4.3&lt;/<span class="pl-ent">version</span>&gt;
+  &lt;<span class="pl-ent">version</span>&gt;0.4.4&lt;/<span class="pl-ent">version</span>&gt;
 &lt;/<span class="pl-ent">dependency</span>&gt;</pre></div>
+
+<h1>
+<a id="user-content-more-documents" class="anchor" href="#more-documents" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>More Documents</h1>
+
+<p>More Documents can be found from its web site <a href="http://nginx-clojure.github.io/">nginx-clojure.github.io</a></p>
 
 <h1>
 <a id="user-content-license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h1>

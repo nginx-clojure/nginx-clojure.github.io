@@ -691,3 +691,71 @@ e.g.</p>
   (<span class="pl-en">assoc!</span>  response-headers <span class="pl-s"><span class="pl-pds">"</span>Xfeep-Header<span class="pl-pds">"</span></span>  <span class="pl-s"><span class="pl-pds">"</span>Hello2!<span class="pl-pds">"</span></span>)
   (<span class="pl-en">assoc!</span>  response-headers <span class="pl-s"><span class="pl-pds">"</span>Server<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>My-Test-Server<span class="pl-pds">"</span></span>) 
   phase-done)</pre></div>
+
+<h2>
+<a id="user-content-28-nginx-body-filter" class="anchor" href="#28-nginx-body-filter" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.8 Nginx Body Filter</h2>
+
+<p>We can use nginx body filter to change the response body.</p>
+
+<ul>
+<li><strong>Java</strong></li>
+</ul>
+
+<p>A stream faced Java body filter should implement the interface NginxJavaBodyFilter which has this method:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">Object</span>[] doFilter(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> request, <span class="pl-smi">InputStream</span> bodyChunk, <span class="pl-k">boolean</span> isLast)  throws <span class="pl-smi">IOException</span>;</pre></div>
+
+<p>For one request this method can be invoked multiple times and at the last time the argument 
+     <code>isLast</code> will be true. Note that <code>bodyChunk</code> is valid only at its call scope and can
+not be stored for later usage. 
+The result returned must be an array which has three elements viz. {status, headers, filtered_chunk}.
+If <code>status</code> is not null <code>filtered_chunk</code> will be used as the final chunk. <code>status</code> and <code>headers</code> will
+be ignored when the response headers has been sent already.
+<code>filtered_chunk</code> can be either of </p>
+
+<ol>
+<li>File, viz. java.io.File</li>
+<li>String</li>
+<li>InputStream</li>
+<li>Array/Iterable, e.g. Array/List/Set of above types</li>
+</ol>
+
+<p>A string faced Java body filter should extends the class StringFacedJavaBodyFilter which has one protected method to be overriden:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">protected</span> <span class="pl-k">Object</span>[] doFilter(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> request, <span class="pl-smi">String</span> body, <span class="pl-k">boolean</span> isLast) throws <span class="pl-smi">IOException</span></pre></div>
+
+<p>This method has the same return value with <code>NginxJavaBodyFilter.doFilter</code>.</p>
+
+<p>e.g.</p>
+
+<div class="highlight highlight-source-nginx"><pre><span class="pl-k">location</span> <span class="pl-en">/hello </span>{
+  <span class="pl-k">body_filter_type</span> java;
+  <span class="pl-k">body_filter_name</span> mytest.StringFacedUppercaseBodyFilter;
+}
+</pre></div>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">StringFacedUppercaseBodyFilter</span> <span class="pl-k">extends</span> <span class="pl-e">StringFacedJavaBodyFilter</span> {
+        <span class="pl-k">@Override</span>
+        <span class="pl-k">protected</span> <span class="pl-k">Object</span>[] <span class="pl-en">doFilter</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>, <span class="pl-smi">String</span> <span class="pl-v">body</span>, <span class="pl-k">boolean</span> <span class="pl-v">isLast</span>) <span class="pl-k">throws</span> <span class="pl-smi">IOException</span> {
+            <span class="pl-k">if</span> (isLast) {
+                <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] {<span class="pl-c1">200</span>, <span class="pl-c1">null</span>, body<span class="pl-k">.</span>toUpperCase()};
+            }<span class="pl-k">else</span> {
+                <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] {<span class="pl-c1">null</span>, <span class="pl-c1">null</span>, body<span class="pl-k">.</span>toUpperCase()};
+            }
+        }
+    }</pre></div>
+
+<ul>
+<li><strong>Clojure</strong></li>
+</ul>
+
+<div class="highlight highlight-source-nginx"><pre><span class="pl-k">location</span> <span class="pl-en">/hello </span>{
+  <span class="pl-k">body_filter_type</span> clojure;
+  <span class="pl-k">body_filter_name</span> mytest/uppercase-filter;
+}
+</pre></div>
+
+<div class="highlight highlight-source-clojure"><pre>(<span class="pl-k">defn</span> <span class="pl-e">uppercase-filter</span> [request body-chunk last?]
+  (<span class="pl-k">let</span> [upper-body (<span class="pl-en">.toUpperCase</span> body-chunk)]
+      (<span class="pl-k">if</span> last? {<span class="pl-c1">:status</span> <span class="pl-c1">200</span> <span class="pl-c1">:body</span> upper-body}
+        {<span class="pl-c1">:body</span> upper-body})))</pre></div>

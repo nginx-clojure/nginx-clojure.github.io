@@ -4,6 +4,12 @@ Downloads & Release History
 1. [Binaries of Releases](http://sourceforge.net/projects/nginx-clojure/files/)
 1. [Sources of Releases](https://github.com/nginx-clojure/nginx-clojure/releases)
 
+## 0.4.4 (2016-03-04)
+
+1. New Feature: experimental nginx body filter by Java/Clojure/Groovy (issue #107)
+1. New Feature: read request body by event callback (issue #109)
+1. Bug Fix: 500 (internal server error) returns when committing 2000+ files to nginx as a proxy for apache mod_dav_svn (issue #106)
+
 ## 0.4.3 (2015-10-25)
 1. New Feature: Add directive [jvm_classpath][] which supports wildcard character * (issue #95)
 1. New Feature: Add directive [jvm_classpath_check][] which is enabled by default and when it is enabled access permission about classpaths will be checked.
@@ -166,10 +172,6 @@ Make Clojure/Java/Groovy handler configurations have the same form. e.g. The old
 1. Supports Java Thread Pool for handle request
 1. Fast Static File Service
 
-[jvm_classpath_check]: //nginx-clojure.github.io/directives.html#jvm_classpath_check
-[jvm_classpath]: //nginx-clojure.github.io/directives.html#jvm_classpath
-[NginxPubSubTopic(Java)/PubSubTopic(Clojure)]: //nginx-clojure.github.io/subpub.html
-[an example project about clojure web dev]: https://github.com/nginx-clojure/nginx-clojure/tree/master/example-projects/clojure-web-example
 [jvm_classpath_check]: //nginx-clojure.github.io/directives.html#jvm_classpath_check
 [jvm_classpath]: //nginx-clojure.github.io/directives.html#jvm_classpath
 [NginxPubSubTopic(Java)/PubSubTopic(Clojure)]: //nginx-clojure.github.io/subpub.html

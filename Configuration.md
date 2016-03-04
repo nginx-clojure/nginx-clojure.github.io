@@ -691,7 +691,79 @@ For Clojure
   (assoc!  response-headers "Server" "My-Test-Server") 
   phase-done)
 ```
-	
+
+2.8 Nginx Body Filter
+-----------------
+
+We can use nginx body filter to change the response body.
+
+* **Java**
+
+A stream faced Java body filter should implement the interface NginxJavaBodyFilter which has this method:
+```java
+public Object[] doFilter(Map<String, Object> request, InputStream bodyChunk, boolean isLast)  throws IOException;
+```
+
+For one request this method can be invoked multiple times and at the last time the argument 
+	 `isLast` will be true. Note that `bodyChunk` is valid only at its call scope and can
+not be stored for later usage. 
+The result returned must be an array which has three elements viz. {status, headers, filtered_chunk}.
+If `status` is not null `filtered_chunk` will be used as the final chunk. `status` and `headers` will
+be ignored when the response headers has been sent already.
+`filtered_chunk` can be either of 
+
+1. File, viz. java.io.File
+1. String
+1. InputStream
+1. Array/Iterable, e.g. Array/List/Set of above types
+
+A string faced Java body filter should extends the class StringFacedJavaBodyFilter which has one protected method to be overriden:
+```java
+protected Object[] doFilter(Map<String, Object> request, String body, boolean isLast) throws IOException
+```
+This method has the same return value with `NginxJavaBodyFilter.doFilter`.
+
+e.g.
+
+```nginx
+location /hello {
+  body_filter_type java;
+  body_filter_name mytest.StringFacedUppercaseBodyFilter;
+}
+
+```
+
+```java
+public static class StringFacedUppercaseBodyFilter extends StringFacedJavaBodyFilter {
+		@Override
+		protected Object[] doFilter(Map<String, Object> request, String body, boolean isLast) throws IOException {
+			if (isLast) {
+				return new Object[] {200, null, body.toUpperCase()};
+			}else {
+				return new Object[] {null, null, body.toUpperCase()};
+			}
+		}
+	}
+```
+
+* **Clojure**
+
+```nginx
+location /hello {
+  body_filter_type clojure;
+  body_filter_name mytest/uppercase-filter;
+}
+
+```
+
+```clojure
+(defn uppercase-filter [request body-chunk last?]
+  (let [upper-body (.toUpperCase body-chunk)]
+      (if last? {:status 200 :body upper-body}
+        {:body upper-body})))
+```
+
+
 [nginx-clojure broadcast API]: https://github.com/nginx-clojure/nginx-clojure/issues/38
 [Shared Map]: https://nginx-clojure.github.io/sharedmap.html
 [Chronicle Map]: https://github.com/OpenHFT/Chronicle-Map
