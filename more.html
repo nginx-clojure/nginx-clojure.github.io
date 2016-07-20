@@ -549,7 +549,9 @@ lein jar</pre></div>
 
           <span class="pl-k">content_handler_type</span> java;
           <span class="pl-k">content_handler_name</span> <span class="pl-s">'nginx.clojure.bridge.NginxBridgeHandler'</span>;
-          <span class="pl-k">content_handler_property</span> system.m2rep <span class="pl-s">'/home/who/.m2/repository'</span>;
+
+          <span class="pl-c">##we can set system properties ,e.g. m2rep</span>
+          <span class="pl-c">#content_handler_property system.m2rep '/home/who/.m2/repository';</span>
 
           <span class="pl-c">##we can put jars into some dir then all of their path will be appended into the classpath</span>
           <span class="pl-c">#content_handler_property bridge.lib.dirs 'my-jersey-libs-dir:myother-dir';</span>
