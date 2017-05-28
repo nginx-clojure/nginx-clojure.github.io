@@ -1,23 +1,37 @@
 <h1>
 <a id="user-content-downloads--release-history" class="anchor" href="#downloads--release-history" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Downloads &amp; Release History</h1>
-
 <ol>
 <li><a href="http://sourceforge.net/projects/nginx-clojure/files/">Binaries of Releases</a></li>
 <li><a href="https://github.com/nginx-clojure/nginx-clojure/releases">Sources of Releases</a></li>
 </ol>
-
+<h2>
+<a id="user-content-045-2017-05-28" class="anchor" href="#045-2017-05-28" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.4.5 (2017-05-28)</h2>
+<ol>
+<li>New Feature: Support to be compiled as Nginx dynamic module, thanks to <a href="https://github.com/LinuxJedi">Andrew Hutchings</a>
+</li>
+<li>Bug Fix: Cannot add multiple Cookies in a response</li>
+<li>Bug Fix: Too many empty chunks are passed to Body filter &amp; some body data lost</li>
+<li>Enhancement: [Nginx-Jersey] Support jersey application sub class</li>
+<li>Enhancement: Try to use enviroment variable JAVA_HOME to detect jvm when jvm_path is auto</li>
+<li>Enhancement: NginxSharedHashMap.keySet/values/entrySet for debug/test usage.</li>
+<li>Bug Fix: Can not use more than two shared maps.</li>
+<li>Bug Fix: NullPointerExecption will happen when multiple rewrite handlers are invoked for one request</li>
+<li>Bug Fix: Can't access ring request data in Sente handler. (content_handler_property fore-prefetch-all-properties true;)</li>
+<li>Enhancement: Compile against Nginx 1.11 &amp; Nginx 1.12</li>
+<li>Bug Fix: Nginx reload will cause connection reset without response</li>
+<li>Bug Fix: Header filter can not change response status from upstream</li>
+<li>Bug Fix: body filters sometimes crash under thread pool mode</li>
+<li>Binaries Distribution:  built with the latest stable Nginx v1.12.0 &amp; openssl v1.1.0e</li>
+</ol>
 <h2>
 <a id="user-content-044-2016-03-04" class="anchor" href="#044-2016-03-04" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.4.4 (2016-03-04)</h2>
-
 <ol>
 <li>New Feature: experimental nginx body filter by Java/Clojure/Groovy (issue #107)</li>
 <li>New Feature: read request body by event callback (issue #109)</li>
 <li>Bug Fix: 500 (internal server error) returns when committing 2000+ files to nginx as a proxy for apache mod_dav_svn (issue #106)</li>
 </ol>
-
 <h2>
 <a id="user-content-043-2015-10-25" class="anchor" href="#043-2015-10-25" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.4.3 (2015-10-25)</h2>
-
 <ol>
 <li>New Feature: Add directive <a href="//nginx-clojure.github.io/directives.html#jvm_classpath">jvm_classpath</a> which supports wildcard character * (issue #95)</li>
 <li>New Feature: Add directive <a href="//nginx-clojure.github.io/directives.html#jvm_classpath_check">jvm_classpath_check</a> which is enabled by default and when it is enabled access permission about classpaths will be checked.</li>
@@ -35,10 +49,8 @@ comments there would not be such example project. (issue #91)</li>
 <li>Documents: Add <a href="http://nginx-clojure.github.io/directives.html">Directives Reference</a>
 </li>
 </ol>
-
 <h2>
 <a id="user-content-042-2015-08-31" class="anchor" href="#042-2015-08-31" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.4.2 (2015-08-31)</h2>
-
 <ol>
 <li>New Feature: Support Sente (issue #87, see <a href="https://github.com/ptaoussanis/sente/pull/160">this PR</a>)</li>
 <li>New Feature: Per-message Compression Extensions (PMCEs) for WebSocket (issue #88)</li>
@@ -47,16 +59,14 @@ comments there would not be such example project. (issue #91)</li>
 <li>Bug Fix: WebSocket and Server Channel do not Work with Some Ring Middlewares (issue #89)</li>
 <li>Bug Fix: Autodetect jvm_path doesn't work sometimes</li>
 </ol>
-
 <h2>
 <a id="user-content-041-2015-08-12" class="anchor" href="#041-2015-08-12" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.4.1 (2015-08-12)</h2>
-
 <ol>
 <li>New Feature: Coroutine based socket supports unix domain socket</li>
 <li>New Feature: APIs for Embedding Nginx-Clojure into a standard Clojure/Java/Groovy App (issue #86)</li>
 <li>New Feature: Autodetect jvm_path (issue #85)</li>
 <li>New Feature: Support to use annotation to mark a class or method to be suspenable in coroutine context (issue #84)</li>
-<li>Enhancement: Auto send error when meets a non websocket request with <code>auto_upgrade_ws</code> is on </li>
+<li>Enhancement: Auto send error when meets a non websocket request with <code>auto_upgrade_ws</code> is on</li>
 <li>Enhancement: Add <code>websocket-upgrade!</code> to server channel API</li>
 <li>Enhancement: Add <code>WholeMessageAdapter</code> to make handling small websocket messages easier.</li>
 <li>Bug Fix: NginxHttpServerChannel.write(ByteBuffer buf) does not reset the buffer's position (issue #83)</li>
@@ -64,10 +74,8 @@ comments there would not be such example project. (issue #91)</li>
 <li>Binaries Distribution: Including some java sources for easy debug.</li>
 <li>Build Script: Autodetect JNI header files</li>
 </ol>
-
 <h2>
 <a id="user-content-040-2015-07-06" class="anchor" href="#040-2015-07-06" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.4.0 (2015-07-06)</h2>
-
 <ol>
 <li>New Feature: Server Side Websocket (issue #73)</li>
 <li>New Feature: A build-in Jersey container to support java standard RESTful web services (JAX-RS 2.0) (issue #74)</li>
@@ -84,12 +92,10 @@ comments there would not be such example project. (issue #91)</li>
 <li>Documents : Release History link in README (issue #68)</li>
 <li>Binaries Distribution: built with The latest stable Nginx v1.8.0 which released at 2015-04-21.</li>
 </ol>
-
 <h2>
 <a id="user-content-030-2014-12-11" class="anchor" href="#030-2014-12-11" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.3.0 (2014-12-11)</h2>
-
 <ol>
-<li>Discard: Directive <code>clojure</code>, <code>clojure_code</code> are no longer supported, use <code>handler_type</code>/<code>content_handler_type</code>, 
+<li>Discard: Directive <code>clojure</code>, <code>clojure_code</code> are no longer supported, use <code>handler_type</code>/<code>content_handler_type</code>,
 <code>handler_name</code>/<code>content_handler_name</code>, <code>handler_code</code>/<code>content_handler_code</code> instead.</li>
 <li>Discard:  Now <code>handler_***</code> can not be used to declare a nginx worker  initialization handler, use `jvm_init_handler_*** instead.</li>
 <li>New Feature:  Supports  writing nginx access handler  by  java/clojure/groovy (issue #53)</li>
@@ -103,19 +109,15 @@ comments there would not be such example project. (issue #91)</li>
 <li>Bug Fix: The first registered handler will not work if there 's a asynchronous reading of request body (issue #51)</li>
 <li>Enhancement: <code>handlers_lazy_init</code> can be used to make handler initialized lazily or eagerly  (issue #52)</li>
 </ol>
-
 <h2>
 <a id="user-content-027-2014-11-11" class="anchor" href="#027-2014-11-11" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.2.7 (2014-11-11)</h2>
-
 <ol>
 <li>New Feature: Compiling option for  disabling all functions silently when JVM_PATH not configured. (issue #47)</li>
 <li>New Feature: Access request BODY in rewrite handler (issue #49)</li>
 <li>Enhancement : Optimization of encoding String to Nginx temp buffer chain to reduce  Java heap memory usage and improve the performance.</li>
 </ol>
-
 <h2>
 <a id="user-content-026-2014-10-10" class="anchor" href="#026-2014-10-10" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.2.6 (2014-10-10)</h2>
-
 <ol>
 <li>Fix Bug: rewrite handler does not handle write event correctly with thread pool mode or coroutine mode (issue #43)</li>
 <li>Fix Bug: built-in jvm variable #{pno} doesn't work (issue #44)</li>
@@ -125,10 +127,8 @@ comments there would not be such example project. (issue #91)</li>
 </li>
 <li>Binaries: built with The latest stable Nginx v1.6.2 which released at 2014-09-16.</li>
 </ol>
-
 <h2>
 <a id="user-content-025-2014-09-07" class="anchor" href="#025-2014-09-07" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.2.5 (2014-09-07)</h2>
-
 <ol>
 <li>New Feature: Reference variables in jvm_options &amp; different jvm debug ports for jvm processes (issue #42)</li>
 <li>New Feature: Server Sent Events(SSE) &amp; Long polling (issue #41, issue #36)</li>
@@ -138,40 +138,32 @@ comments there would not be such example project. (issue #91)</li>
 <li>New Feature: Asynchronous Channel a wrapper of asynchronous socket to make the usage easier (issue #37)</li>
 <li>Enhancement: Fix--On Windows a little many write events happen and these events seem useless (issue #35)</li>
 </ol>
-
 <h2>
 <a id="user-content-024-2014-07-25" class="anchor" href="#024-2014-07-25" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.2.4 (2014-07-25)</h2>
-
 <ol>
 <li>New Feature: Support Groovy - another dynamic jvm language (issue #34)</li>
 <li>Fix bug: Slow Memory Leak for Coroutine based Socket bug (issue #32 )</li>
 <li>Fix bug: Should Clone ThreadLocals for Coroutines (issue #31)</li>
 <li>New Feature: More friendly to java users who maybe know nothing about clojure feature (issue #29)</li>
-<li>Five new nginx directives <code>handler_type</code>, <code>handler_name</code>, <code>handler_code</code>, <code>rewrite_handler_name</code>, <code>rewrite_handler_code</code>. 
+<li>Five new nginx directives <code>handler_type</code>, <code>handler_name</code>, <code>handler_code</code>, <code>rewrite_handler_name</code>, <code>rewrite_handler_code</code>.
 Make Clojure/Java/Groovy handler configurations have the same form. e.g. The old pair of nginx directives <code>clojure</code>, <code>clojure_code</code> is equivalent to <code>handler_type='clojure'</code> + <code>handler_code</code>.</li>
 </ol>
-
 <h2>
 <a id="user-content-023-2014-07-05" class="anchor" href="#023-2014-07-05" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.2.3 (2014-07-05)</h2>
-
 <ol>
 <li>Fix issue After invoking on coroutine based socket nginx worker will exit and be recreated when network is disabled (issue #26)</li>
 <li>Fix issue PATCH loses the data payload (issue #27)</li>
 <li>Support user defined http request method (issue #28 )</li>
 <li>Fix issue Nginx worker crashes when to fetch http header "authorization" from request (issue #30)</li>
 </ol>
-
 <h2>
 <a id="user-content-022-2014-05-31" class="anchor" href="#022-2014-05-31" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.2.2 (2014-05-31)</h2>
-
 <ol>
 <li>Fix bug of with Compojure 1.1.5 + Apache Solrj 4.3.0 + httpclient 4.3.2 NPE happens first time then everything is OK (issue #22)</li>
 <li>Verifying option for auto generated waving configurations needed by coroutine based socket (issue #23)</li>
 </ol>
-
 <h2>
 <a id="user-content-021-2014-05-17" class="anchor" href="#021-2014-05-17" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.2.1 (2014-05-17)</h2>
-
 <ol>
 <li>Support to close coroutine based socket from non-main thread (issue #19)</li>
 <li>Auto generated waving class configurations about Proxy InvocationHandler instance (issue #17 )</li>
@@ -180,10 +172,8 @@ Make Clojure/Java/Groovy handler configurations have the same form. e.g. The old
 <li>Handle multiple sockets parallel in sub coroutines, e.g. we can invoke two remote services at the same time feature (issue #14)</li>
 <li>Support nginx rewrite handler to set var before proxy pass (issue #3)</li>
 </ol>
-
 <h2>
 <a id="user-content-020-2014-04-25" class="anchor" href="#020-2014-04-25" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.2.0 (2014-04-25)</h2>
-
 <ol>
 <li>non-blocking socket based on coroutine and compatible with largely existing java library such as apache http client, mysql jdbc drivers</li>
 <li>asynchronous callback API of socket for some advanced usage</li>
@@ -192,30 +182,24 @@ Make Clojure/Java/Groovy handler configurations have the same form. e.g. The old
 <li>support Linux 32bit x86 now</li>
 <li>publish <a href="https://sourceforge.net/projects/nginx-clojure/files/">binary release compiled with lastes stable nginx 1.6.0</a> about Linux x64, Linux i586, Win32 &amp; MacOS X</li>
 </ol>
-
 <h2>
 <a id="user-content-012-2014-02-03" class="anchor" href="#012-2014-02-03" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.1.2 (2014-02-03)</h2>
-
 <ol>
 <li>fix <a href="/nginx-clojure/nginx-clojure/issues/2">#2 Problems with HTTP Redirect 302</a>
 </li>
 <li>header names are  case-insensitive now.</li>
 <li>publish <a href="https://sourceforge.net/projects/nginx-clojure/files/">binary release</a> about Linux x64, Win32 &amp; MacOS X</li>
 </ol>
-
 <h2>
 <a id="user-content-011-2014-01-20" class="anchor" href="#011-2014-01-20" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.1.1 (2014-01-20)</h2>
-
 <ol>
-<li>Supports InputStream, ISeq &amp; recursive ISeq in Response Body. </li>
+<li>Supports InputStream, ISeq &amp; recursive ISeq in Response Body.</li>
 <li>Auto maintains HTTP last-modified header for multiple files in Response Body</li>
 </ol>
-
 <h2>
 <a id="user-content-010-2014-01-09" class="anchor" href="#010-2014-01-09" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.1.0 (2014-01-09)</h2>
-
 <ol>
-<li>Compitiable with Ring Spec (1.1) </li>
+<li>Compitiable with Ring Spec (1.1)</li>
 <li>Supports Java Thread Pool for handle request</li>
 <li>Fast Static File Service</li>
 </ol>

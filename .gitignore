@@ -1,1 +1,3 @@
 /bin
+/.lein-repl-history
+/target/

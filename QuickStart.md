@@ -4,7 +4,7 @@ Quick Start
 Installation
 --------------
 
-1. Download the latest binaries release v0.4.3 from [here](https://sourceforge.net/projects/nginx-clojure/files/). 
+1. Download the latest binaries release v0.4.5 from [here](https://sourceforge.net/projects/nginx-clojure/files/). 
 1. Unzip the zip file downloaded then rename the file `nginx-${os-arc}` to `nginx`, eg. for linux is `nginx-linux-x64`
 
 >If you want to compile it with your own nginx please check [HERE](installation.html)
@@ -19,7 +19,7 @@ Configuration
 	### auto or a real path, e,g /usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so
 	jvm_path auto;
 		
-	### Set my app jars and resources, it must include nginx-clojure runtime jar,e.g. nginx-clojure-0.4.3.jar and 
+	### Set my app jars and resources, it must include nginx-clojure runtime jar,e.g. nginx-clojure-0.4.5.jar and 
 	##  for clojure user clojure runtime jar is also needed.
 	### See http://nginx-clojure.github.io/directives.html#jvm_classpath
 	jvm_classpath 'libs/*'; #windows user should use ';' as the separator
@@ -140,7 +140,7 @@ Start up
 
 ```nginx
 
-$ cd nginx-clojure-0.4.2/nginx-1.8.0
+$ cd nginx-clojure-0.4.5
 $ ./nginx
 ``` 
 If everything is ok, we can access our first http service by this url

@@ -1,162 +1,142 @@
 <h1>
-<a id="user-content-quick-start" class="anchor" href="#quick-start" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quick Start</h1>
-
+<a id="user-content-quick-start" class="anchor" href="#quick-start" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Quick Start</h1>
 <h2>
-<a id="user-content-installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
-
+<a id="user-content-installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
 <ol>
-<li>Download the latest binaries release v0.4.3 from <a href="https://sourceforge.net/projects/nginx-clojure/files/">here</a>. </li>
+<li>Download the latest binaries release v0.4.5 from <a href="https://sourceforge.net/projects/nginx-clojure/files/">here</a>.</li>
 <li>Unzip the zip file downloaded then rename the file <code>nginx-${os-arc}</code> to <code>nginx</code>, eg. for linux is <code>nginx-linux-x64</code>
 </li>
 </ol>
-
 <blockquote>
 <p>If you want to compile it with your own nginx please check <a href="installation.html">HERE</a></p>
 </blockquote>
-
 <h2>
-<a id="user-content-configuration" class="anchor" href="#configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration</h2>
-
+<a id="user-content-configuration" class="anchor" href="#configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration</h2>
 <ol>
-<li>Open conf/nginx.conf file</li>
+<li>
+<p>Open conf/nginx.conf file</p>
+</li>
 <li>
 <p>Setting JVM path and class path within <code>http {</code> block in  nginx.conf</p>
-
 <div class="highlight highlight-source-nginx"><pre><span class="pl-c">### jvm dynamic library path</span>
 <span class="pl-c">### auto or a real path, e,g /usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so</span>
 <span class="pl-k">jvm_path</span> auto;
-
-<span class="pl-c">### Set my app jars and resources, it must include nginx-clojure runtime jar,e.g. nginx-clojure-0.4.3.jar and </span>
+	
+<span class="pl-c">### Set my app jars and resources, it must include nginx-clojure runtime jar,e.g. nginx-clojure-0.4.5.jar and </span>
 <span class="pl-c">##  for clojure user clojure runtime jar is also needed.</span>
 <span class="pl-c">### See http://nginx-clojure.github.io/directives.html#jvm_classpath</span>
 <span class="pl-k">jvm_classpath</span> <span class="pl-s">'libs/*'</span>; <span class="pl-c">#windows user should use ';' as the separator</span>
 </pre></div>
 </li>
-<li><p>Setting Inline Http Service Handler</p></li>
+<li>
+<p>Setting Inline Http Service Handler</p>
+</li>
 </ol>
-
 <ul>
 <li>
 <p><strong>Clojure</strong></p>
-
-<div class="highlight highlight-source-nginx"><pre>   <span class="pl-c">##Within `server {` block in nginx.conf</span>
-   <span class="pl-k">location</span> <span class="pl-en">/clojure </span>{
-      <span class="pl-k">content_handler_type</span> <span class="pl-s">'clojure'</span>;
-      <span class="pl-k">content_handler_code</span> <span class="pl-s">' </span>
-<span class="pl-s">                    (fn[req]</span>
-<span class="pl-s">                      {</span>
-<span class="pl-s">                        :status 200,</span>
-<span class="pl-s">                        :headers {"content-type" "text/plain"},</span>
-<span class="pl-s">                        :body  "Hello Clojure &amp; Nginx!"</span>
-<span class="pl-s">                        })</span>
-<span class="pl-s">      '</span>;
-   }</pre></div>
+<div class="highlight highlight-source-nginx"><pre>    <span class="pl-c">##Within `server {` block in nginx.conf</span>
+    <span class="pl-k">location</span> <span class="pl-en">/clojure </span>{
+       <span class="pl-k">content_handler_type</span> <span class="pl-s">'clojure'</span>;
+       <span class="pl-k">content_handler_code</span> <span class="pl-s">' </span>
+<span class="pl-s"> 					(fn[req]</span>
+<span class="pl-s"> 					  {</span>
+<span class="pl-s"> 					    :status 200,</span>
+<span class="pl-s"> 					    :headers {"content-type" "text/plain"},</span>
+<span class="pl-s"> 					    :body  "Hello Clojure &amp; Nginx!"</span>
+<span class="pl-s"> 					    })</span>
+<span class="pl-s">       '</span>;
+    }</pre></div>
 </li>
 <li>
 <p><strong>Groovy</strong></p>
-
-<div class="highlight highlight-source-nginx"><pre>   <span class="pl-c">##Within `server {` block in nginx.conf</span>
-   <span class="pl-k">location</span> <span class="pl-en">/groovy </span>{
-      <span class="pl-k">content_handler_type</span> <span class="pl-s">'groovy'</span>;
-      <span class="pl-k">content_handler_code</span> <span class="pl-s">' </span>
-<span class="pl-s">           import nginx.clojure.java.NginxJavaRingHandler;</span>
-<span class="pl-s">           import java.util.Map;</span>
-<span class="pl-s">           public class HelloGroovy implements NginxJavaRingHandler {</span>
-<span class="pl-s">              public Object[] invoke(Map&lt;String, Object&gt; request){</span>
-<span class="pl-s">                 return [200, //http status 200</span>
-<span class="pl-s">                         ["Content-Type":"text/html"], //headers map</span>
-<span class="pl-s">                         "Hello, Groovy &amp; Nginx!"]; //response body can be string, File or Array/Collection of them</span>
-<span class="pl-s">              }</span>
-<span class="pl-s">           }</span>
-<span class="pl-s">      '</span>;
-   }</pre></div>
+<div class="highlight highlight-source-nginx"><pre>    <span class="pl-c">##Within `server {` block in nginx.conf</span>
+    <span class="pl-k">location</span> <span class="pl-en">/groovy </span>{
+       <span class="pl-k">content_handler_type</span> <span class="pl-s">'groovy'</span>;
+       <span class="pl-k">content_handler_code</span> <span class="pl-s">' </span>
+<span class="pl-s">            import nginx.clojure.java.NginxJavaRingHandler;</span>
+<span class="pl-s">            import java.util.Map;</span>
+<span class="pl-s">            public class HelloGroovy implements NginxJavaRingHandler {</span>
+<span class="pl-s">               public Object[] invoke(Map&lt;String, Object&gt; request){</span>
+<span class="pl-s">                  return [200, //http status 200</span>
+<span class="pl-s">                          ["Content-Type":"text/html"], //headers map</span>
+<span class="pl-s">                          "Hello, Groovy &amp; Nginx!"]; //response body can be string, File or Array/Collection of them</span>
+<span class="pl-s">               }</span>
+<span class="pl-s">            }</span>
+<span class="pl-s">       '</span>;
+    }</pre></div>
 </li>
 <li>
 <p><strong>Java</strong></p>
-
 <blockquote>
 <p><strong>Note:</strong>
 So far nginx-clojure has not supported inline java handler, please see the next section to learn how to use an external java handler.</p>
 </blockquote>
 </li>
 </ul>
-
 <ol>
-<li><p>Setting Compojure Router/External Http Service Handler</p></li>
+<li>Setting Compojure Router/External Http Service Handler</li>
 </ol>
-
 <ul>
 <li>
 <p><strong>Clojure</strong></p>
-
-<div class="highlight highlight-source-nginx"><pre><span class="pl-c">##Within `server {` block in nginx.conf</span>
-<span class="pl-k">location</span> <span class="pl-en">/ </span>{
-  <span class="pl-k">content_handler_type</span> clojure;
-  <span class="pl-k">content_handler_name</span> <span class="pl-s">'example/my-app'</span>;
-}</pre></div>
-
+<div class="highlight highlight-source-nginx"><pre> <span class="pl-c">##Within `server {` block in nginx.conf</span>
+ <span class="pl-k">location</span> <span class="pl-en">/ </span>{
+   <span class="pl-k">content_handler_type</span> clojure;
+   <span class="pl-k">content_handler_name</span> <span class="pl-s">'example/my-app'</span>;
+ }</pre></div>
 <p>Make sure that the below source is in the classpath.</p>
-
-<div class="highlight highlight-source-clojure"><pre><span class="pl-c">;;;my_app.clj</span>
+<div class="highlight highlight-source-clojure"><pre><span class="pl-c"><span class="pl-c">;</span>;;my_app.clj</span>
 (<span class="pl-k">ns</span> <span class="pl-e">example</span>
   (<span class="pl-c1">:require</span> [compojure.core <span class="pl-c1">:refer</span> <span class="pl-c1">:all</span>]
           [compojure.route <span class="pl-c1">:as</span> route]))
 
-(<span class="pl-k">defroutes</span> my-app
+(<span class="pl-k">defroutes</span> <span class="pl-e">my-app</span>
   (<span class="pl-en">GET</span> <span class="pl-s"><span class="pl-pds">"</span>/<span class="pl-pds">"</span></span> [] <span class="pl-s"><span class="pl-pds">"</span>&lt;h1&gt;Hello World&lt;/h1&gt;<span class="pl-pds">"</span></span>)
   (<span class="pl-en">route/not-found</span> <span class="pl-s"><span class="pl-pds">"</span>&lt;h1&gt;Page not found&lt;/h1&gt;<span class="pl-pds">"</span></span>))</pre></div>
 </li>
 <li>
 <p><strong>Java</strong></p>
-
-<div class="highlight highlight-source-nginx"><pre>   <span class="pl-c">##Within `server {` block in nginx.conf</span>
-   <span class="pl-k">location</span> <span class="pl-en">/java </span>{
-      <span class="pl-k">content_handler_type</span> <span class="pl-s">'java'</span>;
-      <span class="pl-k">content_handler_name</span> <span class="pl-s">'mytest.HelloService'</span>;
-   }
+<div class="highlight highlight-source-nginx"><pre>    <span class="pl-c">##Within `server {` block in nginx.conf</span>
+    <span class="pl-k">location</span> <span class="pl-en">/java </span>{
+       <span class="pl-k">content_handler_type</span> <span class="pl-s">'java'</span>;
+       <span class="pl-k">content_handler_name</span> <span class="pl-s">'mytest.HelloService'</span>;
+    }
 
 </pre></div>
-
 <p>Make sure that the class of the below source is in the classpath.</p>
-
-<div class="highlight highlight-source-java"><pre>    <span class="pl-k">package</span> <span class="pl-smi">mytest</span>;
-
-    <span class="pl-k">import</span> <span class="pl-smi">java.util.Map</span>;
-
-    <span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.java.ArrayMap</span>;
-    <span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.java.NginxJavaRingHandler</span>;
-    <span class="pl-k">import static</span> <span class="pl-smi">nginx.clojure.MiniConstants.*</span>;
-
-    <span class="pl-k">public</span>  <span class="pl-k">class</span> <span class="pl-en">HelloService</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
-
-        <span class="pl-k">@Override</span>
-        <span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>) {
-            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] { 
-                    <span class="pl-c1">NGX_HTTP_OK</span>, <span class="pl-c">//http status 200</span>
-                    <span class="pl-smi">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-c1">CONTENT_TYPE</span>, <span class="pl-s"><span class="pl-pds">"</span>text/plain<span class="pl-pds">"</span></span>), <span class="pl-c">//headers map</span>
-                    <span class="pl-s"><span class="pl-pds">"</span>Hello, Java &amp; Nginx!<span class="pl-pds">"</span></span>  <span class="pl-c">//response body can be string, File or Array/Collection of string or File</span>
-                    };
-        }
-    }</pre></div>
+<div class="highlight highlight-source-java"><pre> 	<span class="pl-k">package</span> <span class="pl-smi">mytest</span>;
+ 	
+ 	<span class="pl-k">import</span> <span class="pl-smi">java.util.Map</span>;
+ 	
+ 	<span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.java.ArrayMap</span>;
+ 	<span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.java.NginxJavaRingHandler</span>;
+ 	<span class="pl-k">import static</span> <span class="pl-smi">nginx.clojure.MiniConstants.*</span>;
+ 	
+ 	<span class="pl-k">public</span>  <span class="pl-k">class</span> <span class="pl-en">HelloService</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
+ 	
+ 		<span class="pl-k">@Override</span>
+ 		<span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>) {
+ 			<span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] { 
+ 					<span class="pl-c1">NGX_HTTP_OK</span>, <span class="pl-c"><span class="pl-c">//</span>http status 200</span>
+ 					<span class="pl-smi">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-c1">CONTENT_TYPE</span>, <span class="pl-s"><span class="pl-pds">"</span>text/plain<span class="pl-pds">"</span></span>), <span class="pl-c"><span class="pl-c">//</span>headers map</span>
+ 					<span class="pl-s"><span class="pl-pds">"</span>Hello, Java &amp; Nginx!<span class="pl-pds">"</span></span>  <span class="pl-c"><span class="pl-c">//</span>response body can be string, File or Array/Collection of string or File</span>
+ 					};
+ 		}
+ 	}</pre></div>
 </li>
 </ul>
-
 <hr>
-
 <blockquote>
 <p><strong>Note:</strong>
 For more advanced configurations such as enable coroutine based socket, thread pool  etc. Please check them from <a href="configuration.html">HERE</a>.</p>
 </blockquote>
-
 <h2>
-<a id="user-content-start-up" class="anchor" href="#start-up" aria-hidden="true"><span class="octicon octicon-link"></span></a>Start up</h2>
-
+<a id="user-content-start-up" class="anchor" href="#start-up" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Start up</h2>
 <div class="highlight highlight-source-nginx"><pre>
-$ <span class="pl-k">cd</span> nginx-clojure-0.4.2/nginx-1.8.0
+$ <span class="pl-k">cd</span> nginx-clojure-0.4.5
 $ ./<span class="pl-k">nginx</span></pre></div>
-
 <p>If everything is ok, we can access our first http service by this url</p>
-
 <div class="highlight highlight-source-nginx"><pre><span class="pl-c">### For Clojure</span>
 http://localhost:8080/<span class="pl-k">clojure</span>
 
@@ -169,30 +149,20 @@ http://localhost:8080/<span class="pl-k">groovy</span>
 
 <span class="pl-c">### For Java</span>
 http://localhost:8080/<span class="pl-k">java</span></pre></div>
-
 <p>We can check the logs/error.log to see error information.</p>
-
 <h2>
-<a id="user-content-reload" class="anchor" href="#reload" aria-hidden="true"><span class="octicon octicon-link"></span></a>Reload</h2>
-
+<a id="user-content-reload" class="anchor" href="#reload" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Reload</h2>
 <p>If we change some settings  we can reload the settings without stopping our services.</p>
-
 <div class="highlight highlight-source-nginx"><pre>$ ./<span class="pl-k">nginx</span> -s reload</pre></div>
-
 <h2>
-<a id="user-content-stop" class="anchor" href="#stop" aria-hidden="true"><span class="octicon octicon-link"></span></a>Stop</h2>
-
+<a id="user-content-stop" class="anchor" href="#stop" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Stop</h2>
 <div class="highlight highlight-source-nginx"><pre>$ ./<span class="pl-k">nginx</span> -s stop</pre></div>
-
 <h2>
-<a id="user-content-examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h2>
-
+<a id="user-content-examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples</h2>
 <h3>
-<a id="user-content-clojure-web-example" class="anchor" href="#clojure-web-example" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="https://github.com/nginx-clojure/nginx-clojure/tree/master/example-projects/clojure-web-example">clojure-web-example</a>
+<a id="user-content-clojure-web-example" class="anchor" href="#clojure-web-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://github.com/nginx-clojure/nginx-clojure/tree/master/example-projects/clojure-web-example">clojure-web-example</a>
 </h3>
-
 <p>A basic example about nginx-clojure &amp; clojure web dev. It uses:</p>
-
 <ul>
 <li>
 <a href="https://github.com/weavejester/compojure">Compojure</a> (for uri routing)</li>
@@ -202,5 +172,4 @@ http://localhost:8080/<span class="pl-k">java</span></pre></div>
 <a href="http://nginx-clojure.github.io/more.html#38--sever-side-websocket">Websocket API</a> &amp; <a href="">Sub/Pub API</a> (to demo a simple chatroom)</li>
 <li>ring.middleware.reload (for auto-reloading modified namespaces in dev environments)</li>
 </ul>
-
 <p>See it on <a href="https://github.com/nginx-clojure/nginx-clojure/tree/master/example-projects/clojure-web-example">github</a>.</p>
