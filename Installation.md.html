@@ -1,54 +1,50 @@
-<h1>
-<a id="user-content-1-installation" class="anchor" href="#1-installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Installation</h1>
-
-<p>The lastest release is 0.4.3. Please check the  <a href="downloads.html">Update History</a> for more details.</p>
-
-<h2>
-<a id="user-content-11-installation-by-binary" class="anchor" href="#11-installation-by-binary" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.1 Installation by Binary</h2>
-
 <ol>
-<li>First you can download  Release 0.4.3  from <a href="https://sourceforge.net/projects/nginx-clojure/files/">here</a>. 
+<li>Installation
+=============</li>
+</ol>
+<p>The lastest release is 0.5.0. Please check the  <a href="downloads.html">Update History</a> for more details.</p>
+<h2>
+<a id="user-content-11-installation-by-binary" class="anchor" href="#11-installation-by-binary" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.1 Installation by Binary</h2>
+<ol>
+<li>First you can download  Release 0.5.0  from <a href="https://sourceforge.net/projects/nginx-clojure/files/" rel="nofollow">here</a>.
 The zip file includes Nginx-Clojure binaries about Linux x64, Linux i586, Win32, Win64 and Mac OS X.</li>
 <li>Unzip the zip file downloaded then rename the file <code>nginx-${os-arc}</code> to <code>nginx</code>, eg. for linux is <code>nginx-linux-x64</code>
 </li>
 </ol>
-
 <h2>
-<a id="user-content-12-installation-by-source" class="anchor" href="#12-installation-by-source" aria-hidden="true"><span class="octicon octicon-link"></span></a>1.2 Installation by Source</h2>
-
+<a id="user-content-12-installation-by-source" class="anchor" href="#12-installation-by-source" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1.2 Installation by Source</h2>
 <p>Nginx-Clojure may be compiled successfully on Linux x64, Linux x86 32bit, Win32, Win64 and Mac OS X x64.</p>
-
 <ol>
-<li>First download from <a href="http://nginx.org/en/download.html">nginx site</a> or check out nginx source by hg from <a href="http://hg.nginx.org/nginx">http://hg.nginx.org/nginx</a>. 
-For Win32 users MUST check out nginx source by hg because the zipped source doesn't contain Win32 related code.</li>
-<li>Check out Nginx-Clojure source from github OR download the zipped source code from <a href="https://github.com/xfeep/nginx-clojure/releases">https://github.com/xfeep/nginx-clojure/releases</a>
-</li>
-<li>If you want to use Http SSL module, you should install openssl and openssl dev first.</li>
 <li>
-<p>Make sure jdk (version should be 1.6+ ) is installed, we can use <code>javac</code>, <code>java</code>, e.g.</p>
-
+<p>First download from <a href="http://nginx.org/en/download.html" rel="nofollow">nginx site</a> or check out nginx source by hg from <a href="http://hg.nginx.org/nginx" rel="nofollow">http://hg.nginx.org/nginx</a>.
+For Win32 users MUST check out nginx source by hg because the zipped source doesn't contain Win32 related code.</p>
+</li>
+<li>
+<p>Check out Nginx-Clojure source from github OR download the zipped source code from <a href="https://github.com/xfeep/nginx-clojure/releases">https://github.com/xfeep/nginx-clojure/releases</a></p>
+</li>
+<li>
+<p>If you want to use Http SSL module, you should install openssl and openssl dev first.</p>
+</li>
+<li>
+<p>Make sure jdk (version should be 1.8+ ) is installed, we can use <code>javac</code>, <code>java</code>, e.g.</p>
 <div class="highlight highlight-source-shell"><pre><span class="pl-smi">$javac</span> -version
-javac 1.7.0_45</pre></div>
+javac 1.8.0_112</pre></div>
 </li>
 <li>
-<p>Add Nginx-Clojure module to Nginx configure command, here is a simplest example without more details about <a href="http://wiki.nginx.org/InstallOptions">InstallOptions</a></p>
-
-<div class="highlight highlight-source-shell"><pre><span class="pl-c">#If nginx source is checked out from hg, please replace ./configure with auto/configure</span>
+<p>Add Nginx-Clojure module to Nginx configure command, here is a simplest example without more details about <a href="http://wiki.nginx.org/InstallOptions" rel="nofollow">InstallOptions</a></p>
+<div class="highlight highlight-source-shell"><pre><span class="pl-c"><span class="pl-c">#</span>If nginx source is checked out from hg, please replace ./configure with auto/configure</span>
 $./configure \
-    --add-module=nginx-clojure/src/c
+	--add-module=nginx-clojure/src/c
 $ make
 $ make install</pre></div>
 </li>
 <li>
 <p>Create the jar file about Nginx-Clojure</p>
-
 <p>Please check the lein version <code>lein version</code>, it should be at least 2.0.0.</p>
-
 <div class="highlight highlight-source-shell"><pre>$ <span class="pl-c1">cd</span> nginx-clojure
 $ lein jar</pre></div>
-
-<p>Then you'll find nginx-clojure-${version}.jar (eg. nginx-clojure-0.4.2.jar) in the target folder. 
-The jar file is self contained. If your project use clojure  it naturally depends on the clojure core jar, e.g clojure-1.5.1.jar.
-If your project use groovy it naturally depends on the groovy runtime jar, e.g. groovy-2.3.4.jar.</p>
+<p>Then you'll find nginx-clojure-${version}.jar (eg. nginx-clojure-0.5.0.jar) in the target folder.
+The jar file is self contained. If your project use clojure  it naturally depends on the clojure core jar, e.g clojure-1.9.0.jar.
+If your project use groovy it naturally depends on the groovy runtime jar, e.g. groovy-2.5.8.jar.</p>
 </li>
 </ol>

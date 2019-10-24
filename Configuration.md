@@ -763,6 +763,60 @@ location /hello {
         {:body upper-body})))
 ```
 
+2.9 Nginx Log Handler
+-----------------
+
+Nginx log handler will be called just before the request is destroyed and its return result will be ignored.
+In a log handler we should not modify any thing about this request such as header, status. response, body and so on.
+
+* **Java**
+
+e.g.
+
+```nginx
+location /hello {
+  ....
+  log_handler_type java;
+  log_handler_name mytest.MyLogHandler;
+  log_handler_property format 'yyyyMMdd HH:mm:ss';
+}
+
+```
+
+```java
+	public class MyLogHandler implements NginxJavaRingHandler, Configurable {
+		String format;
+		@Override
+		public Object[] invoke(Map<String, Object> request) throws IOException {
+			File file = new File("logs/SimpleLogHandler.log");
+			try (FileOutputStream out = new FileOutputStream(file, true)) {
+				out.write((new SimpleDateFormat(format).format(new Date()) + ":" + request.get(Constants.URI) + "\n")
+						.getBytes("utf8"));
+			}
+			return null;
+		}
+
+		@Override
+		public void config(Map<String, String> properties) {
+			format = properties.get("format");
+		}
+	}
+```
+
+* **Clojure**
+
+```nginx
+location /hello {
+  log_handler_type clojure;
+  log_handler_name mytest/simple-log-handler;
+}
+
+```
+
+```clojure
+(defn simple-log-handler [request]
+    (spit "logs/SimpleLogHandler.log" (str (Date.) ":" (:uri request) "\n") :append true ))
+```
 
 [nginx-clojure broadcast API]: https://github.com/nginx-clojure/nginx-clojure/issues/38
 [Shared Map]: https://nginx-clojure.github.io/sharedmap.html

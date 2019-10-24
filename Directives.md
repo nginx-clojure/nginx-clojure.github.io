@@ -1,3 +1,4 @@
+
 # Directives Reference
 
   * [jvm_path](#jvm_path)
@@ -16,19 +17,27 @@
   * [content_handler_type](#content_handler_type)
   * [content_handler_name](#content_handler_name)
   * [content_handler_code](#content_handler_code)
+  * [content_handler_property](#content_handler_property)  
   * [rewrite_handler_type](#rewrite_handler_type)
   * [rewrite_handler_name](#rewrite_handler_name)
   * [rewrite_handler_code](#rewrite_handler_code)
+  * [rewrite_handler_property](#rewrite_handler_property)  
   * [access_handler_type](#access_handler_type)
   * [access_handler_name](#access_handler_name)
   * [access_handler_code](#access_handler_code)
+  * [access_handler_property](#access_handler_property)  
   * [header_filter_type](#header_filter_type)
   * [header_filter_name](#header_filter_name)
   * [header_filter_code](#header_filter_code)
-  * [content_handler_property](#content_handler_property)
-  * [rewrite_handler_property](#rewrite_handler_property)
-  * [access_handler_property](#access_handler_property)
-  * [header_filter_property](#header_filter_property)
+  * [header_filter_property](#header_filter_property) 
+  * [body_filter_type](#body_filter_type)
+  * [body_filter_name](#body_filter_name)
+  * [body_filter_code](#body_filter_code)
+  * [body_filter_property](#body_filter_property)    
+  * [log_handler_type](#log_handler_type)
+  * [log_handler_name](#log_handler_name)
+  * [log_handler_code](#log_handler_code)
+  * [log_handler_property](#log_handler_property)        
   * [always_read_body](#always_read_body)
   * [shared_map](#shared_map)
   * [write_page_size](#write_page_size)
@@ -396,6 +405,18 @@ location /groovy {
 }
 ```
 
+## content_handler_property
+
+* **Syntax**:	**content_handler_property** name value;
+* **Default**:	—
+* **Context**:	location
+* **repeatable** true
+
+Defines one content handler property. All of those content handler properties belonged to one location will be pass to 
+the related content handler 's method `config(properties)` if the content handler implements
+the interface `nginx.clojure.Configurable`.
+
+
 ## rewrite_handler_type
 
 * **Syntax**:	**rewrite_handler_type** clojure | java | groovy;
@@ -483,6 +504,17 @@ e.g.
  } 
 ```
 
+## rewrite_handler_property
+
+* **Syntax**:	**rewrite_handler_property** name value;
+* **Default**:	—
+* **Context**:	location
+* **repeatable** true
+
+Defines one rewrite handler property. All of those rewrite handler properties belonged to one location will be pass to 
+the related rewrite handler 's method `config(properties)` if the rewrite handler implements
+the interface `nginx.clojure.Configurable`.
+
 ## access_handler_type
 
 * **Syntax**:	**access_handler_type** clojure | java | groovy;
@@ -544,6 +576,17 @@ Here 's an example to implement a simple HTTP Basic Authentication.
 * **Context**:	location
 
 Specifies a access handler by a block of inline code. See [access_handler_name](#access_handler_name).
+
+## access_handler_property
+
+* **Syntax**:	**access_handler_property** name value;
+* **Default**:	—
+* **Context**:	location
+* **repeatable** true
+
+Defines one access handler property. All of those access handler properties belonged to one location will be pass to 
+the related access handler 's method `config(properties)` if the access handler implements
+the interface `nginx.clojure.Configurable`.
 
 ## header_filter_type
 
@@ -636,39 +679,6 @@ import nginx.clojure.java.Constants;
 
 Specifies a header filter by a block of inline code. See [header_filter_name](#header_filter_name).
 
-## content_handler_property
-
-* **Syntax**:	**content_handler_property** name value;
-* **Default**:	—
-* **Context**:	location
-* **repeatable** true
-
-Defines one content handler property. All of those content handler properties belonged to one location will be pass to 
-the related content handler 's method `config(properties)` if the content handler implements
-the interface `nginx.clojure.Configurable`.
-
-## rewrite_handler_property
-
-* **Syntax**:	**rewrite_handler_property** name value;
-* **Default**:	—
-* **Context**:	location
-* **repeatable** true
-
-Defines one rewrite handler property. All of those rewrite handler properties belonged to one location will be pass to 
-the related rewrite handler 's method `config(properties)` if the rewrite handler implements
-the interface `nginx.clojure.Configurable`.
-
-## access_handler_property
-
-* **Syntax**:	**access_handler_property** name value;
-* **Default**:	—
-* **Context**:	location
-* **repeatable** true
-
-Defines one access handler property. All of those access handler properties belonged to one location will be pass to 
-the related access handler 's method `config(properties)` if the access handler implements
-the interface `nginx.clojure.Configurable`.
-
 ## header_filter_property
 
 * **Syntax**:	**header_filter_property** name value;
@@ -679,6 +689,216 @@ the interface `nginx.clojure.Configurable`.
 Defines one header filter property. All of those header filter properties belonged to one location will be pass to 
 the related header filter 's method `config(properties)` if the header filter implements
 the interface `nginx.clojure.Configurable`.
+
+
+## body_filter_type
+
+* **Syntax**:	**body_filter_type** clojure | java | groovy;
+* **Default**:	clojure
+* **Context**:	location
+
+## body_filter_name
+
+* **Syntax**:	**body_filter_name** *full-qualified-name*;
+* **Default**:	—
+* **Context**:	location
+
+Specifies a body filter by a full qualified name.
+
+We can use body filter to modify/replace body content. 
+
+A stream faced Java body filter should implement the interface NginxJavaBodyFilter which has this method:
+```java
+public Object[] doFilter(Map<String, Object> request, InputStream bodyChunk, boolean isLast)  throws IOException;
+```
+
+For one request this method can be invoked multiple times and at the last time the argument 
+	 `isLast` will be true. Note that `bodyChunk` is valid only at its call scope and can
+not be stored for later usage. 
+The result returned must be an array which has three elements viz. {status, headers, filtered_chunk}.
+If `status` is not null `filtered_chunk` will be used as the final chunk. `status` and `headers` will
+be ignored when the response headers has been sent already.
+`filtered_chunk` can be either of 
+
+1. File, viz. java.io.File
+1. String
+1. InputStream
+1. Array/Iterable, e.g. Array/List/Set of above types
+
+A string faced Java body filter should extends the class StringFacedJavaBodyFilter which has one protected method to be overriden:
+```java
+protected Object[] doFilter(Map<String, Object> request, String body, boolean isLast) throws IOException
+```
+This method has the same return value with `NginxJavaBodyFilter.doFilter`.
+
+This example will make to body content to upper case.
+
+* **Java/Groovy**
+
+```nginx
+
+      location /upperfilter {
+	          body_filter_type 'java';
+	          body_filter_name 'my.UppercaseBodyFilter';
+	           ..................
+	          }
+```
+
+```java
+
+package my;
+
+import nginx.clojure.java.NginxJavaRingHandler;
+import nginx.clojure.java.Constants;
+import nginx.clojure.java.StringFacedJavaBodyFilter;
+
+public static class UppercaseBodyFilter extends StringFacedJavaBodyFilter {
+		@Override
+		protected Object[] doFilter(Map<String, Object> request, String body, boolean isLast) throws IOException {
+			if (isLast) {
+				return new Object[] {200, null, body.toUpperCase()};
+			}else {
+				return new Object[] {null, null, body.toUpperCase()};
+			}
+		}
+	}
+```
+
+* **Clojure**
+
+```nginx
+
+      location /upperfilter {
+	          body_filter_type 'clojure';
+	          body_filter_name 'my/uppercase-filter';
+	           ..................
+	          }
+```
+
+```clojure
+
+(defn uppercase-filter [request body-chunk last?]
+  (let [upper-body (.toUpperCase body-chunk)]
+      (if last? {:status 200 :body upper-body}
+        {:body upper-body})))
+```
+
+## body_filter_code
+
+* **Syntax**:	**body_filter_code** *inline-body-filter-code*;
+* **Default**:	—
+* **Context**:	location
+
+
+Specifies a header filter by a block of inline code. See [body_filter_name](#body_filter_name).
+
+## body_filter_property
+
+* **Syntax**:	**body_filter_property** name value;
+* **Default**:	—
+* **Context**:	location
+* **repeatable** true
+
+Defines one body filter property. All of those body filter properties belonged to one location will be pass to 
+the related body filter 's method `config(properties)` if the body filter implements
+the interface `nginx.clojure.Configurable`.
+
+## log_handler_type
+
+* **Syntax**:	**log_handler_type** clojure | java | groovy;
+* **Default**:	clojure
+* **Context**:	location
+
+## log_handler_name
+
+* **Syntax**:	**log_handler_name** *full-qualified-name*;
+* **Default**:	—
+* **Context**:	location
+
+Defines an external log handler. e.g.
+
+Nginx log handler will be called just before the request is destroyed and its return result will be ignored.
+In a log handler we should not modify any thing about this request such as header, status. response, body and so on.
+
+* **Java**
+
+e.g.
+
+```nginx
+location /hello {
+  ....
+  log_handler_type java;
+  log_handler_name mytest.MyLogHandler;
+  log_handler_property format 'yyyyMMdd HH:mm:ss';
+}
+
+```
+
+```java
+	public class MyLogHandler implements NginxJavaRingHandler, Configurable {
+		String format;
+		@Override
+		public Object[] invoke(Map<String, Object> request) throws IOException {
+			File file = new File("logs/SimpleLogHandler.log");
+			try (FileOutputStream out = new FileOutputStream(file, true)) {
+				out.write((new SimpleDateFormat(format).format(new Date()) + ":" + request.get(Constants.URI) + "\n")
+						.getBytes("utf8"));
+			}
+			return null;
+		}
+
+		@Override
+		public void config(Map<String, String> properties) {
+			format = properties.get("format");
+		}
+	}
+```
+
+* **Clojure**
+
+```nginx
+location /hello {
+  log_handler_type clojure;
+  log_handler_name mytest/simple-log-handler;
+}
+
+```
+
+```clojure
+(defn simple-log-handler [request]
+    (spit "logs/SimpleLogHandler.log" (str (Date.) ":" (:uri request) "\n") :append true ))
+```
+
+## log_handler_code
+
+* **Syntax**:	**log_handler_code** *log-content-handler-code*;
+* **Default**:	—
+* **Context**:	location
+
+Defines an inline content handler. e.g.
+
+* **Clojure**
+
+```nginx
+location /hello {
+  log_handler_type clojure;
+  log_handler_code '
+    (fn[r] (spit "logs/SimpleLogHandler.log" (str (Date.) ":" (:uri r) "\n") :append true ) )
+  ';
+}
+```
+
+## log_handler_property
+
+* **Syntax**:	**log_handler_property** name value;
+* **Default**:	—
+* **Context**:	location
+* **repeatable** true
+
+Defines one log handler property. All of those log handler properties belonged to one location will be pass to 
+the related log handler 's method `config(properties)` if the log handler implements
+the interface `nginx.clojure.Configurable`.
+
 
 ## always_read_body
 

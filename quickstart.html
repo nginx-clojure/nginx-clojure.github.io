@@ -38,9 +38,9 @@
 	          <li>
              <a id="forkme_banner" href="https://github.com/nginx-clojure/nginx-clojure" target="_blank">View on GitHub</a>
             </li>
-            <li>
+<!--             <li>
              <a id="google_group_banner" href="https://groups.google.com/forum/#!forum/nginx-clojure" target="_blank">Google Group</a>
-            </li>
+            </li> -->
 	        </ul>
           <div id="project_logo">
           <h1 id="project_title">nginx-clojure</h1>
@@ -70,7 +70,7 @@
 						<li><a href="configuration.html#26-nginx-access-handler"><span class="glyphicon glyphicon-cog"></span> Nginx Access Handler</a></li>
 						<li><a href="configuration.html#27-nginx-header-filter"><span class="glyphicon glyphicon-cog"></span> Nginx Header Filter</a></li>
 						<li><a href="configuration.html#28-nginx-body-filter"><span class="glyphicon glyphicon-cog"></span> Nginx Body Filter</a></li>
-						
+						<li><a href="configuration.html#29-nginx-log-handler"><span class="glyphicon glyphicon-cog"></span> Nginx Log Handler</a></li>
 					</ul>
 					</div>
 					<div class="btn-group">
@@ -105,7 +105,7 @@
 <h2>
 <a id="user-content-installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
 <ol>
-<li>Download the latest binaries release v0.4.5 from <a href="https://sourceforge.net/projects/nginx-clojure/files/">here</a>.</li>
+<li>Download the latest binaries release v0.5.0 from <a href="https://sourceforge.net/projects/nginx-clojure/files/" rel="nofollow">here</a>.</li>
 <li>Unzip the zip file downloaded then rename the file <code>nginx-${os-arc}</code> to <code>nginx</code>, eg. for linux is <code>nginx-linux-x64</code>
 </li>
 </ol>
@@ -121,10 +121,10 @@
 <li>
 <p>Setting JVM path and class path within <code>http {</code> block in  nginx.conf</p>
 <div class="highlight highlight-source-nginx"><pre><span class="pl-c">### jvm dynamic library path</span>
-<span class="pl-c">### auto or a real path, e,g /usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so</span>
+<span class="pl-c">### auto or a real path, e,g /usr/lib/jvm/java-8-oracle/jre/lib/amd64/server/libjvm.so</span>
 <span class="pl-k">jvm_path</span> auto;
 	
-<span class="pl-c">### Set my app jars and resources, it must include nginx-clojure runtime jar,e.g. nginx-clojure-0.4.5.jar and </span>
+<span class="pl-c">### Set my app jars and resources, it must include nginx-clojure runtime jar,e.g. nginx-clojure-0.5.0.jar and </span>
 <span class="pl-c">##  for clojure user clojure runtime jar is also needed.</span>
 <span class="pl-c">### See http://nginx-clojure.github.io/directives.html#jvm_classpath</span>
 <span class="pl-k">jvm_classpath</span> <span class="pl-s">'libs/*'</span>; <span class="pl-c">#windows user should use ';' as the separator</span>
@@ -236,7 +236,7 @@ For more advanced configurations such as enable coroutine based socket, thread p
 <h2>
 <a id="user-content-start-up" class="anchor" href="#start-up" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Start up</h2>
 <div class="highlight highlight-source-nginx"><pre>
-$ <span class="pl-k">cd</span> nginx-clojure-0.4.5
+$ <span class="pl-k">cd</span> nginx-clojure-0.5.0
 $ ./<span class="pl-k">nginx</span></pre></div>
 <p>If everything is ok, we can access our first http service by this url</p>
 <div class="highlight highlight-source-nginx"><pre><span class="pl-c">### For Clojure</span>
@@ -271,7 +271,7 @@ http://localhost:8080/<span class="pl-k">java</span></pre></div>
 <li>
 <a href="https://github.com/weavejester/hiccup">Hiccup</a> (for html rendering)</li>
 <li>
-<a href="http://nginx-clojure.github.io/more.html#38--sever-side-websocket">Websocket API</a> &amp; <a href="">Sub/Pub API</a> (to demo a simple chatroom)</li>
+<a href="http://nginx-clojure.github.io/more.html#38--sever-side-websocket" rel="nofollow">Websocket API</a> &amp; <a href="">Sub/Pub API</a> (to demo a simple chatroom)</li>
 <li>ring.middleware.reload (for auto-reloading modified namespaces in dev environments)</li>
 </ul>
 <p>See it on <a href="https://github.com/nginx-clojure/nginx-clojure/tree/master/example-projects/clojure-web-example">github</a>.</p>
