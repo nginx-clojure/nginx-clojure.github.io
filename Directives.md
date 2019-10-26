@@ -820,36 +820,56 @@ Defines an external log handler. e.g.
 Nginx log handler will be called just before the request is destroyed and its return result will be ignored.
 In a log handler we should not modify any thing about this request such as header, status. response, body and so on.
 
-* **Java**
+e.g. we can write access log just like 
 
-e.g.
+```
+127.0.0.1 - x 26/Oct/2019:13:54:08 +0800 GET /cljloghandler/simpleloghandler HTTP/1.1 200 20 x curl/7.64.0 
+127.0.0.1 - x 26/Oct/2019:14:44:57 +0800 GET /cljloghandler/simpleloghandler HTTP/1.1 200 20 x curl/7.64.0 
+127.0.0.1 - x 26/Oct/2019:14:59:03 +0800 GET //cljloghandler/simpleloghandler HTTP/1.1 200 20 x Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36 
+
+```
+
+* **Java**
 
 ```nginx
 location /hello {
   ....
   log_handler_type java;
   log_handler_name mytest.MyLogHandler;
-  log_handler_property format 'yyyyMMdd HH:mm:ss';
+  log_handler_property logUserAgent on;
 }
 
 ```
 
 ```java
-	public class MyLogHandler implements NginxJavaRingHandler, Configurable {
-		String format;
+	public static class SimpleLogHandler implements NginxJavaRingHandler, Configurable {
+		
+		boolean logUserAgent;
+		
 		@Override
 		public Object[] invoke(Map<String, Object> request) throws IOException {
 			File file = new File("logs/SimpleLogHandler.log");
+			NginxJavaRequest r = (NginxJavaRequest) request;
 			try (FileOutputStream out = new FileOutputStream(file, true)) {
-				out.write((new SimpleDateFormat(format).format(new Date()) + ":" + request.get(Constants.URI) + "\n")
-						.getBytes("utf8"));
+				String msg = String.format("%s - %s [%s] \"%s\" %s \"%s\" %s %s\n", r.getVariable("remote_addr"),
+						r.getVariable("remote_user", "x"), r.getVariable("time_local"), r.getVariable("request"),
+						r.getVariable("status"), r.getVariable("body_bytes_sent"), r.getVariable("http_referer", "x"),
+						logUserAgent ? r.getVariable("http_user_agent") : "-");
+				out.write(msg.getBytes("utf8"));
 			}
 			return null;
 		}
 
 		@Override
 		public void config(Map<String, String> properties) {
-			format = properties.get("format");
+			logUserAgent = "on".equalsIgnoreCase(properties.get("logUserAgent"));
+		}
+		
+
+		@Override
+		public String[] variablesNeedPrefetch() {
+			return new String[] { "remote_addr", "remote_user", "time_local", "request", "status", "body_bytes_sent",
+					"http_referer", "http_user_agent" };
 		}
 	}
 ```
@@ -865,8 +885,27 @@ location /hello {
 ```
 
 ```clojure
-(defn simple-log-handler [request]
-    (spit "logs/SimpleLogHandler.log" (str (Date.) ":" (:uri request) "\n") :append true ))
+(ns mytest
+  (:use [nginx.clojure.core]))
+
+(defn simple-log-handler
+  [r]
+    (spit "logs/SimpleLogHandler.log" 
+          (str (get-ngx-var r "remote_addr") " - "
+               (get-ngx-var r "remote_user" "x") " "
+               (get-ngx-var r "time_local") " "
+               (get-ngx-var r "request") " "
+               (get-ngx-var r "status") " "
+               (get-ngx-var r "body_bytes_sent") " "
+               (get-ngx-var r "http_referer" "x") " "
+               (get-ngx-var r "http_user_agent") " "
+                "\n")
+          :append true ))
+
+;;; make variables prefetched to access them at non-main thread
+(def simple-log-handler (with-meta simple-log-handler {"variablesNeedPrefetch" 
+                                        ["remote_addr", "remote_user", "time_local", "request", 
+                                         "status", "body_bytes_sent", "http_referer", "http_user_agent"]}))
 ```
 
 ## log_handler_code

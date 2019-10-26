@@ -109,7 +109,7 @@
 <h2>
 <a id="user-content-050-2019-10-26" class="anchor" href="#050-2019-10-26" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.5.0 (2019-10-26)</h2>
 <ol>
-<li>New Feature: Java 9, 10, 11, 12 support. But Java 6 and Java7 are deprecated now.</li>
+<li>New Feature: Java 9, 10, 11, 12 support. But Java 6 and Java 7 are deprecated now.</li>
 <li>New Feature: Log handler</li>
 <li>New Feature: HTTP V2 support (thanks to Nginx v1.14.2)</li>
 <li>Bug Fix: Memory leak with file handler #180</li>
@@ -118,8 +118,10 @@
 <li>Bug Fix: ContainsKey of nginx shared map</li>
 <li>Bug Fix: NginxRequest.setVariable in a rewrite handler will hang</li>
 <li>Bug Fix: Segmentation fault on shutdown</li>
+<li>Bug Fix: Make clojure request map immutable for compojure</li>
 <li>Enhancement: API for discarding request body (request.discardRequestBody())</li>
 <li>Enhancement: Coroutine support for cascade constructor invoking</li>
+<li>Enhancement: Configurable headers/variables prefetch for more safety in multithreaded mode</li>
 <li>Binaries Distribution: built with Nginx v1.14.2</li>
 </ol>
 <h2>
