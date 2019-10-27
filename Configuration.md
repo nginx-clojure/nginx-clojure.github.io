@@ -580,7 +580,8 @@ We also added an example(for unit testing) about this, in nginx.conf
        }
 ```
 
-The example java rewrite handler code can be found from https://github.com/nginx-clojure/nginx-clojure/blob/master/test/java/nginx/clojure/java/RewriteHandlerTestSet4NginxJavaRingHandler.java#L35  	
+The example java rewrite handler code can be found from 
+[RewriteHandlerTestSet4NginxJavaRingHandler.java](https://github.com/nginx-clojure/nginx-clojure/blob/master/test/java/nginx/clojure/java/RewriteHandlerTestSet4NginxJavaRingHandler.java#L35) 	
 	
 	
 2.6 Nginx Access Handler

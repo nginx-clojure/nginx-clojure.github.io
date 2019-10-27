@@ -39,7 +39,7 @@ Usage
   }
  
   function setNewOnClick(originalOnClick,hash){
-    anchorsList[i].onclick=function(){
+    anchorsList[i].onclick=function(){	
       $(originalOnClick);
 //      $(document).scrollTop(($(hash).offset().top) - $(".navbar-fixed-top").height());
       $(document).scrollTop(($('#user-content-'+hash.substring(1)).position().top - 200));

@@ -493,7 +493,8 @@ We also added an example(for unit testing) about this, in nginx.conf</p>
           <span class="pl-k">rewrite_handler_name</span> <span class="pl-s">'nginx.clojure.java.RewriteHandlerTestSet4NginxJavaRingHandler<span class="pl-smi">$SimpleRewriteByBodyHandler</span>'</span>;
           <span class="pl-k">proxy_pass</span> http://<span class="pl-smi">$myup</span>;
        }</pre></div>
-<p>The example java rewrite handler code can be found from <a href="https://github.com/nginx-clojure/nginx-clojure/blob/master/test/java/nginx/clojure/java/RewriteHandlerTestSet4NginxJavaRingHandler.java#L35">https://github.com/nginx-clojure/nginx-clojure/blob/master/test/java/nginx/clojure/java/RewriteHandlerTestSet4NginxJavaRingHandler.java#L35</a></p>
+<p>The example java rewrite handler code can be found from
+<a href="https://github.com/nginx-clojure/nginx-clojure/blob/master/test/java/nginx/clojure/java/RewriteHandlerTestSet4NginxJavaRingHandler.java#L35">RewriteHandlerTestSet4NginxJavaRingHandler.java</a></p>
 <h2>
 <a id="user-content-26-nginx-access-handler" class="anchor" href="#26-nginx-access-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.6 Nginx Access Handler</h2>
 <p>Although we can do similar things within a rewrite handler but using Nginx Access Handler will further define roles of all kind of handlers.

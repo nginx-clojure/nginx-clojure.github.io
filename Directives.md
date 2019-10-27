@@ -1,46 +1,46 @@
 
 # Directives Reference
 
-  * [jvm_path](#jvm_path)
-  * [jvm_var](#jvm_var)
-  * [jvm_classpath](#jvm_classpath)
-  * [jvm_classpath_check](#jvm_classpath_check)
-  * [jvm_workers](#jvm_workers)
-  * [jvm_options](#jvm_options)
-  * [jvm_handler_type](#jvm_handler_type)
-  * [jvm_init_handler_name](#jvm_init_handler_name)
-  * [jvm_init_handler_code](#jvm_init_handler_code)
-  * [jvm_exit_handler_name](#jvm_exit_handler_name)
-  * [jvm_exit_handler_code](#jvm_exit_handler_code)
-  * [handlers_lazy_init](#handlers_lazy_init)
-  * [auto_upgrade_ws](#auto_upgrade_ws)
-  * [content_handler_type](#content_handler_type)
-  * [content_handler_name](#content_handler_name)
-  * [content_handler_code](#content_handler_code)
-  * [content_handler_property](#content_handler_property)  
-  * [rewrite_handler_type](#rewrite_handler_type)
-  * [rewrite_handler_name](#rewrite_handler_name)
-  * [rewrite_handler_code](#rewrite_handler_code)
-  * [rewrite_handler_property](#rewrite_handler_property)  
-  * [access_handler_type](#access_handler_type)
-  * [access_handler_name](#access_handler_name)
-  * [access_handler_code](#access_handler_code)
-  * [access_handler_property](#access_handler_property)  
-  * [header_filter_type](#header_filter_type)
-  * [header_filter_name](#header_filter_name)
-  * [header_filter_code](#header_filter_code)
-  * [header_filter_property](#header_filter_property) 
-  * [body_filter_type](#body_filter_type)
-  * [body_filter_name](#body_filter_name)
-  * [body_filter_code](#body_filter_code)
-  * [body_filter_property](#body_filter_property)    
-  * [log_handler_type](#log_handler_type)
-  * [log_handler_name](#log_handler_name)
-  * [log_handler_code](#log_handler_code)
-  * [log_handler_property](#log_handler_property)        
-  * [always_read_body](#always_read_body)
-  * [shared_map](#shared_map)
-  * [write_page_size](#write_page_size)
+  * [jvm_path](#user-content-jvm_path)
+  * [jvm_var](#user-content-jvm_var)
+  * [jvm_classpath](#user-content-jvm_classpath)
+  * [jvm_classpath_check](#user-content-jvm_classpath_check)
+  * [jvm_workers](#user-content-jvm_workers)
+  * [jvm_options](#user-content-jvm_options)
+  * [jvm_handler_type](#user-content-jvm_handler_type)
+  * [jvm_init_handler_name](#user-content-jvm_init_handler_name)
+  * [jvm_init_handler_code](#user-content-jvm_init_handler_code)
+  * [jvm_exit_handler_name](#user-content-jvm_exit_handler_name)
+  * [jvm_exit_handler_code](#user-content-jvm_exit_handler_code)
+  * [handlers_lazy_init](#user-content-handlers_lazy_init)
+  * [auto_upgrade_ws](#user-content-auto_upgrade_ws)
+  * [content_handler_type](#user-content-content_handler_type)
+  * [content_handler_name](#user-content-content_handler_name)
+  * [content_handler_code](#user-content-content_handler_code)
+  * [content_handler_property](#user-content-content_handler_property)  
+  * [rewrite_handler_type](#user-content-rewrite_handler_type)
+  * [rewrite_handler_name](#user-content-rewrite_handler_name)
+  * [rewrite_handler_code](#user-content-rewrite_handler_code)
+  * [rewrite_handler_property](#user-content-rewrite_handler_property)  
+  * [access_handler_type](#user-content-access_handler_type)
+  * [access_handler_name](#user-content-access_handler_name)
+  * [access_handler_code](#user-content-access_handler_code)
+  * [access_handler_property](#user-content-access_handler_property)  
+  * [header_filter_type](#user-content-header_filter_type)
+  * [header_filter_name](#user-content-header_filter_name)
+  * [header_filter_code](#user-content-header_filter_code)
+  * [header_filter_property](#user-content-header_filter_property) 
+  * [body_filter_type](#user-content-body_filter_type)
+  * [body_filter_name](#user-content-body_filter_name)
+  * [body_filter_code](#user-content-body_filter_code)
+  * [body_filter_property](#user-content-body_filter_property)    
+  * [log_handler_type](#user-content-log_handler_type)
+  * [log_handler_name](#user-content-log_handler_name)
+  * [log_handler_code](#user-content-log_handler_code)
+  * [log_handler_property](#user-content-log_handler_property)        
+  * [always_read_body](#user-content-always_read_body)
+  * [shared_map](#user-content-shared_map)
+  * [write_page_size](#user-content-write_page_size)
 
 
 ## jvm_path
@@ -51,11 +51,38 @@
 * **Context**:	http
 
 Defines jvm shared library path. When `auto` is used it will auto-detect jvm path otherwise it should be a real jvm shared library path. e.g. 
-* On Windows 32-bit it maybe is `C:/Program Files/Java/jdk1.7.0_25/jre/bin/server/jvm.dll`,
-* On MacOSX it maybe is `/Library/Java/JavaVirtualMachines/1.6.0_65-b14-462.jdk/Contents/Libraries/libserver.dylib` or `/Library/Java/JavaVirtualMachines/jdk1.7.0_55.jdk/Contents/Home/jre/lib/server/libjvm.dylib`;
-* On Ubuntu, it maybe is `/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so`;
-* On CentOS 64-bit, it maybe is `/usr/java/jdk1.6.0_45/jre/lib/amd64/server/libjvm.so`;
-* On CentOS 32-bit, it maybe is `/usr/java/jdk1.7.0_51/jre/lib/i386/server/libjvm.so`;
+
+* On Windows 32-bit it maybe is 
+
+```
+C:/Program Files/Java/jdk1.7.0_25/jre/bin/server/jvm.dll
+```
+
+* On MacOSX it maybe is 
+
+```
+/Library/Java/JavaVirtualMachines/1.6.0_65-b14-462.jdk/Contents/Libraries/libserver.dylib
+   or 
+/Library/Java/JavaVirtualMachines/jdk1.7.0_55.jdk/Contents/Home/jre/lib/server/libjvm.dylib
+ ```
+
+* On Ubuntu, it maybe is 
+
+```
+/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so`;
+```
+
+* On CentOS 64-bit, it maybe is 
+
+```
+/usr/java/jdk1.6.0_45/jre/lib/amd64/server/libjvm.so`;
+```
+
+* On CentOS 32-bit, it maybe is 
+
+```
+/usr/java/jdk1.7.0_51/jre/lib/i386/server/libjvm.so`;
+```
 
 ## jvm_var
 
@@ -64,7 +91,7 @@ Defines jvm shared library path. When `auto` is used it will auto-detect jvm pat
 * **Context**:	http
 * **repeatable** true
 
-Defines a varaible which can be reused in jvm related directives such as [jvm_var](#jvm_var), [jvm_classpath](#jvm_classpath), [jvm_options](#jvm_options).
+Defines a varaible which can be reused in jvm related directives such as [jvm_var](#user-content-jvm_var), [jvm_classpath](#user-content-jvm_classpath), [jvm_options](#user-content-jvm_options).
 
 e.g.
 
@@ -575,7 +602,7 @@ Here 's an example to implement a simple HTTP Basic Authentication.
 * **Default**:	—
 * **Context**:	location
 
-Specifies a access handler by a block of inline code. See [access_handler_name](#access_handler_name).
+Specifies a access handler by a block of inline code. See [access_handler_name](#user-content-access_handler_name).
 
 ## access_handler_property
 
@@ -677,7 +704,7 @@ import nginx.clojure.java.Constants;
 * **Context**:	location
 
 
-Specifies a header filter by a block of inline code. See [header_filter_name](#header_filter_name).
+Specifies a header filter by a block of inline code. See [header_filter_name](#user-content-header_filter_name).
 
 ## header_filter_property
 
@@ -790,7 +817,7 @@ public static class UppercaseBodyFilter extends StringFacedJavaBodyFilter {
 * **Context**:	location
 
 
-Specifies a header filter by a block of inline code. See [body_filter_name](#body_filter_name).
+Specifies a header filter by a block of inline code. See [body_filter_name](#user-content-body_filter_name).
 
 ## body_filter_property
 
@@ -988,11 +1015,6 @@ So far it has two implementations: tiny map & hash map both of which use MurmurH
 generate hash code. The key/value of shared hash map can be `int`,`long`,`String`, `byte array`.
 
 **limitation**
-
-type        | entry structure size(Bytes)| table structure size(Bytes)| space limit |entries limit| key limit| value limit| 
------------- | -----------|-----------|-------------|------------|--------------------|---------------------
-tiny map  |24 |entries x 4| 4G (64-bit) or 2G (32-bit)| 2^31=2.14Billions | 16M | 4G (64-bit) or 2G (32-bit) |
-hash map  |40(64-bit) or 28(32-bit)|entries x 8(64-bit) or 4 (32-bit)  |OS process memory limit| 2^63 (64-bit) or 2^31 (32-bit)|  OS process memory limit | OS process memory limit  |
 
 But note that if needed memory size is less than half of OS page size the real allocated size of nginx slab only can be 
 2^3 = 8, 2^4 = 16, 2^5 = 32,..., 2^(ngx_pagesize_shift - 1).So on 64-bit OS entry structure size of tiny map really

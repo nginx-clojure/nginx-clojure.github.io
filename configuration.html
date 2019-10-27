@@ -32,7 +32,7 @@
   <body>
   <div id="header">
        <!-- HEADER -->
-    <nav id="header_wrap" class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <nav id="header_wrap" class="" role="navigation">
         <header id="header_logo_title"  class="inner container">
           <ul class="external-link-buttons">
 	          <li>
@@ -62,15 +62,15 @@
           <div class="btn-group">
           <button type="button" class="btn btn-sample btn-lg dropdown-toggle" data-toggle="dropdown" id="docDropDownBtn"><span class="glyphicon glyphicon-cog"></span> Configuration <span class="caret"></span></button>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="configuration.html#21-jvm-path--class-path--other-jvm-options"><span class="glyphicon glyphicon-cog"></span> JVM Path,Class Path & Other JVM Options</a></li>
-						<li><a href="configuration.html#22-initialization-handler-for-nginx-worker"><span class="glyphicon glyphicon-cog"></span> Initialization Handler for nginx worker</a></li>
-						<li><a href="configuration.html#23-content-ring-handler-for-location"><span class="glyphicon glyphicon-cog"></span> Content Ring Handler for Location</a></li>
-						<li><a href="configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations"><span class="glyphicon glyphicon-cog"></span> Coroutine/Asynchronous Client Channel/Thread Pool </a></li>
-						<li><a href="configuration.html#25-nginx-rewrite-handler"><span class="glyphicon glyphicon-cog"></span> Nginx Rewrite Handler</a></li>
-						<li><a href="configuration.html#26-nginx-access-handler"><span class="glyphicon glyphicon-cog"></span> Nginx Access Handler</a></li>
-						<li><a href="configuration.html#27-nginx-header-filter"><span class="glyphicon glyphicon-cog"></span> Nginx Header Filter</a></li>
-						<li><a href="configuration.html#28-nginx-body-filter"><span class="glyphicon glyphicon-cog"></span> Nginx Body Filter</a></li>
-						<li><a href="configuration.html#29-nginx-log-handler"><span class="glyphicon glyphicon-cog"></span> Nginx Log Handler</a></li>
+						<li><a href="configuration.html#user-content-21-jvm-path--class-path--other-jvm-options"><span class="glyphicon glyphicon-cog"></span> JVM Path,Class Path & Other JVM Options</a></li>
+						<li><a href="configuration.html#user-content-22-initialization-handler-for-nginx-worker"><span class="glyphicon glyphicon-cog"></span> Initialization Handler for nginx worker</a></li>
+						<li><a href="configuration.html#user-content-23-content-ring-handler-for-location"><span class="glyphicon glyphicon-cog"></span> Content Ring Handler for Location</a></li>
+						<li><a href="configuration.html#user-content-24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations"><span class="glyphicon glyphicon-cog"></span> Coroutine/Asynchronous Client Channel/Thread Pool </a></li>
+						<li><a href="configuration.html#user-content-25-nginx-rewrite-handler"><span class="glyphicon glyphicon-cog"></span> Nginx Rewrite Handler</a></li>
+						<li><a href="configuration.html#user-content-26-nginx-access-handler"><span class="glyphicon glyphicon-cog"></span> Nginx Access Handler</a></li>
+						<li><a href="configuration.html#user-content-27-nginx-header-filter"><span class="glyphicon glyphicon-cog"></span> Nginx Header Filter</a></li>
+						<li><a href="configuration.html#user-content-28-nginx-body-filter"><span class="glyphicon glyphicon-cog"></span> Nginx Body Filter</a></li>
+						<li><a href="configuration.html#user-content-29-nginx-log-handler"><span class="glyphicon glyphicon-cog"></span> Nginx Log Handler</a></li>
 					</ul>
 					</div>
 					<div class="btn-group">
@@ -595,7 +595,8 @@ We also added an example(for unit testing) about this, in nginx.conf</p>
           <span class="pl-k">rewrite_handler_name</span> <span class="pl-s">'nginx.clojure.java.RewriteHandlerTestSet4NginxJavaRingHandler<span class="pl-smi">$SimpleRewriteByBodyHandler</span>'</span>;
           <span class="pl-k">proxy_pass</span> http://<span class="pl-smi">$myup</span>;
        }</pre></div>
-<p>The example java rewrite handler code can be found from <a href="https://github.com/nginx-clojure/nginx-clojure/blob/master/test/java/nginx/clojure/java/RewriteHandlerTestSet4NginxJavaRingHandler.java#L35">https://github.com/nginx-clojure/nginx-clojure/blob/master/test/java/nginx/clojure/java/RewriteHandlerTestSet4NginxJavaRingHandler.java#L35</a></p>
+<p>The example java rewrite handler code can be found from
+<a href="https://github.com/nginx-clojure/nginx-clojure/blob/master/test/java/nginx/clojure/java/RewriteHandlerTestSet4NginxJavaRingHandler.java#L35">RewriteHandlerTestSet4NginxJavaRingHandler.java</a></p>
 <h2>
 <a id="user-content-26-nginx-access-handler" class="anchor" href="#26-nginx-access-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.6 Nginx Access Handler</h2>
 <p>Although we can do similar things within a rewrite handler but using Nginx Access Handler will further define roles of all kind of handlers.
@@ -825,6 +826,9 @@ In a log handler we should not modify any thing about this request such as heade
 		</footer>
 	</div>
  </div>
-
+	<script type="text/javascript">
+	  //$("a[href^='http']").attr("target","_blank");
+	  //setTimeout("fixNavbarIssue();", 1000);
+	</script>
 </body>
   </html>
