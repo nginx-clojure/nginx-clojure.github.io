@@ -108,7 +108,7 @@
 <div class="highlight highlight-source-nginx"><pre>
     <span class="pl-c">###define jvm path, auto for auto-detect jvm path or a real path</span>
     <span class="pl-c">###for win32,  jvm_path maybe is "C:/Program Files/Java/jdk1.7.0_25/jre/bin/server/jvm.dll";</span>
-    <span class="pl-c">###for macosx, jvm_path maybe is "/Library/Java/JavaVirtualMachines/1.6.0_65-b14-462.jdk/Contents/Libraries/libserver.dylib";</span>
+    <span class="pl-c">###for macosx, jvm_path maybe is "/Library/Java/JavaVirtualMachines/jdk1.7.0_55.jdk/Contents/Home/jre/lib/server/libjvm.dylib";</span>
     <span class="pl-c">###for ubuntu, jvm_path maybe is "/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so";</span>
     <span class="pl-c">###for centos, jvm_path maybe is "/usr/java/jdk1.6.0_45/jre/lib/amd64/server/libjvm.so";</span>
     <span class="pl-c">###for centos 32bit, jvm_path maybe is "/usr/java/jdk1.7.0_51/jre/lib/i386/server/libjvm.so";</span>
@@ -149,7 +149,7 @@
     <span class="pl-k">jvm_var</span> mrr <span class="pl-s">'/home/who/.m2/repository'</span>;
     <span class="pl-k">jvm_var</span> ncjar <span class="pl-s">'#{ncdev}/target/nginx-clojure-0.2.5.jar'</span>;
 
-    <span class="pl-k">jvm_options</span> <span class="pl-s">"-Djava.class.path=#{ncjar}:#{mrr}/clj-http/clj-http/0.7.8/clj-http-0.7.8.jar"</span>;</pre></div>
+    <span class="pl-k">jvm_classpath</span> <span class="pl-s">"#{ncjar}:#{mrr}/clj-http/clj-http/0.7.8/clj-http-0.7.8.jar"</span>;</pre></div>
 <h3>
 <a id="user-content-specify-debug-ports-for-jvms" class="anchor" href="#specify-debug-ports-for-jvms" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Specify Debug Ports for JVMs</h3>
 <p>It 's a new feature since v0.2.5.
@@ -180,8 +180,6 @@ even external service(e.g. redis, database) to  coordinate the state or use cook
 <li>When importing Swing We Must specifiy <code>jvm_options "-Djava.awt.headless=true"</code> , otherwise the nginx will hang.</li>
 <li>By adding the location of your clojure source files to the classpath,then just issue "nginx -s reload" and changes to the sources get picked up!</li>
 <li>You can remove clojure-1.5.1.jar from class path and point at your "lein uberjar" to pick up a different version of clojure.</li>
-<li>To use Java 7 on OSX, in nginx.conf your may set <code>jvm_path "/Library/Java/JavaVirtualMachines/jdk1.7.0_55.jdk/Contents/Home/jre/lib/server/libjvm.dylib";</code>
-</li>
 </ol>
 <h2>
 <a id="user-content-22-initialization-handler-for-nginx-worker" class="anchor" href="#22-initialization-handler-for-nginx-worker" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.2 Initialization Handler for nginx worker</h2>
@@ -827,23 +825,6 @@ In a log handler we should not modify any thing about this request such as heade
 		</footer>
 	</div>
  </div>
-  
-	<script type="text/javascript">
-	  $("a[href^='http']").attr("target","_blank");
-	  setTimeout("fixNavbarIssue();", 100);
-		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl."
-				: "http://www.");
-		document
-				.write(unescape("%3Cscript src='"
-						+ gaJsHost
-						+ "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-	</script>
-	<script type="text/javascript">
-		try {
-			var pageTracker = _gat._getTracker("UA-53526038-1");
-			pageTracker._trackPageview();
-		} catch (err) {
-		}
-	</script>
+
 </body>
   </html>

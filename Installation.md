@@ -1,5 +1,4 @@
-1. Installation
-=============
+# 1. Installation
 
 The lastest release is 0.5.0. Please check the  [Update History](downloads.html) for more details.
 

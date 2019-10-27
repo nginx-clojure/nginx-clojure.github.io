@@ -10,7 +10,7 @@ Setting JVM path and class path within `http {` block in  nginx.conf
 
     ###define jvm path, auto for auto-detect jvm path or a real path
     ###for win32,  jvm_path maybe is "C:/Program Files/Java/jdk1.7.0_25/jre/bin/server/jvm.dll";
-    ###for macosx, jvm_path maybe is "/Library/Java/JavaVirtualMachines/1.6.0_65-b14-462.jdk/Contents/Libraries/libserver.dylib";
+    ###for macosx, jvm_path maybe is "/Library/Java/JavaVirtualMachines/jdk1.7.0_55.jdk/Contents/Home/jre/lib/server/libjvm.dylib";
     ###for ubuntu, jvm_path maybe is "/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so";
     ###for centos, jvm_path maybe is "/usr/java/jdk1.6.0_45/jre/lib/amd64/server/libjvm.so";
     ###for centos 32bit, jvm_path maybe is "/usr/java/jdk1.7.0_51/jre/lib/i386/server/libjvm.so";
@@ -55,7 +55,7 @@ It 's a new feature since v0.2.5. We can define variables and reuse them in jvm_
     jvm_var mrr '/home/who/.m2/repository';
     jvm_var ncjar '#{ncdev}/target/nginx-clojure-0.2.5.jar';
 
-    jvm_options "-Djava.class.path=#{ncjar}:#{mrr}/clj-http/clj-http/0.7.8/clj-http-0.7.8.jar";
+    jvm_classpath "#{ncjar}:#{mrr}/clj-http/clj-http/0.7.8/clj-http-0.7.8.jar";
 ```
 
 ### Specify Debug Ports for JVMs
@@ -97,7 +97,6 @@ even external service(e.g. redis, database) to  coordinate the state or use cook
 1. When importing Swing We Must specifiy `jvm_options "-Djava.awt.headless=true"` , otherwise the nginx will hang.
 1. By adding the location of your clojure source files to the classpath,then just issue "nginx -s reload" and changes to the sources get picked up!
 1. You can remove clojure-1.5.1.jar from class path and point at your "lein uberjar" to pick up a different version of clojure. 
-1. To use Java 7 on OSX, in nginx.conf your may set `jvm_path "/Library/Java/JavaVirtualMachines/jdk1.7.0_55.jdk/Contents/Home/jre/lib/server/libjvm.dylib";`
 
 2.2 Initialization Handler for nginx worker
 -----------------
