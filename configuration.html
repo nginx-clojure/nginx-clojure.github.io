@@ -100,10 +100,8 @@
       <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-           <ol start="2">
-<li>Configurations
-=================</li>
-</ol>
+           <h1>
+<a id="user-content-2-configurations" class="anchor" href="#2-configurations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Configurations</h1>
 <h2>
 <a id="user-content-21-jvm-path--class-path--other-jvm-options" class="anchor" href="#21-jvm-path--class-path--other-jvm-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.1 JVM Path , Class Path &amp; Other JVM Options</h2>
 <p>Setting JVM path and class path within <code>http {</code> block in  nginx.conf</p>
@@ -136,7 +134,8 @@
     <span class="pl-c">###the remote debug port will be 8401 ~ 840X .</span>
     <span class="pl-c">#jvm_options "-Xdebug";</span>
     <span class="pl-c">#jvm_options "-Xrunjdwp:server=y,transport=dt_socket,address=840#{pno},suspend=n";</span></pre></div>
-<p>###Reusable Variables</p>
+<h3>
+<a id="user-content-reusable-variables" class="anchor" href="#reusable-variables" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Reusable Variables</h3>
 <p>It 's a new feature since v0.2.5. We can define variables and reuse them in jvm_options to make configurations neat.</p>
 <div class="highlight highlight-source-nginx"><pre>
     <span class="pl-c">###define nginx_clojure_jar</span>
@@ -151,7 +150,8 @@
     <span class="pl-k">jvm_var</span> ncjar <span class="pl-s">'#{ncdev}/target/nginx-clojure-0.2.5.jar'</span>;
 
     <span class="pl-k">jvm_options</span> <span class="pl-s">"-Djava.class.path=#{ncjar}:#{mrr}/clj-http/clj-http/0.7.8/clj-http-0.7.8.jar"</span>;</pre></div>
-<p>###Specify Debug Ports for JVMs</p>
+<h3>
+<a id="user-content-specify-debug-ports-for-jvms" class="anchor" href="#specify-debug-ports-for-jvms" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Specify Debug Ports for JVMs</h3>
 <p>It 's a new feature since v0.2.5.
 If the <code>worker_processes</code> &gt; 1, the below code will cause error for multiple JVMs try listen on the same debug port <code>2400</code>.</p>
 <div class="highlight highlight-source-nginx"><pre>
@@ -168,9 +168,11 @@ e.g. When <code>worker_processes</code> is 8, the debug ports will range from po
     <span class="pl-k">jvm_options</span> <span class="pl-s">"-Xdebug"</span>;
     <span class="pl-k">jvm_options</span> <span class="pl-s">"-Xrunjdwp:server=y,transport=dt_socket,address=240#{pno},suspend=n"</span>;
 }</pre></div>
-<p>###Advanced JVM Options for I/O</p>
+<h3>
+<a id="user-content-advanced-jvm-options-for-io" class="anchor" href="#advanced-jvm-options-for-io" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Advanced JVM Options for I/O</h3>
 <p>Check <a href="configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations">this section</a> for more deitals about choice and configuration about <code>thread pool</code> , <code>coroutine</code> based socket or <code>asynchronous socket/channel</code>.</p>
-<p>###Some Useful Tips</p>
+<h3>
+<a id="user-content-some-useful-tips" class="anchor" href="#some-useful-tips" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Some Useful Tips</h3>
 <p>These tips are really useful. Most of them are from real users. Thanks <a href="https://github.com/rickr-nook">Rickr Nook</a> who give us some useful tips.</p>
 <ol>
 <li>The number of embed JVMs is the same with Nginx <code>worker_processes</code>, so if <code>worker_processes</code> &gt; 1 we maybe need <a href="https://github.com/nginx-clojure/nginx-clojure/issues/38">nginx-clojure broadcast API</a>, shared memory (e.g nginx-clojure built-in <a href="https://nginx-clojure.github.io/sharedmap.html" rel="nofollow">Shared Map</a>, OpenHFT <a href="https://github.com/OpenHFT/Chronicle-Map">Chronicle Map</a>) or
@@ -243,7 +245,8 @@ use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.
 <li>Directive <code>content_handler_property</code> is used to declare one or many properties for content handler which implements interface <code>nginx.clojure.Configurable</code>
 </li>
 </ul>
-<p>###2.3.1 Inline Ring Handler</p>
+<h3>
+<a id="user-content-231-inline-ring-handler" class="anchor" href="#231-inline-ring-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.3.1 Inline Ring Handler</h3>
 <p>For Clojure :</p>
 <div class="highlight highlight-source-nginx"><pre>       <span class="pl-k">location</span> <span class="pl-en">/clojure </span>{
           <span class="pl-k">handler_type</span> <span class="pl-s">'clojure'</span>;
@@ -273,7 +276,8 @@ use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.
 <span class="pl-s">          '</span>;
        }</pre></div>
 <p>Now you can start nginx and access <a href="http://localhost:8080/groovy" rel="nofollow">http://localhost:8080/groovy</a>, if some error happens please check error.log file.</p>
-<p>###2.3.2 Reference of External Ring Handlers</p>
+<h3>
+<a id="user-content-232-reference-of-external-ring-handlers" class="anchor" href="#232-reference-of-external-ring-handlers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.3.2 Reference of External Ring Handlers</h3>
 <p>Please make sure the external Ring handler is in a certain jar file or a directory included by your classpath.
 It is also OK if you do not compile the Clojure/Groovy to java class file and just put the source of them in a certain jar file or a directory included by your classpath.</p>
 <p>For Clojure the exteranl Ring handler example is here</p>

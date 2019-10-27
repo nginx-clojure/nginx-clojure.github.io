@@ -1,5 +1,5 @@
-2. Configurations
-=================
+# 2. Configurations
+
 
 2.1 JVM Path , Class Path & Other JVM Options
 -----------------
@@ -37,7 +37,8 @@ Setting JVM path and class path within `http {` block in  nginx.conf
     #jvm_options "-Xdebug";
     #jvm_options "-Xrunjdwp:server=y,transport=dt_socket,address=840#{pno},suspend=n";
 ````
-###Reusable Variables
+
+### Reusable Variables
 
 It 's a new feature since v0.2.5. We can define variables and reuse them in jvm_options to make configurations neat.
 
@@ -57,7 +58,7 @@ It 's a new feature since v0.2.5. We can define variables and reuse them in jvm_
     jvm_options "-Djava.class.path=#{ncjar}:#{mrr}/clj-http/clj-http/0.7.8/clj-http-0.7.8.jar";
 ```
 
-###Specify Debug Ports for JVMs
+### Specify Debug Ports for JVMs
 
 It 's a new feature since v0.2.5.
 If the `worker_processes` > 1, the below code will cause error for multiple JVMs try listen on the same debug port `2400`.
@@ -83,11 +84,11 @@ http {
 }
 ```
 
-###Advanced JVM Options for I/O
+### Advanced JVM Options for I/O
 
 Check [this section](configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations) for more deitals about choice and configuration about `thread pool` , `coroutine` based socket or `asynchronous socket/channel`.
 
-###Some Useful Tips
+### Some Useful Tips
 
 These tips are really useful. Most of them are from real users. Thanks [Rickr Nook](https://github.com/rickr-nook) who give us some useful tips.
 
@@ -179,7 +180,7 @@ Within `location` block,
 * Directive `content_handler_name` is used to setting an external Ring handler which is in a certain jar file included by your classpath.
 * Directive `content_handler_property` is used to declare one or many properties for content handler which implements interface `nginx.clojure.Configurable`
 
-###2.3.1 Inline Ring Handler
+### 2.3.1 Inline Ring Handler
 
 For Clojure : 
 
@@ -220,7 +221,7 @@ For Groovy :
 Now you can start nginx and access http://localhost:8080/groovy, if some error happens please check error.log file. 
 
 
-###2.3.2 Reference of External Ring Handlers
+### 2.3.2 Reference of External Ring Handlers
 
 Please make sure the external Ring handler is in a certain jar file or a directory included by your classpath.
 It is also OK if you do not compile the Clojure/Groovy to java class file and just put the source of them in a certain jar file or a directory included by your classpath. 
