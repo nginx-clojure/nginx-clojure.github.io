@@ -309,12 +309,12 @@ Full-Width Styles
 }
 
 #header_wrap .inner {
-  padding: 50px 10px 30px 10px;
+  /* padding: 50px 10px 30px 10px; */
 }
 
 #project_logo {
 	background: url("../images/logo.png") no-repeat scroll left center rgba(0, 0, 0, 0);
-	padding: 10px 20px 10px 140px;
+	padding: 15px 20px 10px 140px;
 }
 
 #nav-bar {
@@ -330,7 +330,7 @@ Full-Width Styles
 #project_title {
   margin: 0;
   color: #fff;
-  font-size: 42px;
+  /* font-size: 42px; */
   font-weight: 700;
   text-shadow: #f00 0px 0px 10px;
   display: inline;
@@ -394,7 +394,7 @@ body {
 
 
 #main_content {
-  padding-top: 40px;
+/*   padding-top: 40px; */
 }
 
 #footer_wrap {
