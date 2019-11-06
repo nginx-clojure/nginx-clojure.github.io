@@ -10,10 +10,21 @@ generate hash code. The key/value of shared hash map can be `int`,`long`,`String
 
 **limitation**
 
-type        | entry structure size(Bytes)| table structure size(Bytes)| space limit |entries limit| key limit| value limit| 
------------- | -----------|-----------|-------------|------------|--------------------|---------------------
-tiny map  |24 |entries x 4| 4G or 2G (32-bit)| 2^31=2.14Billions | 16M | 4G or 2G (32-bit) |
-hash map  |40 or 28(32bit)|entries x 8 or 4 (32-bit)  |OS limit| 2^63 or 2^31 (32-bit)|  OS limit | OS limit  |
+
+1. Tiny Map
+	* entries number limit: 2^31=2.14Billions
+	* total space limit : 4G (64-bit) / 2G (32-bit)
+	* key size limit: 16M
+	* value size limit: 4G (64-bit) / 2G (32-bit)
+	* entry structure cost: 24 Bytes
+	* table structure cost: entries x 4 Bytes
+1. Hash Map
+	* entries number limit: 2^63 (64-bit) / 2^31 (32-bit)
+	* total space limit : OS limit
+	* key size limit: OS limit
+	* value size limit: OS limit
+	* entry structure cost: 40 Bytes (64-bit) / 28 Bytes (32-bit)
+	* table structure cost: entries x 8 Bytes (64-bit) / entries x 4 (32-bit)
 
 But note that if needed memory size is less than half of OS page size the real allocated size of nginx slab only can be 
 2^3 = 8, 2^4 = 16, 2^5 = 32,..., 2^(ngx_pagesize_shift - 1).So on 64-bit OS entry structure size of tiny map really
