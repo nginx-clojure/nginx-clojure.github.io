@@ -1105,6 +1105,39 @@ It can be inherited by child server/location/nested-location context.</p>
 So far it has two implementations: tiny map &amp; hash map both of which use MurmurHash3 32-bit to
 generate hash code. The key/value of shared hash map can be <code>int</code>,<code>long</code>,<code>String</code>, <code>byte array</code>.</p>
 <p><strong>limitation</strong></p>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>entry structure size(Bytes)</th>
+<th>table structure size(Bytes)</th>
+<th>space limit</th>
+<th>entries limit</th>
+<th>key limit</th>
+<th>value limit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tiny map</td>
+<td>24</td>
+<td>entries x 4</td>
+<td>4G or 2G (32-bit)</td>
+<td>2^31=2.14Billions</td>
+<td>16M</td>
+<td>4G or 2G (32-bit)</td>
+</tr>
+<tr>
+<td>hash map</td>
+<td>40 or 28(32bit)</td>
+<td>entries x 8 or 4 (32-bit)</td>
+<td>OS limit</td>
+<td>2^63 or 2^31 (32-bit)</td>
+<td>OS limit</td>
+<td>OS limit</td>
+</tr>
+</tbody>
+</table>
 <p>But note that if needed memory size is less than half of OS page size the real allocated size of nginx slab only can be
 2^3 = 8, 2^4 = 16, 2^5 = 32,..., 2^(ngx_pagesize_shift - 1).So on 64-bit OS entry structure size of tiny map really
 uses 32Bytes hash map uses 64Bytes. We'll do some optimize work in the future versions.</p>
