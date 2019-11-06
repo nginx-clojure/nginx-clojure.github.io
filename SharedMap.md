@@ -12,8 +12,8 @@ generate hash code. The key/value of shared hash map can be `int`,`long`,`String
 
 type        | entry structure size(Bytes)| table structure size(Bytes)| space limit |entries limit| key limit| value limit| 
 ------------ | -----------|-----------|-------------|------------|--------------------|---------------------
-tiny map  |24 |entries x 4| 4G (64-bit) or 2G (32-bit)| 2^31=2.14Billions | 16M | 4G (64-bit) or 2G (32-bit) |
-hash map  |40(64-bit) or 28(32-bit)|entries x 8(64-bit) or 4 (32-bit)  |OS process memory limit| 2^63 (64-bit) or 2^31 (32-bit)|  OS process memory limit | OS process memory limit  |
+tiny map  |24 |entries x 4| 4G or 2G (32-bit)| 2^31=2.14Billions | 16M | 4G or 2G (32-bit) |
+hash map  |40 or 28(32bit)|entries x 8 or 4 (32-bit)  |OS limit| 2^63 or 2^31 (32-bit)|  OS limit | OS limit  |
 
 But note that if needed memory size is less than half of OS page size the real allocated size of nginx slab only can be 
 2^3 = 8, 2^4 = 16, 2^5 = 32,..., 2^(ngx_pagesize_shift - 1).So on 64-bit OS entry structure size of tiny map really
