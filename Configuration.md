@@ -45,7 +45,7 @@ It 's a new feature since v0.2.5. We can define variables and reuse them in jvm_
 ```nginx
 
     ###define nginx_clojure_jar
-    jvm_var nginx_clojure_jar '/home/who/git/nginx-clojure/target/nginx-clojure-0.2.5.jar';
+    jvm_var nginx_clojure_jar '/home/who/git/nginx-clojure/target/nginx-clojure-0.5.1.jar';
     ###reference variable nginx_clojure_jar, starts with #{ different from nginx variable
     jvm_options "-javaagent:#{nginx_clojure_jar}=mb";
     jvm_options "-Xbootclasspath/a:#{nginx_clojure_jar}:jars/clojure-1.5.1.jar"; 

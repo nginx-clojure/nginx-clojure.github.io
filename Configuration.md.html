@@ -37,7 +37,7 @@
 <p>It 's a new feature since v0.2.5. We can define variables and reuse them in jvm_options to make configurations neat.</p>
 <div class="highlight highlight-source-nginx"><pre>
     <span class="pl-c">###define nginx_clojure_jar</span>
-    <span class="pl-k">jvm_var</span> nginx_clojure_jar <span class="pl-s">'/home/who/git/nginx-clojure/target/nginx-clojure-0.2.5.jar'</span>;
+    <span class="pl-k">jvm_var</span> nginx_clojure_jar <span class="pl-s">'/home/who/git/nginx-clojure/target/nginx-clojure-0.5.1.jar'</span>;
     <span class="pl-c">###reference variable nginx_clojure_jar, starts with #{ different from nginx variable</span>
     <span class="pl-k">jvm_options</span> <span class="pl-s">"-javaagent:#{nginx_clojure_jar}=mb"</span>;
     <span class="pl-k">jvm_options</span> <span class="pl-s">"-Xbootclasspath/a:#{nginx_clojure_jar}:jars/clojure-1.5.1.jar"</span>; 

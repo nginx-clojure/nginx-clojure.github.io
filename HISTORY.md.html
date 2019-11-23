@@ -5,6 +5,17 @@
 <li><a href="https://github.com/nginx-clojure/nginx-clojure/releases">Sources of Releases</a></li>
 </ol>
 <h2>
+<a id="user-content-051-2019-11-23" class="anchor" href="#051-2019-11-23" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.5.1 (2019-11-23)</h2>
+<ol>
+<li>Bug Fix: Connection hangs with header filter at thread-pool mode #209 #153</li>
+<li>Bug Fix: Body filter hangs when body size is larger than the value specified in proxy_buffers #219</li>
+<li>Bug Fix: Segment fault caused by request is marked as closed too late #222</li>
+<li>Code Style: Fix generic warnings in java code code-style #223 (Thanks to Michael @mgoblin)</li>
+<li>Bug Fix: NPE caused by damaged memory because unsafe modify response headers #198</li>
+<li>Bug Fix: Wrong response for uncompressed message with PMCE enabled</li>
+<li>CI: both auto-triggered unit test and integration test use travis-ci</li>
+</ol>
+<h2>
 <a id="user-content-050-2019-10-26" class="anchor" href="#050-2019-10-26" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>0.5.0 (2019-10-26)</h2>
 <ol>
 <li>New Feature: Java 9, 10, 11, 12 support. But Java 6 and Java 7 are deprecated now.</li>
