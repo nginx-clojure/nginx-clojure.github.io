@@ -391,8 +391,7 @@ which explains perfectly the variable scope.</p>
           <span class="pl-c">## Because execution of directive `set` is after the execution of Nginx-Clojure rewrite handler</span>
           <span class="pl-k">set</span> <span class="pl-smi">$myhost</span> <span class="pl-s">""</span>;
           <span class="pl-k">rewrite_handler_type</span> <span class="pl-s">'clojure'</span>;
-          <span class="pl-k">rewrite_handler_code</span> <span class="pl-s">' ....</span>
-<span class="pl-s">          '</span>;
+          <span class="pl-k">rewrite_handler_name</span> <span class="pl-s">' ....'</span>;
           <span class="pl-k">proxy_pass</span> <span class="pl-smi">$myhost</span>;
        }    
 </pre></div>
@@ -400,8 +399,7 @@ which explains perfectly the variable scope.</p>
 <div class="highlight highlight-source-nginx"><pre>       <span class="pl-k">set</span> <span class="pl-smi">$myhost</span> <span class="pl-s">""</span>;
        <span class="pl-k">location</span> <span class="pl-en">/myproxy </span>{
           <span class="pl-k">rewrite_handler_type</span> <span class="pl-s">'clojure'</span>;
-          <span class="pl-k">rewrite_handler_code</span> <span class="pl-s">' ....</span>
-<span class="pl-s">          '</span>;
+          <span class="pl-k">rewrite_handler_name</span> <span class="pl-s">'....'</span>;
           <span class="pl-k">proxy_pass</span> <span class="pl-smi">$myhost</span>;
        }    
 </pre></div>
@@ -413,7 +411,7 @@ which explains perfectly the variable scope.</p>
        
        <span class="pl-k">location</span> <span class="pl-en">/rewritesimple </span>{
          <span class="pl-k">rewrite_</span> handler_type <span class="pl-s">'clojure'</span>;
-          <span class="pl-k">rewrite_handler_code</span> <span class="pl-s">'</span>
+         <span class="pl-k">rewrite_handler_code</span> <span class="pl-s">'</span>
 <span class="pl-s">           (do (use <span class="pl-cce">\'</span>[nginx.clojure.core]) </span>
 <span class="pl-s">						(fn[req]</span>
 <span class="pl-s">						  (set-ngx-var! req "myvar" "Hello")</span>
@@ -461,7 +459,7 @@ which explains perfectly the variable scope.</p>
 		<span class="pl-k">@Override</span>
 		<span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">req</span>) {
 			<span class="pl-smi">String</span> myhost <span class="pl-k">=</span> computeMyHost(req);
-			((<span class="pl-smi">NginxJavaRequest</span>)req)<span class="pl-k">.</span>setNGXVariable(<span class="pl-s"><span class="pl-pds">"</span>myhost<span class="pl-pds">"</span></span>, myhost);
+			((<span class="pl-smi">NginxJavaRequest</span>)req)<span class="pl-k">.</span>setVariable(<span class="pl-s"><span class="pl-pds">"</span>myhost<span class="pl-pds">"</span></span>, myhost);
 			<span class="pl-k">return</span> <span class="pl-c1">PHASE_DONE</span>;
 		}
 		

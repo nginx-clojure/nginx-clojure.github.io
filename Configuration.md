@@ -452,8 +452,7 @@ which explains perfectly the variable scope.
           ## Because execution of directive `set` is after the execution of Nginx-Clojure rewrite handler
           set $myhost "";
           rewrite_handler_type 'clojure';
-          rewrite_handler_code ' ....
-          ';
+          rewrite_handler_name ' ....';
           proxy_pass $myhost;
        }    
 
@@ -465,8 +464,7 @@ This example is right and there we declare variable $myhost at the outside of `l
        set $myhost "";
        location /myproxy {
           rewrite_handler_type 'clojure';
-          rewrite_handler_code ' ....
-          ';
+          rewrite_handler_name '....';
           proxy_pass $myhost;
        }    
 
@@ -482,7 +480,7 @@ Here's a simple clojure example for Nginx rewrite handler :
        
        location /rewritesimple {
          rewrite_ handler_type 'clojure';
-          rewrite_handler_code '
+         rewrite_handler_code '
            (do (use \'[nginx.clojure.core]) 
 						(fn[req]
 						  (set-ngx-var! req "myvar" "Hello")
@@ -538,7 +536,7 @@ import static nginx.clojure.java.Constants.*;
 		@Override
 		public Object[] invoke(Map<String, Object> req) {
 			String myhost = computeMyHost(req);
-			((NginxJavaRequest)req).setNGXVariable("myhost", myhost);
+			((NginxJavaRequest)req).setVariable("myhost", myhost);
 			return PHASE_DONE;
 		}
 		
