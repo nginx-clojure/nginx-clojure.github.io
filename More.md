@@ -9,7 +9,7 @@
 
 For Clojure the request map and response map are defined by the ring SEPC at https://github.com/ring-clojure/ring/blob/master/SPEC .
 
-For Java/Groovy , the reqest map contains serveral parts:
+For Java/Groovy, the reqest map contains serveral parts:
 
 1. server-port (Required, Integer) The port on which the request is being handled.
 1. server-name (Required, String) The resolved server name, or the server IP address.
