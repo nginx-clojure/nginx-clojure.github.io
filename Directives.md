@@ -559,7 +559,7 @@ Access handler has the same form with rewrite handle. When it returns `phase-don
 , Nginx will continue the next phase otherwise nginx will response directly typically with some error information, 
 such as `401 Unauthorized`, `403 Forbidden`, etc.
 
-Here 's an example to implement a simple HTTP Basic Authentication.
+Here's an example to implement a simple HTTP Basic Authentication.
 
 ```nginx
 

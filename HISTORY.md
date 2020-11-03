@@ -127,7 +127,7 @@ comments there would not be such example project. (issue #91)
 1. New Directives: rewrite_handler_type, access_handler_type, header_filter_type, body_filter_type
 1. New Feature: Supports nested locations (issue #56)
 1. Bug Fix : uppercase letters in nginx variable name can not work (issue #54)
-1. Bug Fix: The first registered handler will not work if there 's a asynchronous reading of request body (issue #51)
+1. Bug Fix: The first registered handler will not work if there's a asynchronous reading of request body (issue #51)
 1. Enhancement: `handlers_lazy_init` can be used to make handler initialized lazily or eagerly  (issue #52)
 
 

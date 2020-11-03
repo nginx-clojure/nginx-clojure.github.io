@@ -72,7 +72,7 @@ the value of :on-error is a function like (fn[ch status])
 current thread  and will flush data on the background asynchronously and later close the channel safely</pre></div></div><div class="public anchor" id="var-closed.3F"><h3>closed?</h3><div class="usage"><code>(closed? ch)</code></div><div class="doc"><pre class="plaintext"></pre></div></div><div class="public anchor" id="var-get-context"><h3>get-context</h3><div class="usage"><code>(get-context ch)</code></div><div class="doc"><pre class="plaintext"></pre></div></div><div class="public anchor" id="var-on-close.21"><h3>on-close!</h3><div class="usage"><code>(on-close! ch attachment listener)</code></div><div class="doc"><pre class="plaintext">Add a close event listener.
 `attachement is a  object which will be passed to listener when close event happens
 `listener is a function like (fn[attachement] ... )
-A close event will happen immediately when channel is closed by either of these three cases:
+A close event will happen immediately when a channel is closed by either of these three cases:
 (1) channel close function/method is invoked on this channel, e.g. (close! ch)
 (2) inner unrecoverable error happens with this channel, e.g. not enough memory to read/write
 (3) remote client connection is closed or broken.</pre></div></div><div class="public anchor" id="var-send.21"><h3>send!</h3><div class="usage"><code>(send! ch data flush? last?)</code></div><div class="doc"><pre class="plaintext">Asynchronously send data to channel without blocking current thread. 
