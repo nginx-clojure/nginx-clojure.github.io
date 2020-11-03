@@ -360,7 +360,7 @@ API is similar to Java 7 NIO.2 Asynchronous Channel and more details can be foun
 <h2>
 <a id="user-content-37--about-logging" class="anchor" href="#37--about-logging" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.7  About Logging</h2>
 
-<p>For logging with nginx-clojure there are several ways</p>
+<p>For logging with nginx-clojure there are several ways:</p>
 
 <ol>
 <li>Using System.err.print/println will write a log to nginx error.log. This way is simplest but logging information will be mixed if you have more than one nginx worker.</li>
@@ -390,7 +390,7 @@ API is similar to Java 7 NIO.2 Asynchronous Channel and more details can be foun
     &lt;/<span class="pl-ent">encoder</span>&gt;
   &lt;/<span class="pl-ent">appender</span>&gt;</pre></div>
 
-<p>Then we'll get log files whose name is just like myapp.2014-09-12-1.log, myapp.2014-09-12-2.log and so on.</p>
+<p>Then we'll generate log files named in this convention: myapp.2014-09-12-1.log, myapp.2014-09-12-2.log and so on.</p>
 
 <h2>
 <a id="user-content-38--sever-side-websocket" class="anchor" href="#38--sever-side-websocket" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3.8  Sever Side WebSocket</h2>

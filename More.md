@@ -101,7 +101,7 @@ Since v0.2.5, nginx-clojure provides a union form of [hijack API][] to work with
 
 ### Hijack the Request
 
-We can hijack the request to get a http server channel to send some messages later. After hijacking the return result from ring handler, will be ignored so we can finely control when & what to be sent to the client.
+We can hijack the request to get a http server channel to send some messages later. After hijacking the return result from ring handler, it will be ignored so we can finely control when & what to be sent to the client.
 
 For Clojure
 
@@ -274,7 +274,7 @@ Here's an example which is retrieving content from mirror.bit.edu.cn:8080 and se
 3.7  About Logging
 -----------------
 
-For logging with nginx-clojure there are several ways
+For logging with nginx-clojure there are several ways:
 
 1. Using System.err.print/println will write a log to nginx error.log. This way is simplest but logging information will be mixed if you have more than one nginx worker.
 2. Using clojure tools.logging + logback or slf4j +  logback, we can get one log file per nginx worker.
@@ -308,7 +308,7 @@ in logback.xml
   </appender>
  ```
 
-Then we'll get log files whose name is just like myapp.2014-09-12-1.log, myapp.2014-09-12-2.log and so on.
+Then we'll generate log files named in this convention: myapp.2014-09-12-1.log, myapp.2014-09-12-2.log and so on.
 
 3.8  Sever Side WebSocket
 -----------------
