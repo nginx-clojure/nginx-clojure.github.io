@@ -9,16 +9,16 @@
 
 For Clojure the request map and response map are defined by the ring SEPC at https://github.com/ring-clojure/ring/blob/master/SPEC .
 
-For Java/Groovy, the reqest map contains serveral parts:
+For Java/Groovy, the request map contains serveral parts:
 
 1. server-port (Required, Integer) The port on which the request is being handled.
 1. server-name (Required, String) The resolved server name, or the server IP address.
 1. remote-addr (Required, String) The IP address of the client or the last proxy that sent the request.
 1. uri (Required, String) The request URI, excluding the query string and the "?" separator. Must start with "/".
 1. query-string (Optional, String) The query string, if present.
-1. scheme (Required, String) The transport protocol, must be one of http or https.
+1. scheme (Required, String) The transport protocol, must be http or https.
 1. request-method (Required, String) The HTTP request method, must be a lowercase keyword corresponding to a HTTP request method, such as :get or :post.
-1. content-type **DEPRECATED** (Optional, String)The MIME type of the request body, if known.
+1. content-type **DEPRECATED** (Optional, String) The MIME type of the request body, if known.
 1. content-length **DEPRECATED** (Optional, Integer) The number of bytes in the request body, if known.
 1. character-encoding **DEPRECATED** (Optional, String) The name of the character encoding used in the request body, if known.
 1. sl-client-cert (Optional, X509Certificate) The SSL client certificate, if supplied. This value  is not **supported** yet.
@@ -34,13 +34,13 @@ The return response is an array of object, e.g
    "Hello, Java & Nginx!" //response body can be string, File or Array/Collection of string or File ]; 
 ```
 
->Note that If the rewrite/access handler returns phase-done (Clojure) or Constants.PHRASE_DONE (Groovy/Java), nginx will continue to next phases (e.g. invoke proxy_pass or content ring handler). If the rewrite handler returns a general response, nginx will send this response to the client and stop to continue to next phases.
+>Note that if the rewrite/access handler returns phase-done (Clojure) or Constants.PHRASE_DONE (Groovy/Java), nginx will continue to next phases (e.g. invoke proxy_pass or content ring handler). If the rewrite handler returns a general response, nginx will send this response to the client and stop to continue to next phases.
 
 
 3.1 Handle Multiple Coroutine Based Sockets Parallel
 -----------------
 
-Sometimes we need invoke serveral remote services before completing the ring  response. For better performance we need a way to handle multiple sockets parallel in sub coroutines.
+Sometimes we need to invoke serveral remote services before completing the ring  response. For better performance we need a way to handle multiple sockets parallel in sub coroutines.
 
 e.g. fetch two page parallel by clj-http
 
@@ -54,7 +54,7 @@ e.g. fetch two page parallel by clj-http
 
 Here `co-pvalues` is also non-blocking and coroutine based. In fact it will create two sub coroutines to handle two sockets.
 
-For Java/Groovy, we can use `NginxClojureRT.coBatchCall` to do the same thing. Here 's a simple example for Groovy.
+For Java/Groovy, we can use `NginxClojureRT.coBatchCall` to do the same thing. Here's a simple example for Groovy.
 
 ```groovy
      def (r1, r2) = NginxClojureRT.coBatchCall( 
@@ -72,9 +72,9 @@ See [Shared Map & Session Store](sharedmap.html).
 3.3 User Defined Http Method
 -----------------
 
-Some web services need user defined http request method to define special operations beyond standard http request methods. 
+Some web services need a user defined http request method to define special operations beyond standard http request methods. 
 
-e.g. We use `MYUPLOAD` to upload a file and overwrite the one if it exists.  The `curl` command maybe is 
+e.g. We use `MYUPLOAD` to upload a file and overwrite the one if it exists.  The `curl` command could be 
 
 ```bash
 curl   -v  -X MYUPLOAD  --upload-file post-test-data \
@@ -97,11 +97,11 @@ location /myservice {
 3.4 Server Channel for Long Polling & Server Sent Events (SSE)
 -----------------
 
-Since v0.2.5, nginx-clojure provides union form of [hijack API][] to do with Long Polling & Server Sent Events (SSE).
+Since v0.2.5, nginx-clojure provides a union form of [hijack API][] to work with Long Polling & Server Sent Events (SSE).
 
 ### Hijack the Request
 
-We can hijack the request to get a http server channel to sent some messages later. After hijacking the return result from ring handler will be ignore so we can finely control when & what to be sent to the client.
+We can hijack the request to get a http server channel to send some messages later. After hijacking the return result from ring handler, will be ignored so we can finely control when & what to be sent to the client.
 
 For Clojure
 
@@ -159,7 +159,7 @@ The complete java doc about hijack is below
 
 ### Send a Complete Response for Long Polling
 
-When some event happen which let a complete response must be sent to the Long Polling request client we can use `send-response!`(Clojure) or sendResponse (Java/Groovy) to send a complete response. This action is non-blocking and after completion the channel will be closed automatically.
+When an event happens which produces a complete response it must be sent to the Long Polling request client. We can use `send-response!`(Clojure) or sendResponse (Java/Groovy) to send a complete response. This action is non-blocking and after completion the channel will be closed automatically.
 
 For Clojure
 
@@ -180,8 +180,8 @@ channel.sendResponse(new Object[] { NGX_HTTP_OK,
 ### Send Messages for Server Sent Events (SSE)
 
 First we can use `send-headers!`(Clojure) or `sendHeaders` (Java/Groovy) to send a SSE header. Then we
-can use `send!` (Clojure) or `send` (Java/Groovy) to send later messages. The last two parameters of send
-function is used to flush message or close channel after sending current message.
+can use `send!` (Clojure) or `send` (Java/Groovy) to send later messages. The last two parameters of the send
+function is used to flush a message or close the channel after sending the current message.
 
 For Clojure:
 
@@ -216,7 +216,7 @@ channel.send("data: Bye, bye.\r\n", true, true)
 
 ### Listener about the Closed Event of Channel
 
-A closed event will happen immediately when channel is closed by either of these three cases:
+A closed event will happen immediately when a channel is closed by either of these three cases:
 
 * channel close function/method is invoked on this channel, e.g. (close! ch)
 * inner unrecoverable error happens with this channel, e.g. not enough memory to read/write
@@ -226,7 +226,7 @@ For Clojure
 
 ```clojure
 
-(on-close! ch {:ch ch :desc "this is a event attachement"}
+(on-close! ch {:ch ch :desc "this is an event attachement"}
  (fn[att] (info "closed channel from request :" (.request (:ch att)))))
 ```
 
@@ -246,26 +246,26 @@ channel.addListener(channel, new ChannelCloseAdapter<NginxHttpServerChannel>() {
 3.5 Sub/Pub & broadcast Event
 -----------------
 
-Suppose our Nginx instance has 3 workers (worker process not jvm_workers which is just thread number of thread pool in jvm). Now we want to provide sub/pub service. e.g.
+Suppose our Nginx instance has 3 workers (worker process not jvm_workers which is just thread number of thread pool in jvm). Now we want to provide a sub/pub service. e.g.
 
 1. Client A connected to nginx worker A and subscribed to uri `/mychannel/sub`
 2. Client B connected to nginx worker B and subscribed to uri `/mychannel/sub`
 3. Client C connected to nginx worker C and publish a message to uri `/mychannel/pub`
 
-So the service at endpoint of  `/mychannel/pub` must broadcast pub event to Client A and Client B.
-Although for large-scale application we can use sub/pub service from Redis on nginx-clojure ,  for small-scale or medium-scale application this feature will make the dev life easier.
+So the service at endpoint of  `/mychannel/pub` must broadcast a pub event to Client A and Client B.
+Although for large-scale application we can use a sub/pub service from Redis on nginx-clojure. For small-scale or medium-scale applications this feature will make the dev's life easier.
 
 More details can be found from [Pub/Sub Among Nginx Worker Processes](subpub.html)
 
 3.6 Asynchronous Client Channel
 -----------------
 
-Asynchronous Client Channel is wrapper of Asynchronous Client Socket for more easier usage. 
-So far Asynchronous Channel *cann't* work with thread pool mode. The Asynchronous Channel 
-API is a little like Java 7 NIO.2 Asynchronous Channel and more details can be found from issue #37 and it comments
+Asynchronous Client Channel is a wrapper of Asynchronous Client Socket made for more easier usage. 
+So far Asynchronous Channel *can't* work with thread pool mode. The Asynchronous Channel 
+API is similar to Java 7 NIO.2 Asynchronous Channel and more details can be found from issue #37 and its comments
 [Asynchronous Channel API][].
 
-Here 's an example which is to get content from mirror.bit.edu.cn:8080 and sent it to client. 
+Here's an example which is retrieving content from mirror.bit.edu.cn:8080 and sending it to the client. 
 
 * [Clojure Example](https://github.com/nginx-clojure/nginx-clojure/blob/master/test/clojure/nginx/clojure/asyn_channel_handlers_for_test.clj)
 * [Java Example](https://github.com/nginx-clojure/nginx-clojure/blob/master/test/java/nginx/clojure/net/SimpleHandler4TestNginxClojureAsynChannel.java)
@@ -274,9 +274,9 @@ Here 's an example which is to get content from mirror.bit.edu.cn:8080 and sent 
 3.7  About Logging
 -----------------
 
-For logging with nginx-clojure  there are some ways
+For logging with nginx-clojure there are several ways
 
-1. Using System.err.print/println will write log to nginx error.log. This way is simplest but logging information will be mixed if you have more than one nginx worker.
+1. Using System.err.print/println will write a log to nginx error.log. This way is simplest but logging information will be mixed if you have more than one nginx worker.
 2. Using clojure tools.logging + logback or slf4j +  logback, we can get one log file per nginx worker.
 
 e.g
@@ -308,7 +308,7 @@ in logback.xml
   </appender>
  ```
 
-Then we 'll get log files whose name just like myapp.2014-09-12-1.log,  myapp.2014-09-12-2.log.
+Then we'll get log files whose name is just like myapp.2014-09-12-1.log, myapp.2014-09-12-2.log and so on.
 
 3.8  Sever Side WebSocket
 -----------------
@@ -420,7 +420,7 @@ public class WSEcho implements NginxJavaRingHandler {
 
 ###3.8.1 Use Access Handler For WebSocket Security
 
-In below example we return 404 for non WebSocket request 
+In the example below we return 404 for non WebSocket request 
 
 ```nginx
 location /my-ws {
@@ -459,7 +459,7 @@ public class WSAccessHandler implements NginxJavaRingHandler {
 We can get the released version from [clojars](https://clojars.org/nginx-clojure/nginx-jersey) or 
 the jar in [nginx-clojure binary release](https://sourceforge.net/projects/nginx-clojure/files/) 
 
-For get the latest version from the github source
+To get the latest version from the github source
 
 ```shell
 git clone https://github.com/nginx-clojure/nginx-clojure
@@ -505,9 +505,9 @@ in nginx.conf
       }
 ```
 
-All sources about this example can be found from jersey github repository 's example [json-jackson](https://github.com/jersey/jersey/tree/2.17/examples/json-jackson/src/main/java/org/glassfish/jersey/examples/jackson).
+All sources about this example can be found from jersey github repository's example [json-jackson](https://github.com/jersey/jersey/tree/2.17/examples/json-jackson/src/main/java/org/glassfish/jersey/examples/jackson).
 
-then we test the JAX-RS services by curl
+Then we test the JAX-RS services by curl
 
 ```shell
 $ curl  -v http://localhost:8080/jersey/emptyArrayResource
@@ -568,7 +568,7 @@ Apache Tomcat version | Nginx-Clojure version|Nginx-Tomcat8 version
 We can get the released version from [clojars](https://clojars.org/nginx-clojure/nginx-tomcat8) or 
 the jar in [nginx-clojure binary release](https://sourceforge.net/projects/nginx-clojure/files/) 
 
-For get the latest version from the github source
+To get the latest version from the github source
 
 ```shell
 git clone https://github.com/nginx-clojure/nginx-clojure
@@ -608,7 +608,7 @@ in nginx.conf
           ##ignore nginx filter, default is false
           #content_handler_property ignoreNginxFilter false;
           
-          ##when dispatch is false tomcat servlet will be executed in main thread.By default dispatch is false
+          ##when dispatch is false tomcat servlet will be executed in main thread. By default dispatch is false
           ##when use websocket with tomcat it must be set true otherwise maybe deadlock will happen.
           #content_handler_property dispatch false;
           
@@ -622,8 +622,8 @@ in nginx.conf
 
 ## Session Management
 
-If `worker_processes` > 1 there will be more than one jvm instances viz. more tomcat instances so to get synchronized session information we can not use the default tomcat session manger.
-Instead we may consider to use either of
+If `worker_processes` > 1 there will be more than one jvm instances viz. more tomcat instances so to get synchronized session information we cannot use the default tomcat session manger.
+Instead we may consider using one of the following:
 
 1. Cookied based Session Store  viz. storing all session attribute information into cookies.
 1. Shared HashMap among processes in the same machine ,e.g. nginx-clojure built-in [Shared Map][], OpenHFT [Chronicle Map][]
@@ -634,9 +634,9 @@ Instead we may consider to use either of
 
 #### Disable Tomcat Access Log
 
-When we need access log , use Nginx access log instead of Tomcat access log.
+When we need the access log, use Nginx's access log instead of Tomcat's access log.
 
-In server.xml comment AccessLogValve configuration to disable Tomcat access log.
+In server.xml comment out AccessLogValve configuration to disable Tomcat access log.
 
 ```xml
 <!--
@@ -648,7 +648,7 @@ In server.xml comment AccessLogValve configuration to disable Tomcat access log.
 
 #### Disable logging to console
 
-Because Tomcat console log is duplicate with other log such as catalina log, manager log ,etc, so it can be disabled.
+Because Tomcat console log is duplicated with other logs such as catalina log, manager log, etc, it can be disabled.
 In conf/logging.properties remove all `java.util.logging.ConsoleHandler`
 
 ```shell
@@ -659,7 +659,7 @@ handlers = 1catalina.org.apache.juli.AsyncFileHandler, 2localhost.org.apache.jul
 
 #### Don't Enable Tomcat Compression
 
-By default compression is off , do not turn it on.
+By default compression is off, do not turn it on.
 
 ```xml
 <Connector port="8080" protocol="HTTP/1.1" compression="off"
@@ -672,7 +672,7 @@ location /examples {
     gzip_types text/plain text/css 'text/html;charset=ISO-8859-1' 'text/html;charset=UTF-8'; 
 }
 ```
-`gzip` can also appear at http, server blocks. More details can be found [HERE](http://nginx.org/en/docs/http/ngx_http_gzip_module.html)
+`gzip` can also appear under http and server blocks. More details can be found [HERE](http://nginx.org/en/docs/http/ngx_http_gzip_module.html)
 
 
 3.11 More about Nginx Worker Process
@@ -684,16 +684,16 @@ e.g. We use 8 Nginx worker processes:
 worker_processes 8;
 ```
 
-Because a JVM instance will be embeded into per Nginx worker process so if there are more than one Nginx worker prcocesses there will be more than one JVM instances.
-So if we want to get synchronized session information we can not use the default tomcat session manger. Instead we may consider to use either of 
+Because a JVM instance will be embeded into every Nginx worker process, if there are more than one Nginx worker prcocesses then there will be more than one JVM instances.
+So if we want to have synchronized session information we cannot use the default tomcat session manger. Instead we may consider using one of the following: 
 
 1. Cookie based Session Store  viz. storing all session attribute information into cookies.
 1. Shared HashMap among processes in the same machine ,e.g. nginx-clojure built-in [Shared Map][], OpenHFT [Chronicle Map][]
 1. External Session Store,  e.g.  Redis / MySQL / Memcached Session Store
 
-When there are more than one Nginx worker prcocesses sub/pub services also need to be taken care of. Subscribers may connect to JVM instances which maybe are different
-with the JVM instance which the publisher send message to. So we need to use [broadcast API](more.html#35-subpub--broadcast-event) from nginx-clojure
-and broadcast message to all Nginx worker prcocesses.
+When there are is than one Nginx worker process, sub/pub services also need to be taken care for. Subscribers may connect to JVM instances which may be different
+than the JVM instance which the publisher sent a message to. So we need to use [broadcast API](more.html#35-subpub--broadcast-event) from nginx-clojure
+and broadcast messages to all Nginx worker processes.
 
 [nginx-clojure broadcast API]: https://github.com/nginx-clojure/nginx-clojure/issues/38
 [Shared Map]: https://nginx-clojure.github.io/sharedmap.html

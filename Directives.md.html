@@ -556,7 +556,7 @@ the interface <code>nginx.clojure.Configurable</code>.</p>
 Access handler has the same form with rewrite handle. When it returns <code>phase-done</code> (Clojure) or  <code>PHASE_DONE</code> (Groovy/Java)
 , Nginx will continue the next phase otherwise nginx will response directly typically with some error information,
 such as <code>401 Unauthorized</code>, <code>403 Forbidden</code>, etc.</p>
-<p>Here 's an example to implement a simple HTTP Basic Authentication.</p>
+<p>Here's an example to implement a simple HTTP Basic Authentication.</p>
 <div class="highlight highlight-source-nginx"><pre>
           <span class="pl-k">location</span> <span class="pl-en">/basicAuth </span>{
                <span class="pl-k">access_handler_type</span> <span class="pl-s">'java'</span>;
