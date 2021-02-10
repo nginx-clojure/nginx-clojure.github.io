@@ -334,7 +334,7 @@ thread in java is costlier than coroutine, facing large amount of connections th
 	#turn on run tool mode, t means Tool
 	jvm_options "-javaagent:jars/nginx-clojure-0.2.7.jar=tmb";
 	
-	#for clojure, you should append clojure core jar, e.g -Djava.class.path=jars/nginx-clojure-0.2.7.jar:mypath-xxx/clojure-1.5.1.jar,please  replace ':' with ';' on windows
+	#for clojure, you should append clojure core jar, e.g -Xbootclasspath/a:jars/nginx-clojure-0.2.7.jar:mypath-xxx/clojure-1.5.1.jar,please  replace ':' with ';' on windows
   jvm_options "-Xbootclasspath/a:jars/nginx-clojure-0.2.7.jar";
   ...
 	}
@@ -386,9 +386,9 @@ thread in java is costlier than coroutine, facing large amount of connections th
 	jvm_options "-Xbootclasspath/a:jars/nginx-clojure-0.2.7.jar:jars/clojure-1.5.1.jar";
 	
 	#coroutine-udfs is a directory to put your User Defined Class Waving Configuration File
-	#for win32, class path seperator is ";", e.g "-Djava.class.path=coroutine-udfs;YOUR_CLASSPATH_HERE"
+	#for win32, class path seperator is ";", e.g "coroutine-udfs;YOUR_CLASSPATH_HERE"
 	#Note: DON NOT put nginx-clojure &  clojure runtime jars here, because they have been appened to the jvm bootclasspath
-	jvm_options "-Djava.class.path=coroutine-udfs:YOUR_CLASSPATH_HERE";
+	jvm_classpath "coroutine-udfs:YOUR_CLASSPATH_HERE";
 	
 	
 	#copy the waving configuration file generated from previous step to you any classpath dir e.g. coroutine-udfs
