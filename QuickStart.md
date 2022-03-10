@@ -4,7 +4,7 @@ Quick Start
 Installation
 --------------
 
-1. Download the latest binaries release v0.5.2 from [here](https://sourceforge.net/projects/nginx-clojure/files/). 
+1. Download the latest binaries release v0.5.3 from [here](https://sourceforge.net/projects/nginx-clojure/files/). 
 1. Unzip the zip file downloaded then rename the file `nginx-${os-arc}` to `nginx`, eg. for linux is `nginx-linux-x64`
 
 >If you want to compile it with your own nginx please check [HERE](installation.html)
@@ -140,7 +140,7 @@ Start up
 
 ```nginx
 
-$ cd nginx-clojure-0.5.2
+$ cd nginx-clojure-0.5.3
 $ ./nginx
 ``` 
 If everything is ok, we can access our first http service by this url

@@ -265,7 +265,7 @@ channel<span class="pl-k">.</span>sendResponse(<span class="pl-k">new</span> <sp
 <a id="user-content-send-messages-for-server-sent-events-sse" class="anchor" href="#send-messages-for-server-sent-events-sse" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Send Messages for Server Sent Events (SSE)</h3>
 
 <p>First we can use <code>send-headers!</code>(Clojure) or <code>sendHeaders</code> (Java/Groovy) to send a SSE header. Then we
-can use <code>send!</code> (Clojure) or <code>send</code> (Java/Groovy) to send later messages. The last two parameters of the send
+can use <code>send!</code> (Clojure) or <code>send</code> (Java/Groovy) to send later messages. The last two parameters of a send
 function is used to flush a message or close the channel after sending the current message.</p>
 
 <p>For Clojure:</p>
@@ -350,7 +350,7 @@ So far Asynchronous Channel <em>can't</em> work with thread pool mode. The Async
 API is similar to Java 7 NIO.2 Asynchronous Channel and more details can be found from issue #37 and its comments
 <a href="https://github.com/nginx-clojure/nginx-clojure/issues/37">Asynchronous Channel API</a>.</p>
 
-<p>Here's an example which is retrieving content from mirror.bit.edu.cn:8080 and sending it to the client. </p>
+<p>Here's an example which is retrieving content from mirror.bit.edu.cn:8080 and sending it to the client.</p>
 
 <ul>
 <li><a href="https://github.com/nginx-clojure/nginx-clojure/blob/master/test/clojure/nginx/clojure/asyn_channel_handlers_for_test.clj">Clojure Example</a></li>
