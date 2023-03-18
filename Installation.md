@@ -41,6 +41,8 @@ For Win32 users MUST check out nginx source by hg because the zipped source does
 	```bash
 	$ cd nginx-clojure
 	$ lein jar
+	# If we build it with jdk 19 we can try below command to enable native coroutine support
+	$ lein with-profile nativeCoroutine jar
 	```
 	Then you'll find nginx-clojure-${version}.jar (eg. nginx-clojure-0.5.1.jar) in the target folder. 
 	The jar file is self contained. If your project use clojure  it naturally depends on the clojure core jar, e.g clojure-1.9.0.jar.
