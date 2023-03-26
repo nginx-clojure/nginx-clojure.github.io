@@ -306,7 +306,7 @@ three choice :
 	* :smiley:It's Java Socket API Compatible and work well with largely existing java library such as apache http client, mysql jdbc drivers etc.
 	* :smiley:It's non-blocking, cheap, fast and let one java main thread be able to handle thousands of connections.
 	* :smiley:Your old code **_need not be changed_** and those plain and old java socket based code such as Apache Http Client, MySQL mysql jdbc drivers etc. will be on the fly with epoll/kqueue on Linux/BSD!
-	* :worried:You must do some steps to get the right class waving configuration file and set it in the nginx conf file.
+	* :worried:If you use JDK version < 19 you must do some steps to get the right class waving configuration file and set it in the nginx conf file.
 1. Asynchronous Client Socket/Channel
 	* :smiley:It's the fastest among those three choice and you can controll it finely.
 	* :smiley:It can work with default mode or Coroutine based Socket enabled mode but can't work with Thread Pool mode.
@@ -321,6 +321,8 @@ thread in java is costlier than coroutine, facing large amount of connections th
 ### 2.4.1 Enable Coroutine based Client Socket
 
 #### 1. Get a User Defined Class Waving Configuration File for Your Web App
+
+**NOTE** This step can be skip if you use JDK 19+ where native coroutine viz. continuation is supported.
 
 * Turn on Run Tool Mode
 		
@@ -370,7 +372,7 @@ thread in java is costlier than coroutine, facing large amount of connections th
 	
 #### 2. Enable Coroutine Support
 
-* Turn on Coroutine Support
+* Turn on Coroutine Support (For JDK version < 19)
 
 	```nginx
 	http {
@@ -397,7 +399,46 @@ thread in java is costlier than coroutine, facing large amount of connections th
 	...
 	}
 	```
-	
+
+* Turn on Coroutine Support (For JDK version 19+)
+
+```nginx
+	http {
+	  ...
+	  #make sure it is reset to a normal number after  above step, e.g. 8 worker processes.
+	  worker_processes  8;
+    
+    jvm_var ncjar 'jars/nginx-clojure-0.6.0.jar';
+
+    
+    jvm_options "--add-opens=java.base/java.lang=ALL-UNNAMED";
+    jvm_options "--add-opens=java.base/sun.nio.cs=ALL-UNNAMED";
+    jvm_options "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED";
+    
+    
+    ###native coroutine enabled mode
+    jvm_options "--enable-preview";
+    jvm_options "--add-opens=java.base/jdk.internal.vm=ALL-UNNAMED";
+    jvm_options "-javaagent:#{ncjar}=N";
+
+    ###for win32, class path seperator is ";"
+    ### If we only use java handler we can omit clojure-***.jar in the below line.
+    jvm_options "-Xbootclasspath/a:#{ncjar}:jars/clojure-1.9.0.jar:jars/spec.alpha-0.1.143.jar";
+    
+    jvm_classpath "coroutine-udfs:YOUR_CLASSPATH_HERE";
+    
+    ## use mysql8.txt to fix IllegalStateException (viz. java.lang.IllegalStateException: Pinned: MONITOR)
+    jvm_options "-Dnginx.clojure.wave.udfs=mysql8.txt";
+```
+
+mysql8.txt is:
+```text
+## Tell nginx-clojure to remove synchronized code
+## To fix IllegalStateException (viz. java.lang.IllegalStateException: Pinned: MONITOR)
+
+package:com/mysql/cj
+```
+
 * restart nginx or reload nginx
 	
 	Now every nginx worker can handle thousands of connections easily! 

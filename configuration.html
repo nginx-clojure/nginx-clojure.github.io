@@ -100,13 +100,10 @@
       <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-           <h1>
-<a id="user-content-2-configurations" class="anchor" href="#2-configurations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Configurations</h1>
-<h2>
-<a id="user-content-21-jvm-path--class-path--other-jvm-options" class="anchor" href="#21-jvm-path--class-path--other-jvm-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.1 JVM Path , Class Path &amp; Other JVM Options</h2>
+           <h1><a id="user-content-2-configurations" class="anchor" aria-hidden="true" href="#2-configurations"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Configurations</h1>
+<h2><a id="user-content-21-jvm-path--class-path--other-jvm-options" class="anchor" aria-hidden="true" href="#21-jvm-path--class-path--other-jvm-options"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.1 JVM Path , Class Path &amp; Other JVM Options</h2>
 <p>Setting JVM path and class path within <code>http {</code> block in  nginx.conf</p>
-<div class="highlight highlight-source-nginx"><pre>
-    <span class="pl-c">###define jvm path, auto for auto-detect jvm path or a real path</span>
+<div class="highlight highlight-source-nginx"><pre>    <span class="pl-c">###define jvm path, auto for auto-detect jvm path or a real path</span>
     <span class="pl-c">###for win32,  jvm_path maybe is "C:/Program Files/Java/jdk1.7.0_25/jre/bin/server/jvm.dll";</span>
     <span class="pl-c">###for macosx, jvm_path maybe is "/Library/Java/JavaVirtualMachines/jdk1.7.0_55.jdk/Contents/Home/jre/lib/server/libjvm.dylib";</span>
     <span class="pl-c">###for ubuntu, jvm_path maybe is "/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server/libjvm.so";</span>
@@ -134,11 +131,9 @@
     <span class="pl-c">###the remote debug port will be 8401 ~ 840X .</span>
     <span class="pl-c">#jvm_options "-Xdebug";</span>
     <span class="pl-c">#jvm_options "-Xrunjdwp:server=y,transport=dt_socket,address=840#{pno},suspend=n";</span></pre></div>
-<h3>
-<a id="user-content-reusable-variables" class="anchor" href="#reusable-variables" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Reusable Variables</h3>
+<h3><a id="user-content-reusable-variables" class="anchor" aria-hidden="true" href="#reusable-variables"><span aria-hidden="true" class="octicon octicon-link"></span></a>Reusable Variables</h3>
 <p>It 's a new feature since v0.2.5. We can define variables and reuse them in jvm_options to make configurations neat.</p>
-<div class="highlight highlight-source-nginx"><pre>
-    <span class="pl-c">###define nginx_clojure_jar</span>
+<div class="highlight highlight-source-nginx"><pre>    <span class="pl-c">###define nginx_clojure_jar</span>
     <span class="pl-k">jvm_var</span> nginx_clojure_jar <span class="pl-s">'/home/who/git/nginx-clojure/target/nginx-clojure-0.5.1.jar'</span>;
     <span class="pl-c">###reference variable nginx_clojure_jar, starts with #{ different from nginx variable</span>
     <span class="pl-k">jvm_options</span> <span class="pl-s">"-javaagent:#{nginx_clojure_jar}=mb"</span>;
@@ -150,29 +145,24 @@
     <span class="pl-k">jvm_var</span> ncjar <span class="pl-s">'#{ncdev}/target/nginx-clojure-0.2.5.jar'</span>;
 
     <span class="pl-k">jvm_classpath</span> <span class="pl-s">"#{ncjar}:#{mrr}/clj-http/clj-http/0.7.8/clj-http-0.7.8.jar"</span>;</pre></div>
-<h3>
-<a id="user-content-specify-debug-ports-for-jvms" class="anchor" href="#specify-debug-ports-for-jvms" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Specify Debug Ports for JVMs</h3>
+<h3><a id="user-content-specify-debug-ports-for-jvms" class="anchor" aria-hidden="true" href="#specify-debug-ports-for-jvms"><span aria-hidden="true" class="octicon octicon-link"></span></a>Specify Debug Ports for JVMs</h3>
 <p>It 's a new feature since v0.2.5.
 If the <code>worker_processes</code> &gt; 1, the below code will cause error for multiple JVMs try listen on the same debug port <code>2400</code>.</p>
-<div class="highlight highlight-source-nginx"><pre>
-    <span class="pl-k">jvm_options</span> <span class="pl-s">"-Xdebug"</span>;
+<div class="highlight highlight-source-nginx"><pre>    <span class="pl-k">jvm_options</span> <span class="pl-s">"-Xdebug"</span>;
     <span class="pl-k">jvm_options</span> <span class="pl-s">"-Xrunjdwp:server=y,transport=dt_socket,address=2400,suspend=n"</span>;</pre></div>
 <p>Since v0.2.5 we can use a built-in jvm_var <code>pno</code> to make all JVMs have different debug ports,  <code>pno</code> is a dynamic variable and will be increased
 on creating every JVM.
 e.g. When <code>worker_processes</code> is 8, the debug ports will range from port <code>2401</code> to <code>2408</code></p>
-<div class="highlight highlight-source-nginx"><pre>
-<span class="pl-k">worker_processes</span>  <span class="pl-s">8</span>;
+<div class="highlight highlight-source-nginx"><pre><span class="pl-k">worker_processes</span>  <span class="pl-s">8</span>;
 
 <span class="pl-k">http</span> {
 ...
     <span class="pl-k">jvm_options</span> <span class="pl-s">"-Xdebug"</span>;
     <span class="pl-k">jvm_options</span> <span class="pl-s">"-Xrunjdwp:server=y,transport=dt_socket,address=240#{pno},suspend=n"</span>;
 }</pre></div>
-<h3>
-<a id="user-content-advanced-jvm-options-for-io" class="anchor" href="#advanced-jvm-options-for-io" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Advanced JVM Options for I/O</h3>
+<h3><a id="user-content-advanced-jvm-options-for-io" class="anchor" aria-hidden="true" href="#advanced-jvm-options-for-io"><span aria-hidden="true" class="octicon octicon-link"></span></a>Advanced JVM Options for I/O</h3>
 <p>Check <a href="configuration.html#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations">this section</a> for more deitals about choice and configuration about <code>thread pool</code> , <code>coroutine</code> based socket or <code>asynchronous socket/channel</code>.</p>
-<h3>
-<a id="user-content-some-useful-tips" class="anchor" href="#some-useful-tips" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Some Useful Tips</h3>
+<h3><a id="user-content-some-useful-tips" class="anchor" aria-hidden="true" href="#some-useful-tips"><span aria-hidden="true" class="octicon octicon-link"></span></a>Some Useful Tips</h3>
 <p>These tips are really useful. Most of them are from real users. Thanks <a href="https://github.com/rickr-nook">Rickr Nook</a> who give us some useful tips.</p>
 <ol>
 <li>The number of embed JVMs is the same with Nginx <code>worker_processes</code>, so if <code>worker_processes</code> &gt; 1 we maybe need <a href="https://github.com/nginx-clojure/nginx-clojure/issues/38">nginx-clojure broadcast API</a>, shared memory (e.g nginx-clojure built-in <a href="https://nginx-clojure.github.io/sharedmap.html" rel="nofollow">Shared Map</a>, OpenHFT <a href="https://github.com/OpenHFT/Chronicle-Map">Chronicle Map</a>) or
@@ -181,8 +171,7 @@ even external service(e.g. redis, database) to  coordinate the state or use cook
 <li>By adding the location of your clojure source files to the classpath,then just issue "nginx -s reload" and changes to the sources get picked up!</li>
 <li>You can remove clojure-1.5.1.jar from class path and point at your "lein uberjar" to pick up a different version of clojure.</li>
 </ol>
-<h2>
-<a id="user-content-22-initialization-handler-for-nginx-worker" class="anchor" href="#22-initialization-handler-for-nginx-worker" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.2 Initialization Handler for nginx worker</h2>
+<h2><a id="user-content-22-initialization-handler-for-nginx-worker" class="anchor" aria-hidden="true" href="#22-initialization-handler-for-nginx-worker"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.2 Initialization Handler for nginx worker</h2>
 <p>You can embed clojure/groovy code in the <code>http { </code> block to do initialization when nginx worker starting. e.g</p>
 <p>For Clojure</p>
 <div class="highlight highlight-source-nginx"><pre><span class="pl-k">http</span> {
@@ -205,11 +194,11 @@ even external service(e.g. redis, database) to  coordinate the state or use cook
     <span class="pl-k">jvm_init_handler_name</span> <span class="pl-s">'my.test/InitHandler'</span>; 
 ....
 }</pre></div>
-<div class="highlight highlight-source-java"><pre>	<span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">JVMInitHandler</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
-		<span class="pl-k">@Override</span>
-		<span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">ctx</span>) {
-			<span class="pl-smi">NginxClojureRT</span><span class="pl-k">.</span>log<span class="pl-k">.</span>info(<span class="pl-s"><span class="pl-pds">"</span>JVMInitHandler invoked!<span class="pl-pds">"</span></span>);
-			<span class="pl-k">return</span> <span class="pl-c1">null</span>; <span class="pl-c"><span class="pl-c">//</span> or return new Object[] {500, null, null}; for  an error</span>
+<div class="highlight highlight-source-java"><pre>	<span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-smi">JVMInitHandler</span> <span class="pl-k">implements</span> <span class="pl-smi">NginxJavaRingHandler</span> {
+		<span class="pl-c1">@</span><span class="pl-c1">Override</span>
+		<span class="pl-k">public</span> <span class="pl-smi">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-smi">Map</span>&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt; <span class="pl-s1">ctx</span>) {
+			<span class="pl-smi">NginxClojureRT</span>.<span class="pl-s1">log</span>.<span class="pl-en">info</span>(<span class="pl-s">"JVMInitHandler invoked!"</span>);
+			<span class="pl-k">return</span> <span class="pl-c1">null</span>; <span class="pl-c">// or return new Object[] {500, null, null}; for  an error</span>
 		}
 	}</pre></div>
 <p>The ring handler can use status 500 and body to report some errors or just return nothing.
@@ -233,8 +222,7 @@ use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.
 <span class="pl-s">		        )</span>
 <span class="pl-s">		    ))</span>
 <span class="pl-s">	    '</span>;</pre></div>
-<h2>
-<a id="user-content-23-content-ring-handler-for-location" class="anchor" href="#23-content-ring-handler-for-location" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.3 Content Ring Handler for Location</h2>
+<h2><a id="user-content-23-content-ring-handler-for-location" class="anchor" aria-hidden="true" href="#23-content-ring-handler-for-location"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.3 Content Ring Handler for Location</h2>
 <p>Within <code>location</code> block,</p>
 <ul>
 <li>Directive <code>content_handler_type</code> is used to setting a type of handler.</li>
@@ -243,8 +231,7 @@ use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.
 <li>Directive <code>content_handler_property</code> is used to declare one or many properties for content handler which implements interface <code>nginx.clojure.Configurable</code>
 </li>
 </ul>
-<h3>
-<a id="user-content-231-inline-ring-handler" class="anchor" href="#231-inline-ring-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.3.1 Inline Ring Handler</h3>
+<h3><a id="user-content-231-inline-ring-handler" class="anchor" aria-hidden="true" href="#231-inline-ring-handler"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.3.1 Inline Ring Handler</h3>
 <p>For Clojure :</p>
 <div class="highlight highlight-source-nginx"><pre>       <span class="pl-k">location</span> <span class="pl-en">/clojure </span>{
           <span class="pl-k">handler_type</span> <span class="pl-s">'clojure'</span>;
@@ -274,8 +261,7 @@ use <code>nginx.clojure.core/without-coroutine</code> to wrap your handler, e.g.
 <span class="pl-s">          '</span>;
        }</pre></div>
 <p>Now you can start nginx and access <a href="http://localhost:8080/groovy" rel="nofollow">http://localhost:8080/groovy</a>, if some error happens please check error.log file.</p>
-<h3>
-<a id="user-content-232-reference-of-external-ring-handlers" class="anchor" href="#232-reference-of-external-ring-handlers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.3.2 Reference of External Ring Handlers</h3>
+<h3><a id="user-content-232-reference-of-external-ring-handlers" class="anchor" aria-hidden="true" href="#232-reference-of-external-ring-handlers"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.3.2 Reference of External Ring Handlers</h3>
 <p>Please make sure the external Ring handler is in a certain jar file or a directory included by your classpath.
 It is also OK if you do not compile the Clojure/Groovy to java class file and just put the source of them in a certain jar file or a directory included by your classpath.</p>
 <p>For Clojure the exteranl Ring handler example is here</p>
@@ -293,19 +279,19 @@ It is also OK if you do not compile the Clojure/Groovy to java class file and ju
        }</pre></div>
 <p>For more details and more useful examples for <a href="https://github.com/weavejester/compojure">Compojure</a> which is a small routing library for Ring that allows web applications to be composed of small, independent parts. Please refer to <a href="https://github.com/weavejester/compojure">https://github.com/weavejester/compojure</a></p>
 <p>For Java</p>
-<div class="highlight highlight-source-java"><pre><span class="pl-k">package</span> <span class="pl-smi">mytest</span>;
-<span class="pl-k">import static</span> <span class="pl-smi">nginx.clojure.MiniConstants.*</span>;
+<div class="highlight highlight-source-java"><pre><span class="pl-k">package</span> <span class="pl-s1">mytest</span>;
+<span class="pl-k">import</span> <span class="pl-k">static</span> <span class="pl-s1">nginx</span>.<span class="pl-s1">clojure</span>.<span class="pl-s1">MiniConstants</span>.*;
 
-<span class="pl-k">import</span> <span class="pl-smi">java.util.HashMap</span>;
-<span class="pl-k">import</span> <span class="pl-smi">java.util.Map</span>;
-<span class="pl-k">public</span>  <span class="pl-k">class</span> <span class="pl-en">Hello</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
+<span class="pl-k">import</span> <span class="pl-s1">java</span>.<span class="pl-s1">util</span>.<span class="pl-s1">HashMap</span>;
+<span class="pl-k">import</span> <span class="pl-s1">java</span>.<span class="pl-s1">util</span>.<span class="pl-s1">Map</span>;
+<span class="pl-k">public</span>  <span class="pl-k">class</span> <span class="pl-smi">Hello</span> <span class="pl-k">implements</span> <span class="pl-smi">NginxJavaRingHandler</span> {
 
-		<span class="pl-k">@Override</span>
-		<span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>) {
+		<span class="pl-c1">@</span><span class="pl-c1">Override</span>
+		<span class="pl-k">public</span> <span class="pl-smi">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-smi">Map</span>&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt; <span class="pl-s1">request</span>) {
 			<span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] { 
-					<span class="pl-c1">NGX_HTTP_OK</span>, <span class="pl-c"><span class="pl-c">//</span>http status 200</span>
-					<span class="pl-smi">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-c1">CONTENT_TYPE</span>, <span class="pl-s"><span class="pl-pds">"</span>text/plain<span class="pl-pds">"</span></span>), <span class="pl-c"><span class="pl-c">//</span>headers map</span>
-					<span class="pl-s"><span class="pl-pds">"</span>Hello, Java &amp; Nginx!<span class="pl-pds">"</span></span>  <span class="pl-c"><span class="pl-c">//</span>response body can be string, File or Array/Collection of them</span>
+					<span class="pl-c1">NGX_HTTP_OK</span>, <span class="pl-c">//http status 200</span>
+					<span class="pl-s1">ArrayMap</span>.<span class="pl-en">create</span>(<span class="pl-c1">CONTENT_TYPE</span>, <span class="pl-s">"text/plain"</span>), <span class="pl-c">//headers map</span>
+					<span class="pl-s">"Hello, Java &amp; Nginx!"</span>  <span class="pl-c">//response body can be string, File or Array/Collection of them</span>
 					};
 		}
 	}</pre></div>
@@ -328,52 +314,39 @@ It is also OK if you do not compile the Clojure/Groovy to java class file and ju
       }
    }</pre></div>
 <p>You should set your  JAR files or directory to class path, see <a href="configuration.html#21-jvm-path--class-path--other-jvm-options">2.1 JVM Path , Class Path &amp; Other JVM Options</a> .</p>
-<h2>
-<a id="user-content-24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations" class="anchor" href="#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.4 Chose  Coroutine based Socket Or Asynchronous Socket/Channel Or Thread Pool for slow I/O operations</h2>
+<h2><a id="user-content-24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations" class="anchor" aria-hidden="true" href="#24-chose--coroutine-based-socket-or-asynchronous-socketchannel-or-thread-pool-for-slow-io-operations"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.4 Chose  Coroutine based Socket Or Asynchronous Socket/Channel Or Thread Pool for slow I/O operations</h2>
 <p>If the http service should do some slow I/O operations such as access external http service, database, etc.  nginx worker will be blocked by those operations
 and the new  user  request even static file request will be blocked. It really sucks！ Before v0.2.0 the only choice is using thread pool but now we have
 three choice :</p>
 <ol>
 <li>Coroutine based Socket
 <ul>
-<li>
-<g-emoji class="g-emoji" alias="smiley" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png">😃</g-emoji>It's Java Socket API Compatible and work well with largely existing java library such as apache http client, mysql jdbc drivers etc.</li>
-<li>
-<g-emoji class="g-emoji" alias="smiley" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png">😃</g-emoji>It's non-blocking, cheap, fast and let one java main thread be able to handle thousands of connections.</li>
-<li>
-<g-emoji class="g-emoji" alias="smiley" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png">😃</g-emoji>Your old code <strong><em>need not be changed</em></strong> and those plain and old java socket based code such as Apache Http Client, MySQL mysql jdbc drivers etc. will be on the fly with epoll/kqueue on Linux/BSD!</li>
-<li>
-<g-emoji class="g-emoji" alias="worried" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f61f.png">😟</g-emoji>You must do some steps to get the right class waving configuration file and set it in the nginx conf file.</li>
+<li><g-emoji class="g-emoji" alias="smiley" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png">😃</g-emoji>It's Java Socket API Compatible and work well with largely existing java library such as apache http client, mysql jdbc drivers etc.</li>
+<li><g-emoji class="g-emoji" alias="smiley" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png">😃</g-emoji>It's non-blocking, cheap, fast and let one java main thread be able to handle thousands of connections.</li>
+<li><g-emoji class="g-emoji" alias="smiley" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png">😃</g-emoji>Your old code <strong><em>need not be changed</em></strong> and those plain and old java socket based code such as Apache Http Client, MySQL mysql jdbc drivers etc. will be on the fly with epoll/kqueue on Linux/BSD!</li>
+<li><g-emoji class="g-emoji" alias="worried" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f61f.png">😟</g-emoji>If you use JDK version &lt; 19 you must do some steps to get the right class waving configuration file and set it in the nginx conf file.</li>
 </ul>
 </li>
 <li>Asynchronous Client Socket/Channel
 <ul>
-<li>
-<g-emoji class="g-emoji" alias="smiley" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png">😃</g-emoji>It's the fastest among those three choice and you can controll it finely.</li>
-<li>
-<g-emoji class="g-emoji" alias="smiley" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png">😃</g-emoji>It can work with default mode or Coroutine based Socket enabled mode but can't work with Thread Pool mode.</li>
-<li>
-<g-emoji class="g-emoji" alias="worried" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f61f.png">😟</g-emoji>Your old code <strong><em>must be changed</em></strong> to use the event driven pattern.</li>
+<li><g-emoji class="g-emoji" alias="smiley" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png">😃</g-emoji>It's the fastest among those three choice and you can controll it finely.</li>
+<li><g-emoji class="g-emoji" alias="smiley" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png">😃</g-emoji>It can work with default mode or Coroutine based Socket enabled mode but can't work with Thread Pool mode.</li>
+<li><g-emoji class="g-emoji" alias="worried" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f61f.png">😟</g-emoji>Your old code <strong><em>must be changed</em></strong> to use the event driven pattern.</li>
 </ul>
 </li>
 <li>Thread Pool
 <ul>
-<li>
-<g-emoji class="g-emoji" alias="smiley" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png">😃</g-emoji>It's a trade off choice and almost all Java server such as Jetty, Tomcat , Glassfish etc. use thread pool to handle http requests.</li>
-<li>
-<g-emoji class="g-emoji" alias="smiley" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png">😃</g-emoji>Your old code <strong><em>need not be changed</em></strong>.</li>
-<li>
-<g-emoji class="g-emoji" alias="worried" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f61f.png">😟</g-emoji>The nginx worker will be blocked after all threads are exhuasted by slow I/O operations.</li>
-<li>
-<g-emoji class="g-emoji" alias="worried" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f61f.png">😟</g-emoji>Becase the max number of threads is always  more smaller than the total number of socket connections supported by Operation Systems and
+<li><g-emoji class="g-emoji" alias="smiley" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png">😃</g-emoji>It's a trade off choice and almost all Java server such as Jetty, Tomcat , Glassfish etc. use thread pool to handle http requests.</li>
+<li><g-emoji class="g-emoji" alias="smiley" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png">😃</g-emoji>Your old code <strong><em>need not be changed</em></strong>.</li>
+<li><g-emoji class="g-emoji" alias="worried" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f61f.png">😟</g-emoji>The nginx worker will be blocked after all threads are exhuasted by slow I/O operations.</li>
+<li><g-emoji class="g-emoji" alias="worried" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f61f.png">😟</g-emoji>Becase the max number of threads is always  more smaller than the total number of socket connections supported by Operation Systems and
 thread in java is costlier than coroutine, facing large amount of connections this choice isn't as good as Coroutine based choice.</li>
 </ul>
 </li>
 </ol>
-<h3>
-<a id="user-content-241-enable-coroutine-based-client-socket" class="anchor" href="#241-enable-coroutine-based-client-socket" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.4.1 Enable Coroutine based Client Socket</h3>
-<h4>
-<a id="user-content-1-get-a-user-defined-class-waving-configuration-file-for-your-web-app" class="anchor" href="#1-get-a-user-defined-class-waving-configuration-file-for-your-web-app" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Get a User Defined Class Waving Configuration File for Your Web App</h4>
+<h3><a id="user-content-241-enable-coroutine-based-client-socket" class="anchor" aria-hidden="true" href="#241-enable-coroutine-based-client-socket"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.4.1 Enable Coroutine based Client Socket</h3>
+<h4><a id="user-content-1-get-a-user-defined-class-waving-configuration-file-for-your-web-app" class="anchor" aria-hidden="true" href="#1-get-a-user-defined-class-waving-configuration-file-for-your-web-app"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Get a User Defined Class Waving Configuration File for Your Web App</h4>
+<p><strong>NOTE</strong> This step can be skip if you use JDK 19+ where native coroutine viz. continuation is supported.</p>
 <ul>
 <li>
 <p>Turn on Run Tool Mode</p>
@@ -420,11 +393,10 @@ thread in java is costlier than coroutine, facing large amount of connections th
 <p>Don't foget reset <code>worker_processes</code> and turn off run tool mode for product enviroument after get class waving configuration</p>
 </li>
 </ul>
-<h4>
-<a id="user-content-2-enable-coroutine-support" class="anchor" href="#2-enable-coroutine-support" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Enable Coroutine Support</h4>
+<h4><a id="user-content-2-enable-coroutine-support" class="anchor" aria-hidden="true" href="#2-enable-coroutine-support"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Enable Coroutine Support</h4>
 <ul>
 <li>
-<p>Turn on Coroutine Support</p>
+<p>Turn on Coroutine Support (For JDK version &lt; 19)</p>
 <div class="highlight highlight-source-nginx"><pre> <span class="pl-k">http</span> {
  ...
  <span class="pl-c">#make sure it is reset to a normal number after  above step, e.g. 8 worker processes.</span>
@@ -450,31 +422,64 @@ thread in java is costlier than coroutine, facing large amount of connections th
  }</pre></div>
 </li>
 <li>
+<p>Turn on Coroutine Support (For JDK version 19+)</p>
+</li>
+</ul>
+<div class="highlight highlight-source-nginx"><pre>	<span class="pl-k">http</span> {
+	  ...
+	  <span class="pl-c">#make sure it is reset to a normal number after  above step, e.g. 8 worker processes.</span>
+	  <span class="pl-k">worker_processes</span>  <span class="pl-s">8</span>;
+    
+    <span class="pl-k">jvm_var</span> ncjar <span class="pl-s">'jars/nginx-clojure-0.6.0.jar'</span>;
+
+    
+    <span class="pl-k">jvm_options</span> <span class="pl-s">"--add-opens=java.base/java.lang=ALL-UNNAMED"</span>;
+    <span class="pl-k">jvm_options</span> <span class="pl-s">"--add-opens=java.base/sun.nio.cs=ALL-UNNAMED"</span>;
+    <span class="pl-k">jvm_options</span> <span class="pl-s">"--add-opens=java.base/sun.nio.ch=ALL-UNNAMED"</span>;
+    
+    
+    <span class="pl-c">###native coroutine enabled mode</span>
+    <span class="pl-k">jvm_options</span> <span class="pl-s">"--enable-preview"</span>;
+    <span class="pl-k">jvm_options</span> <span class="pl-s">"--add-opens=java.base/jdk.internal.vm=ALL-UNNAMED"</span>;
+    <span class="pl-k">jvm_options</span> <span class="pl-s">"-javaagent:#{ncjar}=N"</span>;
+
+    <span class="pl-c">###for win32, class path seperator is ";"</span>
+    <span class="pl-c">### If we only use java handler we can omit clojure-***.jar in the below line.</span>
+    <span class="pl-k">jvm_options</span> <span class="pl-s">"-Xbootclasspath/a:#{ncjar}:jars/clojure-1.9.0.jar:jars/spec.alpha-0.1.143.jar"</span>;
+    
+    <span class="pl-k">jvm_classpath</span> <span class="pl-s">"coroutine-udfs:YOUR_CLASSPATH_HERE"</span>;
+    
+    <span class="pl-c">## use mysql8.txt to fix IllegalStateException (viz. java.lang.IllegalStateException: Pinned: MONITOR)</span>
+    <span class="pl-k">jvm_options</span> <span class="pl-s">"-Dnginx.clojure.wave.udfs=mysql8.txt"</span>;</pre></div>
+<p>mysql8.txt is:</p>
+<pre lang="text"><code>## Tell nginx-clojure to remove synchronized code
+## To fix IllegalStateException (viz. java.lang.IllegalStateException: Pinned: MONITOR)
+
+package:com/mysql/cj
+</code></pre>
+<ul>
+<li>
 <p>restart nginx or reload nginx</p>
 <p>Now every nginx worker can handle thousands of connections easily!</p>
 <p>Those plain and old java socket based code such as Apache Http Client, MySQL mysql jdbc drivers etc. will be on the fly with epoll/kqueue on Linux/BSD!</p>
 <p>Nginx won't blocked until nginx connections exhuasted or jvm OutOfMemory!</p>
 </li>
 </ul>
-<h3>
-<a id="user-content-242-use-asynchronous-client-socketchannel" class="anchor" href="#242-use-asynchronous-client-socketchannel" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.4.2 Use Asynchronous Client Socket/Channel</h3>
+<h3><a id="user-content-242-use-asynchronous-client-socketchannel" class="anchor" aria-hidden="true" href="#242-use-asynchronous-client-socketchannel"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.4.2 Use Asynchronous Client Socket/Channel</h3>
 <p>Asynchronous Socket/Channel Can be used with default mode or coroutined enabled mode without any additional settings. It just a set of API.
 It uses event driven pattern and works with a java callback handler or clojure function for callback. Asynchronous Channel is wrapper of Asynchronous Socket
 for more easier usage. More examples can be found from this section <a href="more.html#36-asynchronous-channel">Asynchronous Socket/Channel</a>.</p>
-<h3>
-<a id="user-content-243-use-thread-pool" class="anchor" href="#243-use-thread-pool" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.4.3 Use Thread Pool</h3>
+<h3><a id="user-content-243-use-thread-pool" class="anchor" aria-hidden="true" href="#243-use-thread-pool"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.4.3 Use Thread Pool</h3>
 <p>If your tasks are often blocked by slow I/O operations, the thread pool method can make the nginx worker not blocked until
 all threads are exhuasted. When facing large amount of connections this choice isn't as good as above coroutine based choice or asynchronous socket.</p>
 <p>eg.</p>
-<div class="highlight highlight-source-nginx"><pre>
-<span class="pl-c">#turn off coroutine mode,  n means do nothing. You can also comment this line to turn off coroutine mode </span>
+<div class="highlight highlight-source-nginx"><pre><span class="pl-c">#turn off coroutine mode,  n means do nothing. You can also comment this line to turn off coroutine mode </span>
 <span class="pl-k">jvm_options</span> <span class="pl-s">"-javaagent:jars/nginx-clojure-0.2.7.jar=nmb"</span>;
 
 <span class="pl-k">jvm_workers</span> 40;</pre></div>
 <p>Now Nginx-Clojure will create a thread pool with fixed 40 threads  per JVM instance/Nginx worker to handle requests. If you get more memory, you can set
 a bigger number.</p>
-<h2>
-<a id="user-content-25-nginx-rewrite-handler" class="anchor" href="#25-nginx-rewrite-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.5 Nginx Rewrite Handler</h2>
+<h2><a id="user-content-25-nginx-rewrite-handler" class="anchor" aria-hidden="true" href="#25-nginx-rewrite-handler"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.5 Nginx Rewrite Handler</h2>
 <p>A nginx rewrite handler can be used to set var or return errors before proxy pass or content ring handler.
 If the rewrite handler returns <code>phase-done</code> (Clojure) or  <code>PHASE_DONE</code> (Groovy/Java), nginx will continue to invoke proxy_pass or
 content ring handler.
@@ -487,8 +492,7 @@ they are declared before nginx rewrtite handler.
 So the below example maybe is wrong. For more details about Nginx Variable please check this  <a href="http://openresty.org/download/agentzh-nginx-tutorials-en.html" rel="nofollow">nginx tutorial</a><br>
 which explains perfectly the variable scope.</p>
 </blockquote>
-<div class="highlight highlight-source-nginx"><pre>
-       <span class="pl-k">location</span> <span class="pl-en">/myproxy </span>{
+<div class="highlight highlight-source-nginx"><pre>       <span class="pl-k">location</span> <span class="pl-en">/myproxy </span>{
           <span class="pl-c">## It maybe is WRONG!!!</span>
           <span class="pl-c">## Because execution of directive `set` is after the execution of Nginx-Clojure rewrite handler</span>
           <span class="pl-k">set</span> <span class="pl-smi">$myhost</span> <span class="pl-s">""</span>;
@@ -505,11 +509,9 @@ which explains perfectly the variable scope.</p>
           <span class="pl-k">proxy_pass</span> <span class="pl-smi">$myhost</span>;
        }    
 </pre></div>
-<h3>
-<a id="user-content-251-simple-example-about-nginx-rewrite-handler" class="anchor" href="#251-simple-example-about-nginx-rewrite-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.5.1 Simple Example about Nginx rewrite handler</h3>
+<h3><a id="user-content-251-simple-example-about-nginx-rewrite-handler" class="anchor" aria-hidden="true" href="#251-simple-example-about-nginx-rewrite-handler"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.5.1 Simple Example about Nginx rewrite handler</h3>
 <p>Here's a simple clojure example for Nginx rewrite handler :</p>
-<div class="highlight highlight-source-nginx"><pre>
-       <span class="pl-k">set</span> <span class="pl-smi">$myvar</span> <span class="pl-s">""</span>;
+<div class="highlight highlight-source-nginx"><pre>       <span class="pl-k">set</span> <span class="pl-smi">$myvar</span> <span class="pl-s">""</span>;
        
        <span class="pl-k">location</span> <span class="pl-en">/rewritesimple </span>{
          <span class="pl-k">rewrite_</span> handler_type <span class="pl-s">'clojure'</span>;
@@ -532,11 +534,9 @@ which explains perfectly the variable scope.</p>
 <span class="pl-s">          '</span>;
        }    
 </pre></div>
-<h3>
-<a id="user-content-252-simple-dynamic-balancer-by-nginx-rewrite-handler" class="anchor" href="#252-simple-dynamic-balancer-by-nginx-rewrite-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.5.2 Simple Dynamic Balancer By Nginx rewrite handler</h3>
+<h3><a id="user-content-252-simple-dynamic-balancer-by-nginx-rewrite-handler" class="anchor" aria-hidden="true" href="#252-simple-dynamic-balancer-by-nginx-rewrite-handler"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.5.2 Simple Dynamic Balancer By Nginx rewrite handler</h3>
 <p>We can also  use this feature to complete a simple dynamic balancer , e.g.</p>
-<div class="highlight highlight-source-nginx"><pre>
-       <span class="pl-k">set</span> <span class="pl-smi">$myhost</span> <span class="pl-s">""</span>;
+<div class="highlight highlight-source-nginx"><pre>       <span class="pl-k">set</span> <span class="pl-smi">$myhost</span> <span class="pl-s">""</span>;
        
        <span class="pl-k">location</span> <span class="pl-en">/myproxy </span>{
           <span class="pl-k">rewrite_handler_type</span> <span class="pl-s">'clojure'</span>;
@@ -552,27 +552,24 @@ which explains perfectly the variable scope.</p>
        }    
 </pre></div>
 <p>The equivalent java code is here</p>
-<div class="highlight highlight-source-java"><pre>
-<span class="pl-k">package</span> <span class="pl-smi">my.test</span>;
+<div class="highlight highlight-source-java"><pre><span class="pl-k">package</span> <span class="pl-s1">my</span>.<span class="pl-s1">test</span>;
 
-<span class="pl-k">import static</span> <span class="pl-smi">nginx.clojure.java.Constants.*</span>;
+<span class="pl-k">import</span> <span class="pl-k">static</span> <span class="pl-s1">nginx</span>.<span class="pl-s1">clojure</span>.<span class="pl-s1">java</span>.<span class="pl-s1">Constants</span>.*;
 	
-	<span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">MyRewriteProxyPassHandler</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
-		<span class="pl-k">@Override</span>
-		<span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">req</span>) {
-			<span class="pl-smi">String</span> myhost <span class="pl-k">=</span> computeMyHost(req);
-			((<span class="pl-smi">NginxJavaRequest</span>)req)<span class="pl-k">.</span>setVariable(<span class="pl-s"><span class="pl-pds">"</span>myhost<span class="pl-pds">"</span></span>, myhost);
+	<span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-smi">MyRewriteProxyPassHandler</span> <span class="pl-k">implements</span> <span class="pl-smi">NginxJavaRingHandler</span> {
+		<span class="pl-c1">@</span><span class="pl-c1">Override</span>
+		<span class="pl-k">public</span> <span class="pl-smi">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-smi">Map</span>&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt; <span class="pl-s1">req</span>) {
+			<span class="pl-smi">String</span> <span class="pl-s1">myhost</span> = <span class="pl-en">computeMyHost</span>(<span class="pl-s1">req</span>);
+			((<span class="pl-smi">NginxJavaRequest</span>)<span class="pl-s1">req</span>).<span class="pl-en">setVariable</span>(<span class="pl-s">"myhost"</span>, <span class="pl-s1">myhost</span>);
 			<span class="pl-k">return</span> <span class="pl-c1">PHASE_DONE</span>;
 		}
 		
-		<span class="pl-k">private</span> <span class="pl-smi">String</span> <span class="pl-en">computeMyHost</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">req</span>) {
-			<span class="pl-c"><span class="pl-c">//</span>compute a upstream name or host name;</span>
+		<span class="pl-k">private</span> <span class="pl-smi">String</span> <span class="pl-en">computeMyHost</span>(<span class="pl-smi">Map</span>&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt; <span class="pl-s1">req</span>) {
+			<span class="pl-c">//compute a upstream name or host name;</span>
 		}
-	}
-</pre></div>
+	}</pre></div>
 <p>Then we set the java rewrtite handler in nginx.conf</p>
-<div class="highlight highlight-source-nginx"><pre>
-       <span class="pl-k">set</span> <span class="pl-smi">$myhost</span> <span class="pl-s">""</span>;
+<div class="highlight highlight-source-nginx"><pre>       <span class="pl-k">set</span> <span class="pl-smi">$myhost</span> <span class="pl-s">""</span>;
        
        <span class="pl-k">location</span> <span class="pl-en">/myproxy </span>{
           <span class="pl-k">rewrite_handler_type</span> <span class="pl-s">'java'</span>;
@@ -580,8 +577,7 @@ which explains perfectly the variable scope.</p>
           <span class="pl-k">proxy_pass</span> <span class="pl-smi">$myhost</span>;
        }    
 </pre></div>
-<h3>
-<a id="user-content-253-access-request-body-in-nginx-rewrite-handler" class="anchor" href="#253-access-request-body-in-nginx-rewrite-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.5.3 Access request BODY in Nginx Rewrite Handler</h3>
+<h3><a id="user-content-253-access-request-body-in-nginx-rewrite-handler" class="anchor" aria-hidden="true" href="#253-access-request-body-in-nginx-rewrite-handler"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.5.3 Access request BODY in Nginx Rewrite Handler</h3>
 <p>Try <code>always_read_body on;</code>  where about the location you want to access the request body in a JAVA rewrite handler.
 We also added an example(for unit testing) about this, in nginx.conf</p>
 <div class="highlight highlight-source-nginx"><pre>     
@@ -595,44 +591,40 @@ We also added an example(for unit testing) about this, in nginx.conf</p>
        }</pre></div>
 <p>The example java rewrite handler code can be found from
 <a href="https://github.com/nginx-clojure/nginx-clojure/blob/master/test/java/nginx/clojure/java/RewriteHandlerTestSet4NginxJavaRingHandler.java#L35">RewriteHandlerTestSet4NginxJavaRingHandler.java</a></p>
-<h2>
-<a id="user-content-26-nginx-access-handler" class="anchor" href="#26-nginx-access-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.6 Nginx Access Handler</h2>
+<h2><a id="user-content-26-nginx-access-handler" class="anchor" aria-hidden="true" href="#26-nginx-access-handler"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.6 Nginx Access Handler</h2>
 <p>Although we can do similar things within a rewrite handler but using Nginx Access Handler will further define roles of all kind of handlers.
 Nginx Access Handler will run after Rewrite Handler and before Content Handler (e.g. general content ring handler ,  proxy_pass, etc.).
 Access Handler has the same form with Rewrite Handler. When it returns <code>PHASE_DONE</code>, nginx will continue the next phase otherwise nginx will response
 directly typically with some error information , e.g. <code>401 Unauthorized</code>, <code>403 Forbidden</code> .
 e.g.</p>
-<div class="highlight highlight-source-nginx"><pre>
-          <span class="pl-k">location</span> <span class="pl-en">/basicAuth </span>{
+<div class="highlight highlight-source-nginx"><pre>          <span class="pl-k">location</span> <span class="pl-en">/basicAuth </span>{
                <span class="pl-k">access_handler_type</span> <span class="pl-s">'java'</span>;
 	             <span class="pl-k">access_handler_name</span> <span class="pl-s">'my.BasicAuthHandler'</span>;
 	             ....
 	          }</pre></div>
-<div class="highlight highlight-source-java"><pre>
-	<span class="pl-c"><span class="pl-c">/**</span></span>
+<div class="highlight highlight-source-java"><pre>	<span class="pl-c">/**</span>
 <span class="pl-c">	 * This is an  example of HTTP basic Authentication.</span>
 <span class="pl-c">	 * It will require visitor to input a user name (xfeep) and password (hello!) </span>
 <span class="pl-c">	 * otherwise it will return 401 Unauthorized or BAD USER &amp; PASSWORD </span>
-<span class="pl-c">	 <span class="pl-c">*/</span></span>
-	<span class="pl-k">public</span>  <span class="pl-k">class</span> <span class="pl-en">BasicAuthHandler</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span> {
+<span class="pl-c">	 */</span>
+	<span class="pl-k">public</span>  <span class="pl-k">class</span> <span class="pl-smi">BasicAuthHandler</span> <span class="pl-k">implements</span> <span class="pl-smi">NginxJavaRingHandler</span> {
 
-		<span class="pl-k">@Override</span>
-		<span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>) {
-			<span class="pl-smi">String</span> auth <span class="pl-k">=</span> (<span class="pl-smi">String</span>) ((<span class="pl-smi">Map</span>)request<span class="pl-k">.</span>get(<span class="pl-c1">HEADERS</span>))<span class="pl-k">.</span>get(<span class="pl-s"><span class="pl-pds">"</span>authorization<span class="pl-pds">"</span></span>);
-			<span class="pl-k">if</span> (auth <span class="pl-k">==</span> <span class="pl-c1">null</span>) {
-				<span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] { <span class="pl-c1">401</span>, <span class="pl-smi">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-s"><span class="pl-pds">"</span>www-authenticate<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Basic realm=<span class="pl-cce">\"</span>Secure Area<span class="pl-cce">\"</span><span class="pl-pds">"</span></span>),
-						<span class="pl-s"><span class="pl-pds">"</span>&lt;HTML&gt;&lt;BODY&gt;&lt;H1&gt;401 Unauthorized.&lt;/H1&gt;&lt;/BODY&gt;&lt;/HTML&gt;<span class="pl-pds">"</span></span> };
+		<span class="pl-c1">@</span><span class="pl-c1">Override</span>
+		<span class="pl-k">public</span> <span class="pl-smi">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-smi">Map</span>&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt; <span class="pl-s1">request</span>) {
+			<span class="pl-smi">String</span> <span class="pl-s1">auth</span> = (<span class="pl-smi">String</span>) ((<span class="pl-smi">Map</span>)<span class="pl-s1">request</span>.<span class="pl-en">get</span>(<span class="pl-c1">HEADERS</span>)).<span class="pl-en">get</span>(<span class="pl-s">"authorization"</span>);
+			<span class="pl-k">if</span> (<span class="pl-s1">auth</span> == <span class="pl-c1">null</span>) {
+				<span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] { <span class="pl-c1">401</span>, <span class="pl-s1">ArrayMap</span>.<span class="pl-en">create</span>(<span class="pl-s">"www-authenticate"</span>, <span class="pl-s">"Basic realm=\"Secure Area\""</span>),
+						<span class="pl-s">"&lt;HTML&gt;&lt;BODY&gt;&lt;H1&gt;401 Unauthorized.&lt;/H1&gt;&lt;/BODY&gt;&lt;/HTML&gt;"</span> };
 			}
-			<span class="pl-k">String</span>[] up <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">String</span>(<span class="pl-smi">DatatypeConverter</span><span class="pl-k">.</span>parseBase64Binary(auth<span class="pl-k">.</span>substring(<span class="pl-s"><span class="pl-pds">"</span>Basic <span class="pl-pds">"</span></span><span class="pl-k">.</span>length())), <span class="pl-c1">DEFAULT_ENCODING</span>)<span class="pl-k">.</span>split(<span class="pl-s"><span class="pl-pds">"</span>:<span class="pl-pds">"</span></span>);
-			<span class="pl-k">if</span> (up[<span class="pl-c1">0</span>]<span class="pl-k">.</span>equals(<span class="pl-s"><span class="pl-pds">"</span>xfeep<span class="pl-pds">"</span></span>) <span class="pl-k">&amp;&amp;</span> up[<span class="pl-c1">1</span>]<span class="pl-k">.</span>equals(<span class="pl-s"><span class="pl-pds">"</span>hello!<span class="pl-pds">"</span></span>)) {
+			<span class="pl-smi">String</span>[] <span class="pl-s1">up</span> = <span class="pl-k">new</span> <span class="pl-smi">String</span>(<span class="pl-s1">DatatypeConverter</span>.<span class="pl-en">parseBase64Binary</span>(<span class="pl-s1">auth</span>.<span class="pl-en">substring</span>(<span class="pl-s">"Basic "</span>.<span class="pl-en">length</span>())), <span class="pl-c1">DEFAULT_ENCODING</span>).<span class="pl-en">split</span>(<span class="pl-s">":"</span>);
+			<span class="pl-k">if</span> (<span class="pl-s1">up</span>[<span class="pl-c1">0</span>].<span class="pl-en">equals</span>(<span class="pl-s">"xfeep"</span>) &amp;&amp; <span class="pl-s1">up</span>[<span class="pl-c1">1</span>].<span class="pl-en">equals</span>(<span class="pl-s">"hello!"</span>)) {
 				<span class="pl-k">return</span> <span class="pl-c1">PHASE_DONE</span>;
 			}
-			<span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] { <span class="pl-c1">401</span>, <span class="pl-smi">ArrayMap</span><span class="pl-k">.</span>create(<span class="pl-s"><span class="pl-pds">"</span>www-authenticate<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Basic realm=<span class="pl-cce">\"</span>Secure Area<span class="pl-cce">\"</span><span class="pl-pds">"</span></span>),
-			<span class="pl-s"><span class="pl-pds">"</span>&lt;HTML&gt;&lt;BODY&gt;&lt;H1&gt;401 Unauthorized BAD USER &amp; PASSWORD.&lt;/H1&gt;&lt;/BODY&gt;&lt;/HTML&gt;<span class="pl-pds">"</span></span> };
+			<span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] { <span class="pl-c1">401</span>, <span class="pl-s1">ArrayMap</span>.<span class="pl-en">create</span>(<span class="pl-s">"www-authenticate"</span>, <span class="pl-s">"Basic realm=\"Secure Area\""</span>),
+			<span class="pl-s">"&lt;HTML&gt;&lt;BODY&gt;&lt;H1&gt;401 Unauthorized BAD USER &amp; PASSWORD.&lt;/H1&gt;&lt;/BODY&gt;&lt;/HTML&gt;"</span> };
 		} 
 	}</pre></div>
-<h2>
-<a id="user-content-27-nginx-header-filter" class="anchor" href="#27-nginx-header-filter" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.7 Nginx Header Filter</h2>
+<h2><a id="user-content-27-nginx-header-filter" class="anchor" aria-hidden="true" href="#27-nginx-header-filter"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.7 Nginx Header Filter</h2>
 <p>We can use Nginx Header Filter written by  Java/Clojure/Groovy to do some useful things, e.g.</p>
 <ol>
 <li>monitor the time cost of requests processed</li>
@@ -648,19 +640,19 @@ directly typically with some error information.</p>
 	          <span class="pl-k">header_filter_name</span> <span class="pl-s">'my.AddMoreHeaders'</span>;
 	           ..................
 	          }</pre></div>
-<div class="highlight highlight-source-java"><pre><span class="pl-k">package</span> <span class="pl-smi">my</span>;
+<div class="highlight highlight-source-java"><pre><span class="pl-k">package</span> <span class="pl-s1">my</span>;
 
-<span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.java.NginxJavaRingHandler</span>;
-<span class="pl-k">import</span> <span class="pl-smi">nginx.clojure.java.Constants</span>;
+<span class="pl-k">import</span> <span class="pl-s1">nginx</span>.<span class="pl-s1">clojure</span>.<span class="pl-s1">java</span>.<span class="pl-s1">NginxJavaRingHandler</span>;
+<span class="pl-k">import</span> <span class="pl-s1">nginx</span>.<span class="pl-s1">clojure</span>.<span class="pl-s1">java</span>.<span class="pl-s1">Constants</span>;
 
-	<span class="pl-k">public</span>  <span class="pl-k">class</span> <span class="pl-en">RemoveAndAddMoreHeaders</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaHeaderFilter</span> {
-		<span class="pl-k">@Override</span>
-		<span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">doFilter</span>(<span class="pl-k">int</span> <span class="pl-v">status</span>, <span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>, <span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">responseHeaders</span>) {
-			responseHeaders<span class="pl-k">.</span>remove(<span class="pl-s"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>);
-			responseHeaders<span class="pl-k">.</span>put(<span class="pl-s"><span class="pl-pds">"</span>Content-Type<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>text/html<span class="pl-pds">"</span></span>);
-			responseHeaders<span class="pl-k">.</span>put(<span class="pl-s"><span class="pl-pds">"</span>Xfeep-Header<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Hello2!<span class="pl-pds">"</span></span>);
-			responseHeaders<span class="pl-k">.</span>put(<span class="pl-s"><span class="pl-pds">"</span>Server<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>My-Test-Server<span class="pl-pds">"</span></span>);
-			<span class="pl-k">return</span> <span class="pl-smi">Constants</span><span class="pl-c1"><span class="pl-k">.</span>PHASE_DONE</span>;
+	<span class="pl-k">public</span>  <span class="pl-k">class</span> <span class="pl-smi">RemoveAndAddMoreHeaders</span> <span class="pl-k">implements</span> <span class="pl-smi">NginxJavaHeaderFilter</span> {
+		<span class="pl-c1">@</span><span class="pl-c1">Override</span>
+		<span class="pl-k">public</span> <span class="pl-smi">Object</span>[] <span class="pl-en">doFilter</span>(<span class="pl-smi">int</span> <span class="pl-s1">status</span>, <span class="pl-smi">Map</span>&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt; <span class="pl-s1">request</span>, <span class="pl-smi">Map</span>&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt; <span class="pl-s1">responseHeaders</span>) {
+			<span class="pl-s1">responseHeaders</span>.<span class="pl-en">remove</span>(<span class="pl-s">"Content-Type"</span>);
+			<span class="pl-s1">responseHeaders</span>.<span class="pl-en">put</span>(<span class="pl-s">"Content-Type"</span>, <span class="pl-s">"text/html"</span>);
+			<span class="pl-s1">responseHeaders</span>.<span class="pl-en">put</span>(<span class="pl-s">"Xfeep-Header"</span>, <span class="pl-s">"Hello2!"</span>);
+			<span class="pl-s1">responseHeaders</span>.<span class="pl-en">put</span>(<span class="pl-s">"Server"</span>, <span class="pl-s">"My-Test-Server"</span>);
+			<span class="pl-k">return</span> <span class="pl-smi">Constants</span>.<span class="pl-c1">PHASE_DONE</span>;
 		}
 	}</pre></div>
 <p>For Clojure</p>
@@ -680,14 +672,13 @@ directly typically with some error information.</p>
   (<span class="pl-en">assoc!</span>  response-headers <span class="pl-s"><span class="pl-pds">"</span>Xfeep-Header<span class="pl-pds">"</span></span>  <span class="pl-s"><span class="pl-pds">"</span>Hello2!<span class="pl-pds">"</span></span>)
   (<span class="pl-en">assoc!</span>  response-headers <span class="pl-s"><span class="pl-pds">"</span>Server<span class="pl-pds">"</span></span> <span class="pl-s"><span class="pl-pds">"</span>My-Test-Server<span class="pl-pds">"</span></span>) 
   <span class="pl-e">phase-done</span>)</pre></div>
-<h2>
-<a id="user-content-28-nginx-body-filter" class="anchor" href="#28-nginx-body-filter" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.8 Nginx Body Filter</h2>
+<h2><a id="user-content-28-nginx-body-filter" class="anchor" aria-hidden="true" href="#28-nginx-body-filter"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.8 Nginx Body Filter</h2>
 <p>We can use nginx body filter to change the response body.</p>
 <ul>
 <li><strong>Java</strong></li>
 </ul>
 <p>A stream faced Java body filter should implement the interface NginxJavaBodyFilter which has this method:</p>
-<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">Object</span>[] doFilter(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> request, <span class="pl-smi">InputStream</span> bodyChunk, <span class="pl-k">boolean</span> isLast)  throws <span class="pl-smi">IOException</span>;</pre></div>
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-smi">Object</span>[] <span class="pl-s1">doFilter</span>(<span class="pl-smi">Map</span>&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt; <span class="pl-s1">request</span>, <span class="pl-smi">InputStream</span> <span class="pl-s1">bodyChunk</span>, <span class="pl-smi">boolean</span> <span class="pl-s1">isLast</span>)  <span class="pl-k">throws</span> <span class="pl-c1">IOException</span>;</pre></div>
 <p>For one request this method can be invoked multiple times and at the last time the argument
 <code>isLast</code> will be true. Note that <code>bodyChunk</code> is valid only at its call scope and can
 not be stored for later usage.
@@ -702,7 +693,7 @@ be ignored when the response headers has been sent already.
 <li>Array/Iterable, e.g. Array/List/Set of above types</li>
 </ol>
 <p>A string faced Java body filter should extends the class StringFacedJavaBodyFilter which has one protected method to be overriden:</p>
-<div class="highlight highlight-source-java"><pre><span class="pl-k">protected</span> <span class="pl-k">Object</span>[] doFilter(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> request, <span class="pl-smi">String</span> body, <span class="pl-k">boolean</span> isLast) throws <span class="pl-smi">IOException</span></pre></div>
+<div class="highlight highlight-source-java"><pre><span class="pl-k">protected</span> <span class="pl-smi">Object</span>[] <span class="pl-s1">doFilter</span>(<span class="pl-smi">Map</span>&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt; <span class="pl-s1">request</span>, <span class="pl-smi">String</span> <span class="pl-s1">body</span>, <span class="pl-smi">boolean</span> <span class="pl-s1">isLast</span>) <span class="pl-k">throws</span> <span class="pl-c1">IOException</span></pre></div>
 <p>This method has the same return value with <code>NginxJavaBodyFilter.doFilter</code>.</p>
 <p>e.g.</p>
 <div class="highlight highlight-source-nginx"><pre><span class="pl-k">location</span> <span class="pl-en">/hello </span>{
@@ -710,13 +701,13 @@ be ignored when the response headers has been sent already.
   <span class="pl-k">body_filter_name</span> mytest.StringFacedUppercaseBodyFilter;
 }
 </pre></div>
-<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">StringFacedUppercaseBodyFilter</span> <span class="pl-k">extends</span> <span class="pl-e">StringFacedJavaBodyFilter</span> {
-		<span class="pl-k">@Override</span>
-		<span class="pl-k">protected</span> <span class="pl-k">Object</span>[] <span class="pl-en">doFilter</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>, <span class="pl-smi">String</span> <span class="pl-v">body</span>, <span class="pl-k">boolean</span> <span class="pl-v">isLast</span>) <span class="pl-k">throws</span> <span class="pl-smi">IOException</span> {
-			<span class="pl-k">if</span> (isLast) {
-				<span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] {<span class="pl-c1">200</span>, <span class="pl-c1">null</span>, body<span class="pl-k">.</span>toUpperCase()};
+<div class="highlight highlight-source-java"><pre><span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-smi">StringFacedUppercaseBodyFilter</span> <span class="pl-k">extends</span> <span class="pl-smi">StringFacedJavaBodyFilter</span> {
+		<span class="pl-c1">@</span><span class="pl-c1">Override</span>
+		<span class="pl-k">protected</span> <span class="pl-smi">Object</span>[] <span class="pl-en">doFilter</span>(<span class="pl-smi">Map</span>&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt; <span class="pl-s1">request</span>, <span class="pl-smi">String</span> <span class="pl-s1">body</span>, <span class="pl-smi">boolean</span> <span class="pl-s1">isLast</span>) <span class="pl-k">throws</span> <span class="pl-smi">IOException</span> {
+			<span class="pl-k">if</span> (<span class="pl-s1">isLast</span>) {
+				<span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] {<span class="pl-c1">200</span>, <span class="pl-c1">null</span>, <span class="pl-s1">body</span>.<span class="pl-en">toUpperCase</span>()};
 			}<span class="pl-k">else</span> {
-				<span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] {<span class="pl-c1">null</span>, <span class="pl-c1">null</span>, body<span class="pl-k">.</span>toUpperCase()};
+				<span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Object</span>[] {<span class="pl-c1">null</span>, <span class="pl-c1">null</span>, <span class="pl-s1">body</span>.<span class="pl-en">toUpperCase</span>()};
 			}
 		}
 	}</pre></div>
@@ -732,8 +723,7 @@ be ignored when the response headers has been sent already.
   (<span class="pl-k">let</span> [upper-body (<span class="pl-en">.toUpperCase</span> body-chunk)]
       (<span class="pl-k">if</span> last? {<span class="pl-c1">:status</span> <span class="pl-c1">200</span> <span class="pl-c1">:body</span> upper-body}
         {<span class="pl-c1">:body</span> upper-body})))</pre></div>
-<h2>
-<a id="user-content-29-nginx-log-handler" class="anchor" href="#29-nginx-log-handler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.9 Nginx Log Handler</h2>
+<h2><a id="user-content-29-nginx-log-handler" class="anchor" aria-hidden="true" href="#29-nginx-log-handler"><span aria-hidden="true" class="octicon octicon-link"></span></a>2.9 Nginx Log Handler</h2>
 <p>Nginx log handler will be called just before the request is destroyed and its return result will be ignored.
 In a log handler we should not modify any thing about this request such as header, status. response, body and so on.</p>
 <p>e.g. we can write access log just like</p>
@@ -752,34 +742,34 @@ In a log handler we should not modify any thing about this request such as heade
   <span class="pl-k">log_handler_property</span> logUserAgent<span class="pl-c1"> on</span>;
 }
 </pre></div>
-<div class="highlight highlight-source-java"><pre>	<span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">SimpleLogHandler</span> <span class="pl-k">implements</span> <span class="pl-e">NginxJavaRingHandler</span>, <span class="pl-e">Configurable</span> {
+<div class="highlight highlight-source-java"><pre>	<span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-smi">SimpleLogHandler</span> <span class="pl-k">implements</span> <span class="pl-smi">NginxJavaRingHandler</span>, <span class="pl-smi">Configurable</span> {
 		
-		<span class="pl-k">boolean</span> logUserAgent;
+		<span class="pl-smi">boolean</span> <span class="pl-s1">logUserAgent</span>;
 		
-		<span class="pl-k">@Override</span>
-		<span class="pl-k">public</span> <span class="pl-k">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt;</span> <span class="pl-v">request</span>) <span class="pl-k">throws</span> <span class="pl-smi">IOException</span> {
-			<span class="pl-smi">File</span> file <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">File</span>(<span class="pl-s"><span class="pl-pds">"</span>logs/SimpleLogHandler.log<span class="pl-pds">"</span></span>);
-			<span class="pl-smi">NginxJavaRequest</span> r <span class="pl-k">=</span> (<span class="pl-smi">NginxJavaRequest</span>) request;
-			<span class="pl-k">try</span> (<span class="pl-smi">FileOutputStream</span> out <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">FileOutputStream</span>(file, <span class="pl-c1">true</span>)) {
-				<span class="pl-smi">String</span> msg <span class="pl-k">=</span> <span class="pl-smi">String</span><span class="pl-k">.</span>format(<span class="pl-s"><span class="pl-pds">"</span>%s - %s [%s] <span class="pl-cce">\"</span>%s<span class="pl-cce">\"</span> %s <span class="pl-cce">\"</span>%s<span class="pl-cce">\"</span> %s %s<span class="pl-cce">\n</span><span class="pl-pds">"</span></span>, r<span class="pl-k">.</span>getVariable(<span class="pl-s"><span class="pl-pds">"</span>remote_addr<span class="pl-pds">"</span></span>),
-						r<span class="pl-k">.</span>getVariable(<span class="pl-s"><span class="pl-pds">"</span>remote_user<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>x<span class="pl-pds">"</span></span>), r<span class="pl-k">.</span>getVariable(<span class="pl-s"><span class="pl-pds">"</span>time_local<span class="pl-pds">"</span></span>), r<span class="pl-k">.</span>getVariable(<span class="pl-s"><span class="pl-pds">"</span>request<span class="pl-pds">"</span></span>),
-						r<span class="pl-k">.</span>getVariable(<span class="pl-s"><span class="pl-pds">"</span>status<span class="pl-pds">"</span></span>), r<span class="pl-k">.</span>getVariable(<span class="pl-s"><span class="pl-pds">"</span>body_bytes_sent<span class="pl-pds">"</span></span>), r<span class="pl-k">.</span>getVariable(<span class="pl-s"><span class="pl-pds">"</span>http_referer<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>x<span class="pl-pds">"</span></span>),
-						logUserAgent <span class="pl-k">?</span> r<span class="pl-k">.</span>getVariable(<span class="pl-s"><span class="pl-pds">"</span>http_user_agent<span class="pl-pds">"</span></span>) <span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>-<span class="pl-pds">"</span></span>);
-				out<span class="pl-k">.</span>write(msg<span class="pl-k">.</span>getBytes(<span class="pl-s"><span class="pl-pds">"</span>utf8<span class="pl-pds">"</span></span>));
+		<span class="pl-c1">@</span><span class="pl-c1">Override</span>
+		<span class="pl-k">public</span> <span class="pl-smi">Object</span>[] <span class="pl-en">invoke</span>(<span class="pl-smi">Map</span>&lt;<span class="pl-smi">String</span>, <span class="pl-smi">Object</span>&gt; <span class="pl-s1">request</span>) <span class="pl-k">throws</span> <span class="pl-smi">IOException</span> {
+			<span class="pl-smi">File</span> <span class="pl-s1">file</span> = <span class="pl-k">new</span> <span class="pl-smi">File</span>(<span class="pl-s">"logs/SimpleLogHandler.log"</span>);
+			<span class="pl-smi">NginxJavaRequest</span> <span class="pl-s1">r</span> = (<span class="pl-smi">NginxJavaRequest</span>) <span class="pl-s1">request</span>;
+			<span class="pl-k">try</span> (<span class="pl-smi">FileOutputStream</span> <span class="pl-s1">out</span> = <span class="pl-k">new</span> <span class="pl-smi">FileOutputStream</span>(<span class="pl-s1">file</span>, <span class="pl-c1">true</span>)) {
+				<span class="pl-smi">String</span> <span class="pl-s1">msg</span> = <span class="pl-s1">String</span>.<span class="pl-en">format</span>(<span class="pl-s">"%s - %s [%s] \"%s\" %s \"%s\" %s %s\n"</span>, <span class="pl-s1">r</span>.<span class="pl-en">getVariable</span>(<span class="pl-s">"remote_addr"</span>),
+						<span class="pl-s1">r</span>.<span class="pl-en">getVariable</span>(<span class="pl-s">"remote_user"</span>, <span class="pl-s">"x"</span>), <span class="pl-s1">r</span>.<span class="pl-en">getVariable</span>(<span class="pl-s">"time_local"</span>), <span class="pl-s1">r</span>.<span class="pl-en">getVariable</span>(<span class="pl-s">"request"</span>),
+						<span class="pl-s1">r</span>.<span class="pl-en">getVariable</span>(<span class="pl-s">"status"</span>), <span class="pl-s1">r</span>.<span class="pl-en">getVariable</span>(<span class="pl-s">"body_bytes_sent"</span>), <span class="pl-s1">r</span>.<span class="pl-en">getVariable</span>(<span class="pl-s">"http_referer"</span>, <span class="pl-s">"x"</span>),
+						<span class="pl-s1">logUserAgent</span> ? <span class="pl-s1">r</span>.<span class="pl-en">getVariable</span>(<span class="pl-s">"http_user_agent"</span>) : <span class="pl-s">"-"</span>);
+				<span class="pl-s1">out</span>.<span class="pl-en">write</span>(<span class="pl-s1">msg</span>.<span class="pl-en">getBytes</span>(<span class="pl-s">"utf8"</span>));
 			}
 			<span class="pl-k">return</span> <span class="pl-c1">null</span>;
 		}
 
-		<span class="pl-k">@Override</span>
-		<span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">config</span>(<span class="pl-k">Map&lt;<span class="pl-smi">String</span>, <span class="pl-smi">String</span>&gt;</span> <span class="pl-v">properties</span>) {
-			logUserAgent <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span><span class="pl-k">.</span>equalsIgnoreCase(properties<span class="pl-k">.</span>get(<span class="pl-s"><span class="pl-pds">"</span>logUserAgent<span class="pl-pds">"</span></span>));
+		<span class="pl-c1">@</span><span class="pl-c1">Override</span>
+		<span class="pl-k">public</span> <span class="pl-smi">void</span> <span class="pl-en">config</span>(<span class="pl-smi">Map</span>&lt;<span class="pl-smi">String</span>, <span class="pl-smi">String</span>&gt; <span class="pl-s1">properties</span>) {
+			<span class="pl-s1">logUserAgent</span> = <span class="pl-s">"on"</span>.<span class="pl-en">equalsIgnoreCase</span>(<span class="pl-s1">properties</span>.<span class="pl-en">get</span>(<span class="pl-s">"logUserAgent"</span>));
 		}
 		
 
-		<span class="pl-k">@Override</span>
-		<span class="pl-k">public</span> <span class="pl-k">String</span>[] <span class="pl-en">variablesNeedPrefetch</span>() {
-			<span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">String</span>[] { <span class="pl-s"><span class="pl-pds">"</span>remote_addr<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>remote_user<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>time_local<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>request<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>status<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>body_bytes_sent<span class="pl-pds">"</span></span>,
-					<span class="pl-s"><span class="pl-pds">"</span>http_referer<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>http_user_agent<span class="pl-pds">"</span></span> };
+		<span class="pl-c1">@</span><span class="pl-c1">Override</span>
+		<span class="pl-k">public</span> <span class="pl-smi">String</span>[] <span class="pl-en">variablesNeedPrefetch</span>() {
+			<span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">String</span>[] { <span class="pl-s">"remote_addr"</span>, <span class="pl-s">"remote_user"</span>, <span class="pl-s">"time_local"</span>, <span class="pl-s">"request"</span>, <span class="pl-s">"status"</span>, <span class="pl-s">"body_bytes_sent"</span>,
+					<span class="pl-s">"http_referer"</span>, <span class="pl-s">"http_user_agent"</span> };
 		}
 	}</pre></div>
 <ul>
