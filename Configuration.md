@@ -322,7 +322,7 @@ thread in java is costlier than coroutine, facing large amount of connections th
 
 #### 1. Get a User Defined Class Waving Configuration File for Your Web App
 
-**NOTE** This step can be skip if you use JDK 19+ where native coroutine viz. continuation is supported.
+**NOTE** You can skip this step if you use JDK 19+ where native coroutine viz. continuation is supported.
 
 * Turn on Run Tool Mode
 		
